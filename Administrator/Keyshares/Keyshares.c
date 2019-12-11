@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 	//rb - non text files
 	fp = fopen("../pass.txt", "rb");
 	//64 bits pass
-	for(int i = 0, i < 64, i++)
+	for(int i = 0; i < 64; i++)
 		pass[w] = fgetc(fp);
 	pass[64]='\0';
 	fclose(fp);
