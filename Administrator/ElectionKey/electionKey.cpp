@@ -29,29 +29,16 @@ int main()
 	PublicKey public_key = keygen.public_key();
 	SecretKey secret_key = keygen.secret_key();
 
-	// APAGAR o que está aqui em baixo nao e pa ser feito aqui
-	/*
-	// Constructing an instance of Encryptor - to be able to encrypt
-	Encryptor encryptor(context, public_key);
-
-	// Constructing an instance of Evaluator - Computations on the ciphertexts
-	// are performed with the Evaluator class
-	Evaluator evaluator(context);
-
-	// Constructing an instance of Decryptor - to decrypt our results
-	Decryptor decryptor(context, secret_key);
-	*/
-
 	// Writing secret and public keys in a file
-	ofstream publicKeyFile;
-	publicKeyFile.open("publicKeyFile.dat", ios::binary | ios::trunc);
-	publicKeyFile << public_key << endl;
-	publicKeyFile.close();
+	ofstream electionPublicKeyFile;
+	electionPublicKeyFile.open("electionPublicKeyFile.dat", ios::binary | ios::trunc);
+	public_key.save(electionPublicKeyFile);
+	electionPublicKeyFile.close();
 
-	ofstream secretKeyFile;
-	secretKeyFile.open("secretKeyFile.dat", ios::binary | ios::trunc);
-	secretKeyFile << secret_key << endl;
-	secretKeyFile.close();
+	ofstream electionSecretKeyFile;
+	electionSecretKeyFile.open("electionSecretKeyFile.dat", ios::binary | ios::trunc);
+	secret_key.save(electionSecretKeyFile);
+	electionSecretKeyFile.close();
 
 	return 0;
 }

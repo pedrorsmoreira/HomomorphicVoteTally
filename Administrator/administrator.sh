@@ -1,18 +1,23 @@
 #!/bin/bash
 
-echo "Hello World"
-
-CANDIDATES = 
+CANDIDATES =
 VOTERS = 
+VOTES = $CANDIDATES
 
 # Generate the Root Key - This will be the public and private key of the
 # Certification Authority
 # APAGAR If you want a password protected key just put the -des3 option
 openssl genrsa -out rootCA.key 2048 > /dev/null 2>&1
-
 # Create and self sign the Root CA Certificate
 # APAGAR -nodes: if this option is specified then if a private key is created it will not be encrypted.
 openssl req -new -x509 -days 3650 -key rootCA.key -out rootCA.crt -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=CA-10/CN=CA10/emailAddress=example@tecnico.ulisboa.pt"
+
+# Creating a file with the properties of the election 
+# that will be the input in the voter app
+echo $CANDIDATES > input.txt
+echo $VOTES >> input.txt
+# Signing this file
+openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 
 # Creating directorie of tally official app
 mkdir ../TallyOfficial
@@ -26,18 +31,20 @@ cd ElectionKey
 cmake .
 make
 ./electionKey
-# Moving the generated election key to the Administrator folder
-mv publicKeyFile.dat ../
-mv secretKeyFile.dat ../
+# Signing this file
+openssl dgst -sha256 -sign rootCA.key -out publicKeyFile.sign publicKeyFile.dat
 cd ..
 
 # Installing on each voter app
 for (( i = 1; i <= $VOTERS; i++ ))
 do
 	mkdir ../Voter$i
+
+	# Copying the signed file with the properties of the election
+	cp input.sign ../Voter$i
 	
 	# Installing the root CA certificate
-	cp ./rootCA.crt ../Voter$i
+	cp rootCA.crt ../Voter$i
 
 	# Generating the voter key pair
 	# APAGAR If you want a password protected key just put the -des3 option
@@ -55,11 +62,17 @@ do
 	cp voter$i.p12 ../Voter$i
 
 	# Installing the eletion public key
-	cp ./ElectionKey/publicKeyFile.dat ../Voter$i
+	cp ./ElectionKey/publicKeyFile.sign ../Voter$i
 done
+
+SPLIT CENAS
 
 # Assigning a weight to each voter and encrypts it with the election public key
 cd ./Weights
 cmake .
 make
 ./weights ./publicKeyFile.dat $VOTERS
+
+
+
+openssl enc -aes-256-cbc -salt -in file.txt -out file.txt.enc -k PASS
