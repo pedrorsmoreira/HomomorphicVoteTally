@@ -2,7 +2,7 @@
 
 echo "Hello World"
 
-# Create the Root Key - This will be the public and private key of the
+# Generate the Root Key - This will be the public and private key of the
 # Certification Authority
 # APAGAR If you want a password protected key just put the -des3 option
 openssl genrsa -out rootCA.key 2048 > /dev/null 2>&1
