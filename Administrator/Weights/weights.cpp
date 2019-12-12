@@ -90,13 +90,17 @@ int main(int argc, char* argv[])
 			weight = rand() % 100 + 1;
 		cout << "\n222222222222222222\n" << endl;
 
-		Plaintext x_plain(to_string(weight));
-		Ciphertext x_encrypted;
-		encryptor.encrypt(x_plain, x_encrypted);
-		x_encrypted.save(encryptedWeightsFile);
+		Plaintext weight_plain(to_string(weight));
 		cout << "\n33333333333333\n" << endl;
+		Ciphertext weight_encrypted;
+		cout << "\n4444444444444444\n" << endl;
+		encryptor.encrypt(weight_plain, weight_encrypted);
+		cout << "\n5555555555555555\n" << endl;
+		weight_encrypted.save(encryptedWeightsFile);
+		cout << "\n6666666666666666\n" << endl;
+		
 	}
-	cout << "\n222222222222222222\n" << endl;
+	cout << "\n----------------\n" << endl;
 
 	weightsFile.close();
 	encryptedWeightsFile.close();
