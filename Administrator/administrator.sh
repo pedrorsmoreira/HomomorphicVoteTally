@@ -50,11 +50,11 @@ do
 	cp ../Administrator/rootCA.crt ./
 
 	# Generating the voter key pair
-	openssl genrsa -out voter$i.key 1024 > /dev/null
+	openssl genrsa -out voter$i.key 1024 > /dev/null 2>&1
 	# Generating the certificate request
 	openssl req -new -key voter$i.key -out voter$i.csr -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
 	# Using the certificate and the private key from our CA to generate the Voter certificate
-	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey ../Administrator/rootCA.key -CAcreateserial -days 3650 > /dev/null
+	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey ../Administrator/rootCA.key -CAcreateserial -days 3650 > /dev/null 2>&1
 	# Signing both files
 	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$i.sign voter$i.key
 	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$i.crt.sign voter$i.crt
