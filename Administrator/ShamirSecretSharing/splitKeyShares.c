@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     sss_create_shares(shares, data, numberOfShares, thershold);
 	
 	for (i = 0; i < numberOfShares; i++) {
-		snprintf(filename, sizeof(filename), "./ShamirSecretSharing/share%d.txt", i+1);
+		snprintf(filename, sizeof(filename), "share%d.txt", i+1);
 		fp = fopen(filename, "wb");
 		for (int j = 0; j < sss_SHARE_LEN; j++)
 			fputc((uint8_t)shares[i][j], fp);

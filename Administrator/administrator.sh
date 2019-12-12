@@ -76,7 +76,7 @@ do
 	cp ../Administrator/ElectionKey/{electionPublicKeyFile.dat,electionPublicKeyFile.sign} ../Voter$i
 done
 
-cd ../Administrator
+cd ../Administrator/ShamirSecretSharing
 
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
@@ -88,7 +88,6 @@ rm ./ElectionKey/electionSecretKeyFile.dat
 printf "\n\n--->Spliting the password of the encrypted election private key using sss and distributing each of the shares by the trustees\n\n"
 # Spliting the password of the encrypted election private key using Shamir’s
 # secret sharing and distributing each of the shares by the trustees
-cd ShamirSecretSharing
 make #> /dev/null 2>&1
 ./splitKeyShares $TRUSTEES $THRESHOLD_TRUSTEES
 rm ./pass.txt # Deleting the original password
