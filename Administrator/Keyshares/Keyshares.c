@@ -3,7 +3,7 @@
 #include <string.h>
 #include "sss/sss.h"
 #include "sss/randombytes.h"
-//#include <assert.h>
+#include <assert.h>
 
 int main(int argc, char *argv[])
 {
