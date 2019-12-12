@@ -89,30 +89,29 @@ printf "\n\n--->Spliting the password of the encrypted election private key usin
 # secret sharing and distributing each of the shares by the trustees
 make #> /dev/null 2>&1
 ./splitKeyShares $TRUSTEES $THRESHOLD_TRUSTEES
-#rm pass.txt # Deleting the original password
+rm pass.txt # Deleting the original password
 #make clean > /dev/null
-cd ../..
 
-#printf "\n\n--->Moving all the signed shares to the counter\n\n"
+printf "\n\n--->Moving all the signed shares to the counter\n\n"
 # Creating directorie of the counter
-#mkdir ../Counter
+mkdir ../../Counter
 
-#for (( i=1; i<=$TRUSTEES; i++ ))
-#do
+for (( i=1; i<=$TRUSTEES; i++ ))
+do
 	# Signing each share
-#	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
+	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
 	# Moving each share to the counter
-#	mv ./ShamirSecretSharing/{share$i.txt,share$i.sign} ../Counter
-#done
+	mv {share$i.txt,share$i.sign} ../../Counter
+done
 
-#printf "\n\n--->Assigning a weight to each voter and encrypts it with the election public key\n\n"
+printf "\n\n--->Assigning a weight to each voter and encrypts it with the election public key\n\n"
 # Assigning a weight to each voter and encrypts it with the election public key
-#cd Weights
-#cmake .
-#make
-#./weights ./electionPublicKeyFile.dat $VOTERS
+cd Weights
+cmake .
+make
+./weights ./electionPublicKeyFile.dat $VOTERS
 # Signing the file
-#openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
-#mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
+openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
+mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
 
 # COMPILES TALLY AND VOTER
