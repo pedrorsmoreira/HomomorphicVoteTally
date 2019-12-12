@@ -63,7 +63,7 @@ do
 	# Generating the voter key pair
 	openssl genrsa -out voter$i.key 1024
 	# Generating the certificate request
-	openssl req -new -key voter$i.key -out voter$i.csr #-subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
+	openssl req -new -key voter$i.key -out voter$i.csr -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
 	# Using the certificate and the private key from our CA to sign the Voter certificate
 	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -days 3650
 	# Signing both files
