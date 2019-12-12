@@ -76,7 +76,7 @@ do
 	cp {../Administrator/ElectionKey/electionPublicKeyFile.dat,../Administrator/ElectionKey/electionPublicKeyFile.sign} ../Voter$i
 done
 
-cd Administrator
+cd ../Administrator
 
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
