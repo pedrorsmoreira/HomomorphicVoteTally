@@ -6,12 +6,17 @@ VOTES=$CANDIDATES
 TRUSTEES=5
 THRESHOLD_TRUSTEES=6
 
+
+#> /dev/null 2>&1
+
+printf "\n\nGenerating Root key and Root CA Certificate\n\n"
 # Generate the Root Key - This will be the public and private key of the
 # Certification Authority
-openssl genrsa -out rootCA.key 2048 > /dev/null 2>&1
+openssl genrsa -out rootCA.key 2048
 # Create and self sign the Root CA Certificate
 openssl req -new -x509 -days 3650 -key rootCA.key -out rootCA.crt -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=CA-10/CN=CA10/emailAddress=example@tecnico.ulisboa.pt"
 
+printf "\n\nCreating a file with the properties of the election and sign it\n\n"
 # Creating a file with the properties of the election 
 # that will be the input in the voter app
 echo $CANDIDATES > input.txt
@@ -19,12 +24,14 @@ echo $VOTES >> input.txt
 # Signing this file
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 
+printf "\n\nInstalling the root certificate in the tally official app\n\n"
 # Creating directorie of tally official app
 mkdir ../TallyOfficial
 
-#Installing the root certificate in the tally official app
+# Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial
 
+printf "\n\nGenerating the election key - a special homomorphic key - sign it and copy it to the tally official app\n\n"
 # Generating the election key
 cd ElectionKey
 # Compiling and running file to generate the election key 
@@ -36,18 +43,23 @@ openssl dgst -sha256 -sign rootCA.key -out electionPublicKeyFile.sign electionPu
 cp {electionPublicKeyFile.dat, electionPublicKeyFile.sign} ../../TallyOfficial
 cd ..
 
+
 # Installing on each voter app
 for (( i=1; i<=$VOTERS; i++ ))
 do
+	printf "\n\n---------- Voter $i ----------\n\n"
 	# Creating directory
 	mkdir ../Voter$i
 
+	printf "\n\nCopying the file and signed file with the properties of the election\n\n"
 	# Copying the signed file with the properties of the election
 	cp {input.txt, input.sign} ../Voter$i
 	
+	printf "\n\nInstalling the root CA certificate\n\n"
 	# Installing the root CA certificate
 	cp rootCA.crt ../Voter$i
 
+	printf "\n\nGenerating the voter private key and certificate - signs both documents and installs them\n\n"
 	# Generating the voter key pair
 	openssl genrsa -out voter$i.key 1024
 	# Generating the certificate request
@@ -60,15 +72,18 @@ do
 	# Installing the voter private key and certificate
 	mv {voter$i.key, voter$iKey.sign, voter$i.csr, voter$iCert.sign} ../Voter$i
 
+	printf "\n\nInstalling the eletion public key\n\n"
 	# Installing the eletion public key
 	cp {./ElectionKey/electionPublicKeyFile.dat, ./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
 done
 
-# Encrypts electionSecretKeyFile and deletes unencripted file
+printf "\n\nEncrypting election secret key with a random generated password and deletes unencripted file\n\n"
+# Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
 openssl rand -hex 16 -out pass.txt
 openssl enc -aes-256-cbc -salt -in ./ElectionKey/electionSecretKeyFile.dat -out ./ElectionKey/electionSecretKeyFile.dat.enc -pass file:pass.txt
 rm ./ElectionKey/electionSecretKeyFile.dat
 
+printf "\n\nSpliting the password of the encrypted election private key using sss and distributing each of the shares by the trustees\n\n"
 # Spliting the password of the encrypted election private key using Shamir’s
 # secret sharing and distributing each of the shares by the trustees
 cd ShamirSecretSharing
@@ -78,6 +93,8 @@ rm ./pass.txt # Deleting the original password
 #make clean > /dev/null
 cd ..
 
+
+printf "\n\nMoving all the signed shares to the counter\n\n"
 # Creating directorie of the counter
 mkdir ../Counter
 
@@ -89,6 +106,7 @@ do
 	mv ./ShamirSecretSharing/{share$i.txt, share$i.sign} ../Counter
 done
 
+printf "\n\nAssigning a weight to each voter and encrypts it with the election public key\n\n"
 # Assigning a weight to each voter and encrypts it with the election public key
 cd ./Weights
 cmake .
