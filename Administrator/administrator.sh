@@ -27,9 +27,6 @@ echo $VOTES >> input.txt
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 
 printf "\n\n--->Installing the root certificate in the tally official app\n\n"
-# Creating directorie of tally official app
-mkdir ../TallyOfficial
-
 # Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial
 

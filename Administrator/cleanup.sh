@@ -1,6 +1,13 @@
 #!/bin/bash
 
-rm -Rf ../Counter ../TallyOfficial ../Voter*
+VOTERS=3
+
+rm -Rf ../Counter 
+
+for (( counter=1; counter<=$VOTERS; counter++ ))
+do
+	rm -Rf ../Voter$counter
+done
 
 rm input.sign input.txt
 
