@@ -79,32 +79,21 @@ int main(int argc, char* argv[])
 	} else
 		howToGenerateWeights = RANDOM;
 
-	cout << "\n----------------\n" << endl;
-
 	int weight = 0;
 	ofstream encryptedWeightsFile;
-	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::trunc);
-	cout << "\n----------------\n" << endl;
+	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::app | ios::trunc);
 	for (int i = 0; i < numberOfVoters; ++i)
 	{
-		cout << "\n111111111111111111\n" << endl;
 		if (howToGenerateWeights == FILE)
 			weightsFile >> weight;
 		else
-			weight = rand() % 20 + 1;
-		cout << "\n222222222222222222\n" << endl;
+			weight = rand() % 100 + 1;
 
 		Plaintext weight_plain(to_string(weight));
-		cout << "\n33333333333333\n" << endl;
 		Ciphertext weight_encrypted;
-		cout << "\n4444444444444444\n" << endl;
 		encryptor.encrypt(weight_plain, weight_encrypted);
-		cout << "\n5555555555555555\n" << endl;
-		weight_encrypted.save(encryptedWeightsFile);
-		cout << "\n6666666666666666\n" << endl;
-		
+		weight_encrypted.save(encryptedWeightsFile);		
 	}
-	cout << "\n----------------\n" << endl;
 
 	weightsFile.close();
 	encryptedWeightsFile.close();
