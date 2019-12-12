@@ -64,8 +64,6 @@ int main(int argc, char* argv[])
 	// are performed with the Evaluator class    
     Evaluator evaluator(context);
 
-    cout << "\n----------------\n" << endl;
-
     // Checking if weights are to be loaded from file or randomly generated
 	if (argc == 4 && is_file_exist(argv[3])) {
 		howToGenerateWeights = FILE;
@@ -82,18 +80,23 @@ int main(int argc, char* argv[])
 	int weight = 0;
 	ofstream encryptedWeightsFile;
 	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::binary | ios::app | ios::trunc);
+	cout << "\n----------------\n" << endl;
 	for (int i = 0; i < numberOfVoters; ++i)
 	{
+		cout << "\n111111111111111111\n" << endl;
 		if (howToGenerateWeights == FILE)
 			weightsFile >> weight;
 		else
 			weight = rand() % 100 + 1;
+		cout << "\n222222222222222222\n" << endl;
 
 		Plaintext weight_plain(to_string(weight));
 		Ciphertext weight_encrypted;
 		encryptor.encrypt(weight_plain, weight_encrypted);
 		weight_encrypted.save(encryptedWeightsFile);
+		cout << "\n33333333333333\n" << endl;
 	}
+	cout << "\n222222222222222222\n" << endl;
 
 	weightsFile.close();
 	encryptedWeightsFile.close();
