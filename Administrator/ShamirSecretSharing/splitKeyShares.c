@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 	int numberOfShares = atoi(argv[1]), thershold = atoi(argv[2]); 
 	FILE* fp; char filename[20];
 
-	uint8_t data[sss_MLEN] = {0};
+	uint8_t data[sss_MLEN];
 	sss_Share shares[numberOfShares];
 
 	int i = 0;
