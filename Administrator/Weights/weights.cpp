@@ -23,6 +23,7 @@ int main(int argc, char* argv[])
     }
 
     int numberOfVoters = atoi(argv[2]);
+    int howToGenerateWeights = RANDOM;
 
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -63,7 +64,7 @@ int main(int argc, char* argv[])
 
     // Checking if weights are to be loaded from file or randomly generated
 	if (argc == 4 && is_file_exist(argv[3])) {
-		int howToGenerateWeights = FILE;
+		howToGenerateWeights = FILE;
 		ifstream weightsFile;
 		weightsFile.open(argv[3]);
 		if (!weightsFile.is_open()) {
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
 			return 1;
 		}
 	} else
-		int howToGenerateWeights = RANDOM;
+		howToGenerateWeights = RANDOM;
 
 	int weight = 0;
 	ofstream encryptedWeightsFile;
