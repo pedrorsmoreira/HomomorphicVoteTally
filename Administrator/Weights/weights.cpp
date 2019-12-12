@@ -82,7 +82,6 @@ int main(int argc, char* argv[])
 	cout << "\n----------------\n" << endl;
 
 	int weight = 0;
-	ofstream
 	ofstream encryptedWeightsFile;
 	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::trunc);
 	cout << "\n----------------\n" << endl;
