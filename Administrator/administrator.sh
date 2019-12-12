@@ -6,6 +6,8 @@ VOTES=$CANDIDATES
 TRUSTEES=5
 THRESHOLD_TRUSTEES=4
 
+# Deleting all the files from previous excutions
+bash cleanup.sh
 
 #> /dev/null 2>&1
 

@@ -2,20 +2,22 @@
 
 rm -Rf ../Counter ../TallyOfficial ../Voter*
 
-rm input.sign input.txt pass.txt
+rm input.sign input.txt
 
 rm rootCA.key rootCA.crt
 
 cd ElectionKey
 rm -Rf CMakeFiles
-rm CMakeCache.txt
+rm CMakeCache.txt cmake_install.cmake CMakeLists.txt
+rm electionKey electionPublicKey.dat electionPublicKey.sign electionSecretKey.dat.enc
 cd ..
 
 cd ShamirSecretSharing
-rm splitKeyShares 
+rm splitKeyShares splitKeyShares.o 
 cd ..
 
 cd Weights
 rm -Rf CMakeFiles
-rm CMakeCache.txt
-rm encryptedWeightsFile.sign
+rm CMakeCache.txt cmake_install.cmake CMakeLists.txt
+rm weights
+cd ..
