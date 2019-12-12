@@ -1,10 +1,10 @@
 #!/bin/bash
 
-CANDIDATES = 2
-VOTERS = 3
-VOTES = $CANDIDATES
-TRUSTEES = 5
-THRESHOLD_TRUSTEES = 6
+CANDIDATES=2
+VOTERS=3
+VOTES=$CANDIDATES
+TRUSTEES=5
+THRESHOLD_TRUSTEES=6
 
 # Generate the Root Key - This will be the public and private key of the
 # Certification Authority
@@ -37,7 +37,7 @@ cp {electionPublicKeyFile.dat, electionPublicKeyFile.sign} ../../TallyOfficial
 cd ..
 
 # Installing on each voter app
-for (( i = 1; i <= $VOTERS; i++ ))
+for (( i=1; i<=$VOTERS; i++ ))
 do
 	# Creating directory
 	mkdir ../Voter$i
@@ -81,7 +81,7 @@ cd ..
 # Creating directorie of the counter
 mkdir ../Counter
 
-for (( i = 1; i <= $TRUSTEES; i++ ))
+for (( i=1; i<=$TRUSTEES; i++ ))
 do
 	# Signing each share
 	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
