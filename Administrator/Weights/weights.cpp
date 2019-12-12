@@ -15,6 +15,9 @@ bool is_file_exist(const char *fileName)
 
 int main(int argc, char* argv[])
 {
+	PublicKey public_key;
+	ifstream weightsFile;
+
 	// Check the number of parameters - the Weights File is not mandatory
     if (argc < 3) {
         // Tell the user how to run the program
@@ -47,7 +50,6 @@ int main(int argc, char* argv[])
 	ifstream publicKeyFile;
 	publicKeyFile.open(argv[1], ios::binary);
 	if (publicKeyFile.is_open()) {
-		PublicKey public_key;
 		public_key.unsafe_load(context, publicKeyFile);
 	} else {
 		cout << "Unable to open Public Key File" << endl;
@@ -65,7 +67,6 @@ int main(int argc, char* argv[])
     // Checking if weights are to be loaded from file or randomly generated
 	if (argc == 4 && is_file_exist(argv[3])) {
 		howToGenerateWeights = FILE;
-		ifstream weightsFile;
 		weightsFile.open(argv[3]);
 		if (!weightsFile.is_open()) {
 			cout << "Unable to open Weights File" << endl;
@@ -90,8 +91,7 @@ int main(int argc, char* argv[])
 		weight_encrypted.save(encryptedWeightsFile);
 	}
 
-	if (howToGenerateWeights == FILE)
-		weightsFile.close();
+	weightsFile.close();
 	encryptedWeightsFile.close();
 
 	return 0;
