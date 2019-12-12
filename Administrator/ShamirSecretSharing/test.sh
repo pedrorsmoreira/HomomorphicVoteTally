@@ -16,4 +16,4 @@ make clean-test
 make test
 ./test
 
-openssl enc -aes-256-cbc -d -in test.dat.enc -out test1.dat -pass file:recovered_pass.txt
+openssl enc -aes-256-cbc -d -in test.dat.enc -out test1.dat -pass file:recovered_pass.txt -iter 10
