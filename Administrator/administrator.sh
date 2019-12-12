@@ -65,18 +65,18 @@ do
 	openssl genrsa -out voter$i.key 1024
 	# Generating the certificate request
 	openssl req -new -key voter$i.key -out voter$i.csr -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
-	# Using the certificate and the private key from our CA to sign the Voter certificate
+	# Using the certificate and the private key from our CA to generate the Voter certificate
 	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey ../Administrator/rootCA.key -CAcreateserial -days 3650
 	# Signing both files
-	#openssl dgst -sha256 -sign rootCA.key -out voter$iKey.sign voter$i.key
-	#openssl dgst -sha256 -sign rootCA.key -out voter$iCert.sign voter$i.csr
-	# Installing the voter private key and certificate
-	#mv {voter$i.key,voter$iKey.sign,voter$i.csr,voter$iCert.sign} ../Voter$i
+	openssl dgst -sha256 -sign rootCA.key -out voter$iKey.sign voter$i.key
+	openssl dgst -sha256 -sign rootCA.key -out voter$iCert.sign voter$i.csr
 
 	printf "\n\n--->Installing the eletion public key\n\n"
 	# Installing the eletion public key
 	cp {../Administrator/ElectionKey/electionPublicKeyFile.dat,../Administrator/ElectionKey/electionPublicKeyFile.sign} ../Voter$i
 done
+
+cd Administrator
 
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
