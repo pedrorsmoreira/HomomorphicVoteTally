@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 	uint8_t data[sss_MLEN];
 	int numberOfShares = atoi(argv[1]); // Receives the number of shares to create
 	int thershold = atoi(argv[2]); // Receives the defined threshold
+	FILE* fp;
 	char fileName[20];
 	sss_Share shares[numberOfShares];
 	
