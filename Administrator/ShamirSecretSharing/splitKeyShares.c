@@ -24,11 +24,6 @@ int main(int argc, char *argv[])
     } while(1);
     fclose(fp);
 
-    printf("\n");
-    for (i = 0; i < sss_MLEN; ++i)
-    	printf("data[%d] %d\n", i, data[i]);
-    printf("\n");
-
     // Split the secret into $numberOfShares shares (with a recombination theshold of $thershold)
     sss_create_shares(shares, data, numberOfShares, thershold);
 
