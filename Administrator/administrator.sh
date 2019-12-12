@@ -39,6 +39,7 @@ cd ..
 # Installing on each voter app
 for (( i = 1; i <= $VOTERS; i++ ))
 do
+	# Creating directory
 	mkdir ../Voter$i
 
 	# Copying the signed file with the properties of the election
@@ -53,13 +54,11 @@ do
 	openssl req -new -key voter$i.key -out voter$i.csr #-subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
 	# Using the certificate and the private key from our CA to sign the Voter certificate
 	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -days 3650
-	# Defining an archive file format to bundle the private key with the voter certificate
-	openssl pkcs12 -export -in voter$i.crt -inkey voter$i.key -name "Voter $i Cert" -out voter$i.p12
-	openssl pkcs12 -in voter$i.p12 -clcerts -nokeys -info
-	# Making the bundle accessible to other users
-	chmod 444 voter$i.p12
+	# Signing both files
+	openssl dgst -sha256 -sign rootCA.key -out voter$iKey.sign voter$i.key
+	openssl dgst -sha256 -sign rootCA.key -out voter$iCert.sign voter$i.csr
 	# Installing the voter private key and certificate
-	cp voter$i.p12 ../Voter$i
+	mv {voter$i.key, voter$iKey.sign, voter$i.csr, voter$iCert.sign} ../Voter$i
 
 	# Installing the eletion public key
 	cp {./ElectionKey/electionPublicKeyFile.dat, ./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
