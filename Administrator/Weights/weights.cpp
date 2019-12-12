@@ -15,6 +15,9 @@ bool is_file_exist(const char *fileName)
 
 int main(int argc, char* argv[])
 {
+	PublicKey public_key;
+	ifstream weightsFile;
+
 	// Check the number of parameters - the Weights File is not mandatory
     if (argc < 3) {
         // Tell the user how to run the program
@@ -23,6 +26,7 @@ int main(int argc, char* argv[])
     }
 
     int numberOfVoters = atoi(argv[2]);
+    int howToGenerateWeights = RANDOM;
 
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -46,7 +50,6 @@ int main(int argc, char* argv[])
 	ifstream publicKeyFile;
 	publicKeyFile.open(argv[1], ios::binary);
 	if (publicKeyFile.is_open()) {
-		PublicKey public_key;
 		public_key.unsafe_load(context, publicKeyFile);
 	} else {
 		cout << "Unable to open Public Key File" << endl;
@@ -63,15 +66,14 @@ int main(int argc, char* argv[])
 
     // Checking if weights are to be loaded from file or randomly generated
 	if (argc == 4 && is_file_exist(argv[3])) {
-		int howToGenerateWeights = FILE;
-		ifstream weightsFile;
+		howToGenerateWeights = FILE;
 		weightsFile.open(argv[3]);
 		if (!weightsFile.is_open()) {
 			cout << "Unable to open Weights File" << endl;
 			return 1;
 		}
 	} else
-		int howToGenerateWeights = RANDOM;
+		howToGenerateWeights = RANDOM;
 
 	int weight = 0;
 	ofstream encryptedWeightsFile;
@@ -86,8 +88,9 @@ int main(int argc, char* argv[])
 		Plaintext weight_plain(to_string(weight));
 		Ciphertext weight_encrypted;
 		encryptor.encrypt(weight_plain, weight_encrypted);
-		encryptedWeightsFile << weight_encrypted << endl;
+		weight_encrypted.save(encryptedWeightsFile);
 	}
+
 	weightsFile.close();
 	encryptedWeightsFile.close();
 
