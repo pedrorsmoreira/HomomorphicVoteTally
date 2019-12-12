@@ -80,7 +80,7 @@ cd ../Administrator
 
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
-openssl rand -hex 16 -out pass.txt
+openssl rand -hex 16 > pass.txt
 
 printf "\n\n--->deu merda ???\n\n"
 

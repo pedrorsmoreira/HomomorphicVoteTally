@@ -1,10 +1,16 @@
 #!/usr/bin/bash
 
-openssl rand -hex 16 -out pass.txt
-openssl enc -aes-256-cbc -salt -in test.dat -out test.dat.enc -pass file:pass.txt
+openssl rand -hex 16 > pass.txt
+openssl enc -aes-256-cbc -salt -in test.dat -out test.dat.enc -pass file:pass.txt -iter 10
 make clean
 make
 ./keyshares 5 4
+
+echo ""
+echo ""
+echo ""
+echo ""
+echo ""
 
 make clean-test
 make test

@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	assert(tmp == 0);
 	assert(memcmp(restored, data, sss_MLEN) == 0);	// acho que este nao podemos fazer no codigo final
 	
-	printf("sss_MLEN %d\n", sss_MLEN);
+	printf("sss_MLEN %ld\n", sss_MLEN);
 
 	// Escreve num ficheiro a pass dps de juntar as shares
 	fp = fopen("recovered_pass.txt", "wb");
