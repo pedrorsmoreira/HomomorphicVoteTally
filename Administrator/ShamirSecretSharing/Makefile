@@ -3,17 +3,17 @@ CFLAGS = -O3 -Ofast -std=c99 -pedantic -Wall
 
 default: program
 
-program: aux keyshares.o
-	${CC} ${CFLAGS} -o keyshares keyshares.o sss/randombytes/randombytes.o sss/sss.o sss/tweetnacl.o sss/hazmat.o
+program: aux splitKeyShares.o
+	${CC} ${CFLAGS} -o splitKeyShares splitKeyShares.o sss/randombytes/randombytes.o sss/sss.o sss/tweetnacl.o sss/hazmat.o
 
 aux:
 	cd sss/randombytes && make && cd .. && make
 
-keyshares.o:
-	${CC} ${CFLAGS} -c keyshares.c
+splitKeyShares.o:
+	${CC} ${CFLAGS} -c splitKeyShares.c
 
 clean:
-	rm -f *.o keyshares && cd sss/randombytes && make clean && cd .. && make clean
+	rm -f *.o splitKeyShares && cd sss/randombytes && make clean && cd .. && make clean
  
 ###
 
