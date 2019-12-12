@@ -65,14 +65,38 @@ do
 	cp {./ElectionKey/electionPublicKeyFile.dat, ./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
 done
 
-SPLIT CENAS
+# Encrypts electionSecretKeyFile and deletes unencripted file
+openssl rand -hex 16 -out pass.txt
+openssl enc -aes-256-cbc -salt -in ./ElectionKey/electionSecretKeyFile.dat -out ./ElectionKey/electionSecretKeyFile.dat.enc -pass file:pass.txt
+rm ./ElectionKey/electionSecretKeyFile.dat
+
+# Spliting the password of the encrypted election private key using Shamir’s
+# secret sharing and distributing each of the shares by the trustees
+cd ShamirSecretSharing
+make #> /dev/null 2>&1
+./splitKeyShares $TRUSTEES $THRESHOLD_TRUSTEES
+rm ./pass.txt # Deleting the original password
+#make clean > /dev/null
+cd ..
+
+# Creating directorie of the counter
+mkdir ../Counter
+
+for (( i = 1; i <= $TRUSTEES; i++ ))
+do
+	# Signing each share
+	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
+	# Moving each share to the counter
+	mv ./ShamirSecretSharing/{share$i.txt, share$i.sign} ../Counter
+done
 
 # Assigning a weight to each voter and encrypts it with the election public key
 cd ./Weights
 cmake .
 make
 ./weights ./electionPublicKeyFile.dat $VOTERS
+# Signing the file
+openssl dgst -sha256 -sign rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
+mv {encryptedWeightsFile.dat, encryptedWeightsFile.sign} ../TallyOfficial
 
-
-
-openssl enc -aes-256-cbc -salt -in file.txt -out file.txt.enc -k PASS
+# COMPILES TALLY AND VOTER
