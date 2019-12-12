@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 		if (howToGenerateWeights == FILE)
 			weightsFile >> weight;
 		else
-			weight = rand() % 100 + 1;
+			weight = rand() % 20 + 1;
 		cout << "\n222222222222222222\n" << endl;
 
 		Plaintext weight_plain(to_string(weight));
