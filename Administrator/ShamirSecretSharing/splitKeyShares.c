@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
 
     fp = fopen("pass.txt", "rb");
     do {
-    	char c = fgetc(fp); 
+    	char c = fgetc(fp);
+    	printf("i %d c %c\n", i, c);
     	if (feof(fp) || c == '\n') break;
     	data[i++] = (uint8_t) c;
     } while(1);
