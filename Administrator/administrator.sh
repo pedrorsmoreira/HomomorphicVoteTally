@@ -82,9 +82,7 @@ printf "\n\n--->Encrypting election secret key with a random generated password 
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
 openssl rand -hex 16 > pass.txt
 
-printf "\n\n--->deu merda ???\n\n"
-
-openssl enc -aes-256-cbc -salt -in ./ElectionKey/electionSecretKeyFile.dat -out ./ElectionKey/electionSecretKeyFile.dat.enc -pass file:pass.txt
+openssl enc -aes-256-cbc -salt -in ./ElectionKey/electionSecretKeyFile.dat -out ./ElectionKey/electionSecretKeyFile.dat.enc -pass file:pass.txt -iter 10
 rm ./ElectionKey/electionSecretKeyFile.dat
 
 printf "\n\n--->Spliting the password of the encrypted election private key using sss and distributing each of the shares by the trustees\n\n"
