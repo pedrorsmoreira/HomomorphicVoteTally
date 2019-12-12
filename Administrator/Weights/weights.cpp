@@ -53,9 +53,9 @@ int main(int argc, char* argv[])
 	// Loading the election public key from the file
 	ifstream publicKeyFile;
 	publicKeyFile.open(argv[1], ios::binary);
-	if (publicKeyFile.is_open()) {
+	if (publicKeyFile.is_open())
 		public_key.unsafe_load(context, publicKeyFile);
-	} else {
+	else {
 		cout << "Unable to open Public Key File" << endl;
 		return 1;
 	}
@@ -63,10 +63,6 @@ int main(int argc, char* argv[])
 
 	// Constructing an instance of Encryptor - to be able to encrypt
 	Encryptor encryptor(context, public_key);
-
-	// Constructing an instance of Evaluator - Computations on the ciphertexts
-	// are performed with the Evaluator class    
-    Evaluator evaluator(context);
 
     // Checking if weights are to be loaded from file or randomly generated
 	if (argc == 4 && is_file_exist(argv[3])) {

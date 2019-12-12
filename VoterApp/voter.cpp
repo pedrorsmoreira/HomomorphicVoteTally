@@ -1,4 +1,3 @@
-#include <iostream>
 #include "boost/filesystem.hpp"  
 
 //directories
@@ -39,7 +38,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 //get the voter ID
-void identify_voter(int& argc, char* argv[], std::string& id){
+void idenify_voter(int& argc, char* argv[], std::string& id){
 	if (argc == 2)
 		id = argv[1];
 	else if (argc == 1){
@@ -104,7 +103,7 @@ int main(int argc, char* argv[]) {
 	std::string  id 		= "";
 	unsigned int id_int = 0;
 	//get user ID
-	identify_voter(argc, argv, id);
+	idenify_voter(argc, argv, id);
 	id_int = std::atoi(argv[1]);
 
 

@@ -27,9 +27,6 @@ echo $VOTES >> input.txt
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 
 printf "\n\n--->Installing the root certificate in the tally official app\n\n"
-# Creating directorie of tally official app
-mkdir ../TallyOfficial
-
 # Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial
 
@@ -70,8 +67,8 @@ do
 	# Using the certificate and the private key from our CA to generate the Voter certificate
 	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey ../Administrator/rootCA.key -CAcreateserial -days 3650
 	# Signing both files
-	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$iKey.sign voter$i.key
-	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$iCert.sign voter$i.csr
+	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$i.sign voter$i.key
+	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$i.crt.sign voter$i.crt
 
 	printf "\n\n--->Installing the eletion public key\n\n"
 	# Installing the eletion public key
