@@ -12,6 +12,9 @@ rm share4.txt
 rm share5.txt
 
 rm test
+rm test.o
 
 rm test.txt.enc
 rm test1.txt
+rm test.dat.enc
+rm test1.dat

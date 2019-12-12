@@ -3,6 +3,8 @@
 CANDIDATES =
 VOTERS = 
 VOTES = $CANDIDATES
+TRUSTEES =
+THRESHOLD_TRUSTEES =
 
 # Generate the Root Key - This will be the public and private key of the
 # Certification Authority
@@ -29,8 +31,9 @@ cd ElectionKey
 cmake .
 make
 ./electionKey
-# Signing the file w
-openssl dgst -sha256 -sign rootCA.key -out publicKeyFile.sign publicKeyFile.dat
+# Signing the file
+openssl dgst -sha256 -sign rootCA.key -out electionPublicKeyFile.sign electionPublicKeyFile.dat
+cp {electionPublicKeyFile.dat, electionPublicKeyFile.sign} ../../TallyOfficial
 cd ..
 
 # Installing on each voter app
@@ -39,13 +42,12 @@ do
 	mkdir ../Voter$i
 
 	# Copying the signed file with the properties of the election
-	cp input.sign ../Voter$i
+	cp {input.txt, input.sign} ../Voter$i
 	
 	# Installing the root CA certificate
 	cp rootCA.crt ../Voter$i
 
 	# Generating the voter key pair
-	# APAGAR If you want a password protected key just put the -des3 option
 	openssl genrsa -out voter$i.key 1024
 	# Generating the certificate request
 	openssl req -new -key voter$i.key -out voter$i.csr #-subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
@@ -60,7 +62,7 @@ do
 	cp voter$i.p12 ../Voter$i
 
 	# Installing the eletion public key
-	cp ./ElectionKey/publicKeyFile.sign ../Voter$i
+	cp {./ElectionKey/electionPublicKeyFile.dat, ./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
 done
 
 SPLIT CENAS
@@ -69,7 +71,7 @@ SPLIT CENAS
 cd ./Weights
 cmake .
 make
-./weights ./publicKeyFile.dat $VOTERS
+./weights ./electionPublicKeyFile.dat $VOTERS
 
 
 
