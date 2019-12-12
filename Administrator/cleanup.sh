@@ -8,8 +8,8 @@ rm rootCA.key rootCA.crt
 
 cd ElectionKey
 rm -Rf CMakeFiles
-rm CMakeCache.txt cmake_install.cmake
-rm electionKey electionPublicKey.dat electionPublicKey.sign electionSecretKey.dat.enc
+rm CMakeCache.txt cmake_install.cmake Makefile
+rm electionKey electionPublicKeyFile.dat electionPublicKeyFile.sign electionSecretKeyFile.dat.enc
 cd ..
 
 cd ShamirSecretSharing
@@ -18,6 +18,6 @@ cd ..
 
 cd Weights
 rm -Rf CMakeFiles
-rm CMakeCache.txt cmake_install.cmake
+rm CMakeCache.txt cmake_install.cmake Makefile
 rm weights
 cd ..
