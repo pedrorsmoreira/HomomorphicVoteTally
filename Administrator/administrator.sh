@@ -109,7 +109,7 @@ printf "\n\n--->Assigning a weight to each voter and encrypts it with the electi
 cd ../Weights
 cmake .
 make
-./weights ./electionPublicKeyFile.dat $VOTERS
+./weights ../ElectionKey/electionPublicKeyFile.dat $VOTERS
 # Signing the file
 openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
 mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
