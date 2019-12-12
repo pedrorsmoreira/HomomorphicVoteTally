@@ -86,9 +86,11 @@ int main(int argc, char* argv[])
 		Plaintext weight_plain(to_string(weight));
 		Ciphertext weight_encrypted;
 		encryptor.encrypt(weight_plain, weight_encrypted);
-		encryptedWeightsFile << weight_encrypted << endl;
+		weight_encrypted.save(encryptedWeightsFile);
 	}
-	weightsFile.close();
+
+	if (howToGenerateWeights == FILE)
+		weightsFile.close();
 	encryptedWeightsFile.close();
 
 	return 0;
