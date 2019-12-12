@@ -1,10 +1,10 @@
 #!/bin/bash
 
-CANDIDATES =
-VOTERS = 
+CANDIDATES = 2
+VOTERS = 3
 VOTES = $CANDIDATES
-TRUSTEES =
-THRESHOLD_TRUSTEES =
+TRUSTEES = 5
+THRESHOLD_TRUSTEES = 6
 
 # Generate the Root Key - This will be the public and private key of the
 # Certification Authority
