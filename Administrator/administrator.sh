@@ -50,14 +50,15 @@ do
 	printf "\n\n---------- Voter $i ----------\n\n"
 	# Creating directory
 	mkdir ../Voter$i
+	cd ../Voter$i
 
 	printf "\n\n--->Copying the file and signed file with the properties of the election\n\n"
 	# Copying the signed file with the properties of the election
-	cp {input.txt,input.sign} ../Voter$i
+	cp {../Administrator/input.txt,../Administrator/input.sign} ./
 	
 	printf "\n\n--->Installing the root CA certificate\n\n"
 	# Installing the root CA certificate
-	cp rootCA.crt ../Voter$i
+	cp ../Administrator/rootCA.crt ./
 
 	printf "\n\n--->Generating the voter private key and certificate - signs both documents and installs them\n\n"
 	# Generating the voter key pair
@@ -65,7 +66,7 @@ do
 	# Generating the certificate request
 	openssl req -new -key voter$i.key -out voter$i.csr -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
 	# Using the certificate and the private key from our CA to sign the Voter certificate
-	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -days 3650
+	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey ../Administrator/rootCA.key -CAcreateserial -days 3650
 	# Signing both files
 	#openssl dgst -sha256 -sign rootCA.key -out voter$iKey.sign voter$i.key
 	#openssl dgst -sha256 -sign rootCA.key -out voter$iCert.sign voter$i.csr
@@ -74,7 +75,7 @@ do
 
 	printf "\n\n--->Installing the eletion public key\n\n"
 	# Installing the eletion public key
-	cp {./ElectionKey/electionPublicKeyFile.dat,./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
+	cp {../Administrator/ElectionKey/electionPublicKeyFile.dat,../Administrator/ElectionKey/electionPublicKeyFile.sign} ../Voter$i
 done
 
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
