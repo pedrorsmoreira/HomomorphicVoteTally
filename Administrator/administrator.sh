@@ -6,10 +6,8 @@ VOTES = $CANDIDATES
 
 # Generate the Root Key - This will be the public and private key of the
 # Certification Authority
-# APAGAR If you want a password protected key just put the -des3 option
 openssl genrsa -out rootCA.key 2048 > /dev/null 2>&1
 # Create and self sign the Root CA Certificate
-# APAGAR -nodes: if this option is specified then if a private key is created it will not be encrypted.
 openssl req -new -x509 -days 3650 -key rootCA.key -out rootCA.crt -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=CA-10/CN=CA10/emailAddress=example@tecnico.ulisboa.pt"
 
 # Creating a file with the properties of the election 
@@ -31,7 +29,7 @@ cd ElectionKey
 cmake .
 make
 ./electionKey
-# Signing this file
+# Signing the file w
 openssl dgst -sha256 -sign rootCA.key -out publicKeyFile.sign publicKeyFile.dat
 cd ..
 
