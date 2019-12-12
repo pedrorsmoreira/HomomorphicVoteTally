@@ -93,9 +93,9 @@ make #> /dev/null 2>&1
 #make clean > /dev/null
 cd ../..
 
-printf "\n\n--->Moving all the signed shares to the counter\n\n"
+#printf "\n\n--->Moving all the signed shares to the counter\n\n"
 # Creating directorie of the counter
-mkdir ../Counter
+#mkdir ../Counter
 
 #for (( i=1; i<=$TRUSTEES; i++ ))
 #do
