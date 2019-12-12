@@ -1,21 +1,30 @@
 #!/bin/bash
 
-rm -Rf ../Counter ../TallyOfficial ../Voter*
+VOTERS=3
 
-rm input.sign input.txt pass.txt
+rm -Rf ../Counter 
+
+for (( counter=1; counter<=$VOTERS; counter++ ))
+do
+	rm -Rf ../Voter$counter
+done
+
+rm input.sign input.txt
 
 rm rootCA.key rootCA.crt
 
 cd ElectionKey
 rm -Rf CMakeFiles
-rm CMakeCache.txt
+rm CMakeCache.txt cmake_install.cmake Makefile
+rm electionKey electionPublicKeyFile.dat electionPublicKeyFile.sign electionSecretKeyFile.dat.enc
 cd ..
 
 cd ShamirSecretSharing
-rm splitKeyShares 
+rm splitKeyShares splitKeyShares.o 
 cd ..
 
 cd Weights
 rm -Rf CMakeFiles
-rm CMakeCache.txt
-rm encryptedWeightsFile.sign
+rm CMakeCache.txt cmake_install.cmake Makefile
+rm weights
+cd ..
