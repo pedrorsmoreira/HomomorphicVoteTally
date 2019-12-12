@@ -82,8 +82,9 @@ int main(int argc, char* argv[])
 	cout << "\n----------------\n" << endl;
 
 	int weight = 0;
+	ofstream
 	ofstream encryptedWeightsFile;
-	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::binary | ios::app | ios::trunc);
+	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::trunc);
 	cout << "\n----------------\n" << endl;
 	for (int i = 0; i < numberOfVoters; ++i)
 	{
