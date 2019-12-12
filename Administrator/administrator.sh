@@ -54,7 +54,7 @@ do
 
 	printf "\n\n--->Copying the file and signed file with the properties of the election\n\n"
 	# Copying the signed file with the properties of the election
-	cp {../Administrator/input.txt,../Administrator/input.sign} ./
+	cp ../Administrator/{input.txt,input.sign} ./
 	
 	printf "\n\n--->Installing the root CA certificate\n\n"
 	# Installing the root CA certificate
@@ -73,7 +73,7 @@ do
 
 	printf "\n\n--->Installing the eletion public key\n\n"
 	# Installing the eletion public key
-	cp {../Administrator/ElectionKey/electionPublicKeyFile.dat,../Administrator/ElectionKey/electionPublicKeyFile.sign} ../Voter$i
+	cp ../Administrator/ElectionKey/{electionPublicKeyFile.dat,electionPublicKeyFile.sign} ../Voter$i
 done
 
 cd ../Administrator
@@ -97,7 +97,6 @@ rm ./pass.txt # Deleting the original password
 #make clean > /dev/null
 cd ..
 
-
 printf "\n\n--->Moving all the signed shares to the counter\n\n"
 # Creating directorie of the counter
 mkdir ../Counter
@@ -118,6 +117,6 @@ make
 ./weights ./electionPublicKeyFile.dat $VOTERS
 # Signing the file
 openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
-mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../TallyOfficial
+mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
 
 # COMPILES TALLY AND VOTER
