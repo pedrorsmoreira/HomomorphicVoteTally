@@ -39,8 +39,8 @@ cmake .
 make
 ./electionKey
 # Signing the file
-openssl dgst -sha256 -sign rootCA.key -out electionPublicKeyFile.sign electionPublicKeyFile.dat
-cp {electionPublicKeyFile.dat, electionPublicKeyFile.sign} ../../TallyOfficial
+openssl dgst -sha256 -sign ../rootCA.key -out electionPublicKeyFile.sign electionPublicKeyFile.dat 
+cp {electionPublicKeyFile.dat,electionPublicKeyFile.sign} ../../TallyOfficial
 cd ..
 
 
@@ -70,11 +70,11 @@ do
 	openssl dgst -sha256 -sign rootCA.key -out voter$iKey.sign voter$i.key
 	openssl dgst -sha256 -sign rootCA.key -out voter$iCert.sign voter$i.csr
 	# Installing the voter private key and certificate
-	mv {voter$i.key, voter$iKey.sign, voter$i.csr, voter$iCert.sign} ../Voter$i
+	mv {voter$i.key,voter$iKey.sign,voter$i.csr,voter$iCert.sign} ../Voter$i
 
 	printf "\n\n--->Installing the eletion public key\n\n"
 	# Installing the eletion public key
-	cp {./ElectionKey/electionPublicKeyFile.dat, ./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
+	cp {./ElectionKey/electionPublicKeyFile.dat,./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
 done
 
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
@@ -103,7 +103,7 @@ do
 	# Signing each share
 	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
 	# Moving each share to the counter
-	mv ./ShamirSecretSharing/{share$i.txt, share$i.sign} ../Counter
+	mv ./ShamirSecretSharing/{share$i.txt,share$i.sign} ../Counter
 done
 
 printf "\n\n--->Assigning a weight to each voter and encrypts it with the election public key\n\n"
@@ -114,6 +114,6 @@ make
 ./weights ./electionPublicKeyFile.dat $VOTERS
 # Signing the file
 openssl dgst -sha256 -sign rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
-mv {encryptedWeightsFile.dat, encryptedWeightsFile.sign} ../TallyOfficial
+mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../TallyOfficial
 
 # COMPILES TALLY AND VOTER
