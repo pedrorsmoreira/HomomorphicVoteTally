@@ -11,7 +11,7 @@ bash cleanup.sh > /dev/null 2>&1
 
 # Generate the Root Key - This will be the public and private key of the
 # Certification Authority
-openssl genrsa -out rootCA.key 2048 > /dev/null
+openssl genrsa -out rootCA.key 2048 > /dev/null 2>&1
 # Create and self sign the Root CA Certificate
 openssl req -new -x509 -days 3650 -key rootCA.key -out rootCA.crt -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=CA-10/CN=CA10/emailAddress=example@tecnico.ulisboa.pt"
 
