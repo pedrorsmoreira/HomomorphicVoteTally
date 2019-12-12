@@ -15,8 +15,6 @@ bool is_file_exist(const char *fileName)
 
 int main(int argc, char* argv[])
 {
-	cout << "\n----------------\n" << endl;
-
 	PublicKey public_key;
 	ifstream weightsFile;
 
@@ -26,8 +24,6 @@ int main(int argc, char* argv[])
         cerr << "Usage: " << argv[0] << " <Election Public Key File> <Number of Voters> <Weights File>" << endl;
         return 1;
     }
-
-    cout << "\n----------------\n" << endl;
 
     int numberOfVoters = atoi(argv[2]);
     int howToGenerateWeights = RANDOM;
@@ -50,9 +46,6 @@ int main(int argc, char* argv[])
 	// Constructing a SEALContext object
 	auto context = SEALContext::Create(parms);
 
-		cout << "\n----------------\n" << endl;
-
-
 	// Loading the election public key from the file
 	ifstream publicKeyFile;
 	publicKeyFile.open(argv[1], ios::binary);
@@ -64,15 +57,14 @@ int main(int argc, char* argv[])
 	}
 	publicKeyFile.close();
 
-		cout << "\n----------------\n" << endl;
-
-
 	// Constructing an instance of Encryptor - to be able to encrypt
 	Encryptor encryptor(context, public_key);
 
 	// Constructing an instance of Evaluator - Computations on the ciphertexts
 	// are performed with the Evaluator class    
     Evaluator evaluator(context);
+
+    cout << "\n----------------\n" << endl;
 
     // Checking if weights are to be loaded from file or randomly generated
 	if (argc == 4 && is_file_exist(argv[3])) {
@@ -84,6 +76,8 @@ int main(int argc, char* argv[])
 		}
 	} else
 		howToGenerateWeights = RANDOM;
+
+	cout << "\n----------------\n" << endl;
 
 	int weight = 0;
 	ofstream encryptedWeightsFile;
