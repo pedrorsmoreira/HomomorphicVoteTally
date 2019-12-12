@@ -68,8 +68,8 @@ do
 	# Using the certificate and the private key from our CA to generate the Voter certificate
 	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey ../Administrator/rootCA.key -CAcreateserial -days 3650
 	# Signing both files
-	openssl dgst -sha256 -sign rootCA.key -out voter$iKey.sign voter$i.key
-	openssl dgst -sha256 -sign rootCA.key -out voter$iCert.sign voter$i.csr
+	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$iKey.sign voter$i.key
+	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$iCert.sign voter$i.csr
 
 	printf "\n\n--->Installing the eletion public key\n\n"
 	# Installing the eletion public key
