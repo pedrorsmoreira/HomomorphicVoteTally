@@ -7,32 +7,38 @@
 
 int main(int argc, char *argv[])
 {
-	uint8_t data[sss_MLEN];
-	int numberOfShares = atoi(argv[1]); // Receives the number of shares to create
-	int thershold = atoi(argv[2]); // Receives the defined threshold
-	FILE* fp;
-	char fileName[20];
-	sss_Share shares[numberOfShares];
+	// Receives the number of shares to create and the defined threshold
+	int numberOfShares = atoi(argv[1]), thershold = atoi(argv[2]); 
+	FILE* fp; char filename[20];
 	
-	//rb - non text files
-	fp = fopen("./pass.txt", "rb");
-	//64 bytess pass
-	for(int i = 0; i < sss_MLEN; i++)
-		data[i] = fgetc(fp);
-	data[64] = '\0';
-	fclose(fp);
+	uint8_t data[sss_MLEN] = {0};
+	sss_Share shares[numberOfShares];
 
-	// Split the secret into shares
-	sss_create_shares(shares, data, numberOfShares, thershold);
+	int i = 0;
 
-	for (int i = 0; i < numberOfShares; i++) {
-		snprintf(fileName, sizeof(fileName), "share%d.txt", i+1);
-		fp = fopen(fileName, "wb");
-		for (int j = 0; j< sss_SHARE_LEN; j++)
-			fputc(shares[i][j], fp);
-		fputc('\0', fp);
+    fp = fopen("./pass.txt", "rb");
+    do {
+    	char c = fgetc(fp); 
+    	if (feof(fp) || c == '\n') break;
+    	data[i++] = (uint8_t) c;
+    } while(1);
+    fclose(fp);
+
+    printf("\n");
+    for (i = 0; i < sss_MLEN; ++i)
+    	printf("data[%d] %d\n", i, data[i]);
+    printf("\n");
+
+    // Split the secret into $numberOfShares shares (with a recombination theshold of $thershold)
+    sss_create_shares(shares, data, numberOfShares, thershold);
+	
+	for (i = 0; i < numberOfShares; i++) {
+		snprintf(filename, sizeof(filename), "share%d.txt", i+1);
+		fp = fopen(filename, "wb");
+		for (int j = 0; j < sss_SHARE_LEN; j++)
+			fputc((uint8_t)shares[i][j], fp);
 		fclose(fp);
 	}
-
+	
 	return 0;
 }
