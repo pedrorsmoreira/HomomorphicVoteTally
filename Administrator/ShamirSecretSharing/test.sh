@@ -6,6 +6,12 @@ make clean
 make
 ./keyshares 5 4
 
+echo ""
+echo ""
+echo ""
+echo ""
+echo ""
+
 make clean-test
 make test
 ./test
