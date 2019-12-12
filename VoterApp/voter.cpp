@@ -1,3 +1,4 @@
+#include <iostream>
 #include "boost/filesystem.hpp"  
 
 //directories
@@ -114,7 +115,7 @@ int main(int argc, char* argv[]) {
 		exit(-2);
 	}
 
-	std::cout << "\n\nVoter " + id " successefully identified.\n\n"
+	std::cout << "\n\nVoter " + id + " successefully identified.\n\n";
 
 	//put the paths for the needed files in strings (for the sake of easiness)
 	//existing files
@@ -153,7 +154,7 @@ int main(int argc, char* argv[]) {
 	}
 
 
-	td::cout << "\n\nVoter " + id " successefully certified.\n\n"
+	std::cout << "\n\nVoter " + id + " successefully certified.\n\n";
 
 	//get the voting parameters
 	unsigned int candidates = 0;
