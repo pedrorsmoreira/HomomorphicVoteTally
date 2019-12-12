@@ -89,7 +89,7 @@ printf "\n\n--->Spliting the password of the encrypted election private key usin
 # secret sharing and distributing each of the shares by the trustees
 make #> /dev/null 2>&1
 ./splitKeyShares $TRUSTEES $THRESHOLD_TRUSTEES
-rm pass.txt # Deleting the original password
+#rm pass.txt # Deleting the original password
 #make clean > /dev/null
 cd ../..
 
