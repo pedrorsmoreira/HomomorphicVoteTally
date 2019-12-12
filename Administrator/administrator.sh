@@ -97,22 +97,22 @@ printf "\n\n--->Moving all the signed shares to the counter\n\n"
 # Creating directorie of the counter
 mkdir ../Counter
 
-for (( i=1; i<=$TRUSTEES; i++ ))
-do
+#for (( i=1; i<=$TRUSTEES; i++ ))
+#do
 	# Signing each share
-	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
+#	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
 	# Moving each share to the counter
-	mv ./ShamirSecretSharing/{share$i.txt,share$i.sign} ../Counter
-done
+#	mv ./ShamirSecretSharing/{share$i.txt,share$i.sign} ../Counter
+#done
 
-printf "\n\n--->Assigning a weight to each voter and encrypts it with the election public key\n\n"
+#printf "\n\n--->Assigning a weight to each voter and encrypts it with the election public key\n\n"
 # Assigning a weight to each voter and encrypts it with the election public key
-cd Weights
-cmake .
-make
-./weights ./electionPublicKeyFile.dat $VOTERS
+#cd Weights
+#cmake .
+#make
+#./weights ./electionPublicKeyFile.dat $VOTERS
 # Signing the file
-openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
-mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
+#openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
+#mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
 
 # COMPILES TALLY AND VOTER
