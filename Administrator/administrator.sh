@@ -50,32 +50,33 @@ do
 	printf "\n\n---------- Voter $i ----------\n\n"
 	# Creating directory
 	mkdir ../Voter$i
+	cd ../Voter$i
 
 	printf "\n\n--->Copying the file and signed file with the properties of the election\n\n"
 	# Copying the signed file with the properties of the election
-	cp {input.txt,input.sign} ../Voter$i
+	cp ../Administrator/{input.txt,input.sign} ./
 	
 	printf "\n\n--->Installing the root CA certificate\n\n"
 	# Installing the root CA certificate
-	cp rootCA.crt ../Voter$i
+	cp ../Administrator/rootCA.crt ./
 
 	printf "\n\n--->Generating the voter private key and certificate - signs both documents and installs them\n\n"
 	# Generating the voter key pair
 	openssl genrsa -out voter$i.key 1024
 	# Generating the certificate request
 	openssl req -new -key voter$i.key -out voter$i.csr -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=Voter$i/CN=Voter$i/emailAddress=example@tecnico.ulisboa.pt"
-	# Using the certificate and the private key from our CA to sign the Voter certificate
-	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey rootCA.key -CAcreateserial -days 3650
+	# Using the certificate and the private key from our CA to generate the Voter certificate
+	openssl x509 -req -in voter$i.csr -out voter$i.crt -sha1 -CA rootCA.crt -CAkey ../Administrator/rootCA.key -CAcreateserial -days 3650
 	# Signing both files
-	#openssl dgst -sha256 -sign rootCA.key -out voter$iKey.sign voter$i.key
-	#openssl dgst -sha256 -sign rootCA.key -out voter$iCert.sign voter$i.csr
-	# Installing the voter private key and certificate
-	#mv {voter$i.key,voter$iKey.sign,voter$i.csr,voter$iCert.sign} ../Voter$i
+	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$iKey.sign voter$i.key
+	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$iCert.sign voter$i.csr
 
 	printf "\n\n--->Installing the eletion public key\n\n"
 	# Installing the eletion public key
-	cp {./ElectionKey/electionPublicKeyFile.dat,./ElectionKey/electionPublicKeyFile.sign} ../Voter$i
+	cp ../Administrator/ElectionKey/{electionPublicKeyFile.dat,electionPublicKeyFile.sign} ../Voter$i
 done
+
+cd ../Administrator
 
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
@@ -95,7 +96,6 @@ make #> /dev/null 2>&1
 rm ./pass.txt # Deleting the original password
 #make clean > /dev/null
 cd ..
-
 
 printf "\n\n--->Moving all the signed shares to the counter\n\n"
 # Creating directorie of the counter
@@ -117,6 +117,6 @@ make
 ./weights ./electionPublicKeyFile.dat $VOTERS
 # Signing the file
 openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
-mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../TallyOfficial
+mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
 
 # COMPILES TALLY AND VOTER

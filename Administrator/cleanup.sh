@@ -1,10 +1,10 @@
 #!/bin/bash
 
+rm -Rf ../Counter ../TallyOfficial ../Voter*
+
+rm input.sign input.txt pass.txt
+
 rm rootCA.key rootCA.crt
-
-rm input.txt input.sign pass.txt
-
-rm -Rf ../TallyOfficial ../Voter* ../Counter
 
 cd ElectionKey
 rm -Rf CMakeFiles
