@@ -43,7 +43,7 @@ openssl dgst -sha256 -sign ../rootCA.key -out electionPublicKeyFile.sign electio
 cp {electionPublicKeyFile.dat,electionPublicKeyFile.sign} ../../TallyOfficial
 cd ..
 
-
+printf "\n\n--->Voter app\n\n"
 # Installing on each voter app
 for (( i=1; i<=$VOTERS; i++ ))
 do
@@ -53,7 +53,7 @@ do
 
 	printf "\n\n--->Copying the file and signed file with the properties of the election\n\n"
 	# Copying the signed file with the properties of the election
-	cp {input.txt, input.sign} ../Voter$i
+	cp {input.txt,input.sign} ../Voter$i
 	
 	printf "\n\n--->Installing the root CA certificate\n\n"
 	# Installing the root CA certificate
@@ -80,6 +80,9 @@ done
 printf "\n\n--->Encrypting election secret key with a random generated password and deletes unencripted file\n\n"
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
 openssl rand -hex 16 -out pass.txt
+
+printf "\n\n--->deu merda ???\n\n"
+
 openssl enc -aes-256-cbc -salt -in ./ElectionKey/electionSecretKeyFile.dat -out ./ElectionKey/electionSecretKeyFile.dat.enc -pass file:pass.txt
 rm ./ElectionKey/electionSecretKeyFile.dat
 
@@ -108,12 +111,12 @@ done
 
 printf "\n\n--->Assigning a weight to each voter and encrypts it with the election public key\n\n"
 # Assigning a weight to each voter and encrypts it with the election public key
-cd ./Weights
+cd Weights
 cmake .
 make
 ./weights ./electionPublicKeyFile.dat $VOTERS
 # Signing the file
-openssl dgst -sha256 -sign rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
+openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
 mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../TallyOfficial
 
 # COMPILES TALLY AND VOTER
