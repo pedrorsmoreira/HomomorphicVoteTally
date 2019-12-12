@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 
 	int weight = 0;
 	ofstream encryptedWeightsFile;
-	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::app | ios::trunc);
+	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::trunc);
 	for (int i = 0; i < numberOfVoters; ++i)
 	{
 		if (howToGenerateWeights == FILE)
