@@ -99,14 +99,14 @@ mkdir ../../Counter
 for (( i=1; i<=$TRUSTEES; i++ ))
 do
 	# Signing each share
-	openssl dgst -sha256 -sign rootCA.key -out share$i.sign share$i.txt
+	openssl dgst -sha256 -sign ../rootCA.key -out share$i.sign share$i.txt
 	# Moving each share to the counter
 	mv {share$i.txt,share$i.sign} ../../Counter
 done
 
 printf "\n\n--->Assigning a weight to each voter and encrypts it with the election public key\n\n"
 # Assigning a weight to each voter and encrypts it with the election public key
-cd Weights
+cd ../Weights
 cmake .
 make
 ./weights ./electionPublicKeyFile.dat $VOTERS
