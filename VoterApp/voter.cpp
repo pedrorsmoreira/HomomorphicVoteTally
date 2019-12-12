@@ -45,8 +45,7 @@ void idenify_voter(int& argc, char* argv[], std::string& id){
 	else if (argc == 1){
 		std::cout << "Type your ID number:";
 		std::getline(std::cin, id);
-	}
-	else{
+	}else{
 		std::cout << "INVALID\n\n usage: vote <ID_number>";
 		exit(-1);
 	}
@@ -78,7 +77,7 @@ bool check_signature(std::string& CA, std::string& subject, std::string& signed_
 
 	system(("openssl x509 -pubkey -noout -in " + CA + " > " + key).c_str());
 	certified = ssystem( ("openssl dgst -sha256 -verify " + key + " -signature " + signed_subject + " " + subject).c_str());
-	
+	std::cout << "\n\n" + certified + "\n\n";
 	remove("CApublic.key");
 
 	return result == certified;
@@ -101,11 +100,11 @@ void write_vote(std::string filePATH, std::vector<unsigned int>& v){
 /////////////////////////////////         main         ///////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[]) {
-	std::string  id 		= "";
+	std::string  id;
 	unsigned int id_int = 0;
 	//get user ID
 	idenify_voter(argc, argv, id);
-	id_int = std::atoi(argv[1]);
+	id_int = std::atoi(id.c_str());
 
 
 	//check if user (directory) exists
