@@ -1,8 +1,4 @@
 #include <iostream>
-#include <fstream>
-
-#include <string>
-#include <ctime>
 
 #include "seal/seal.h"
 using namespace seal;
@@ -10,7 +6,7 @@ using namespace seal;
 #define WEIGHTS 		"encryptedWeightsFile.dat"
 #define WEIGHTS_SIGNED 	"encryptedWeightsFile.sign"
 
-Chypertext zeroInChypertext()
+Ciphertext zeroInCiphertext()
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -57,7 +53,7 @@ Chypertext zeroInChypertext()
 }
 
 
-Chypertext stringToCiphertext(std::string word)
+Ciphertext stringToCiphertext(std::string word)
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -77,21 +73,21 @@ Chypertext stringToCiphertext(std::string word)
 	// Constructing a SEALContext object
 	auto context = SEALContext::Create(parms);
 
-	Chypertext newChypertext;
+	Ciphertext newCiphertext;
 	fstream file;
 	file.open("conversion.txt", ios::trunc);
 	if (!voteEncryptedFile.is_open()) {
-		cout << "Unable to open Conversion File - string to chypertext" << endl;
+		cout << "Unable to open Conversion File - string to Ciphertext" << endl;
 		return 1;
 	}
 	file << word;
 
-	newChypertext.unsafe_load(context, file);
+	newCiphertext.unsafe_load(context, file);
 
-	return newChypertext;
+	return newCiphertext;
 }
 
-std::vector<Chypertext> generateVectorOfChypertext(std::string vote_encrypted)
+std::vector<Ciphertext> generateVectorOfCiphertext(std::string vote_encrypted)
 {
 	ifstream voteEncryptedFile;
 	voteEncryptedFile.open(vote_encrypted, ios::binary);
@@ -101,7 +97,7 @@ std::vector<Chypertext> generateVectorOfChypertext(std::string vote_encrypted)
 	}
 
 	std::string line;
-	std::vector<Chypertext> votesOfVoter;
+	std::vector<Ciphertext> votesOfVoter;
 	while ( getline (inputFile, line) ) {
 		cout << line << '\n';
 
@@ -111,7 +107,7 @@ std::vector<Chypertext> generateVectorOfChypertext(std::string vote_encrypted)
     return votesOfVoter;
 }
 
-Chypertext sumResult(Chypertext encrypted1, Chypertext encrypted2)
+Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -138,7 +134,7 @@ Chypertext sumResult(Chypertext encrypted1, Chypertext encrypted2)
 	return encrypted1;
 }
 
-Chypertext multiplyResult(Chypertext encrypted1, Chypertext encrypted2)
+Ciphertext multiplyResult(Ciphertext encrypted1, Ciphertext encrypted2)
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -167,10 +163,10 @@ Chypertext multiplyResult(Chypertext encrypted1, Chypertext encrypted2)
 
 int main(int argc, char* argv[])
 {
-	std::vector<Chypertext> voteVecChypertext;
-	Chypertext checksum;
-	std::vector<Chypertext> results;
-	std::vector<Chypertext> weights;
+	std::vector<Ciphertext> voteVecCiphertext;
+	Ciphertext checksum;
+	std::vector<Ciphertext> results;
+	std::vector<Ciphertext> weights;
 
 	//Initializations
 	//get the voting parameters
@@ -178,16 +174,16 @@ int main(int argc, char* argv[])
 	unsigned int votes = 0;
 	get_voting_params(input, candidates, votes);
 
-	checksum = zeroInChypertext();
+	checksum = zeroInCiphertext();
 	for (int i = 0; i < candidates; ++i)
-		results.push_back(zeroInChypertext());
+		results.push_back(zeroInCiphertext());
 
 	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
 		std::cout << "Weights NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
-	weights = generateVectorOfChypertext(WEIGHTS);
+	weights = generateVectorOfCiphertext(WEIGHTS);
 
 	std::string votePath = "";
 	std::string voter_crt = "";
@@ -238,14 +234,14 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		voteVecChypertext = generateVectorOfChypertext(vote_encrypted);
+		voteVecCiphertext = generateVectorOfCiphertext(vote_encrypted);
 
 		// Computes homomorphically:
 		for (int i = 0; i < candidates; ++i) {
 			// the checksum for each vote and adds it to an accumulator
-			checksum = sumResult(checksum, voteVecChypertext[i]);
+			checksum = sumResult(checksum, voteVecCiphertext[i]);
 			// the result of the election
-			results[i] = sumResult(results[i], multiplyResult(voteVecChypertext[i], weights[voter]));
+			results[i] = sumResult(results[i], multiplyResult(voteVecCiphertext[i], weights[voter]));
 		}
 	}
 
