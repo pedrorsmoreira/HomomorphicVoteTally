@@ -1,4 +1,5 @@
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+<<<<<<< HEAD
 Change Dir: /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/CMakeTmp
 
 Run Build Command(s):/usr/bin/make cmTC_4ee01/fast && /usr/bin/make -f CMakeFiles/cmTC_4ee01.dir/build.make CMakeFiles/cmTC_4ee01.dir/build
@@ -19,6 +20,25 @@ make[1]: *** [cmTC_4ee01] Error 1
 make[1]: Leaving directory '/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/CMakeTmp'
 Makefile:121: recipe for target 'cmTC_4ee01/fast' failed
 make: *** [cmTC_4ee01/fast] Error 2
+=======
+Change Dir: /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_6b32b/fast && /usr/bin/make -f CMakeFiles/cmTC_6b32b.dir/build.make CMakeFiles/cmTC_6b32b.dir/build
+make[1]: Entering directory '/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_6b32b.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_6b32b.dir/src.c.o   -c /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_6b32b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b32b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_6b32b.dir/src.c.o  -o cmTC_6b32b 
+/usr/bin/ld: CMakeFiles/cmTC_6b32b.dir/src.c.o: in function `main':
+src.c:(.text+0x3e): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x4a): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x5b): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_6b32b.dir/build.make:87: cmTC_6b32b] Error 1
+make[1]: Leaving directory '/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_6b32b/fast] Error 2
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 
 
 Source file was:

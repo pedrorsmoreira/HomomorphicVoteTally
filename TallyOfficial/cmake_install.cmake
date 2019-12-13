@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Install script for directory: /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial
+=======
+# Install script for directory: /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -29,7 +33,11 @@ endif()
 
 # Install shared libraries without execute permission?
 if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
+<<<<<<< HEAD
   set(CMAKE_INSTALL_SO_NO_EXE "1")
+=======
+  set(CMAKE_INSTALL_SO_NO_EXE "0")
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 endif()
 
 # Is this installation the result of a crosscompile?
@@ -45,5 +53,9 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
+<<<<<<< HEAD
 file(WRITE "/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/${CMAKE_INSTALL_MANIFEST}"
+=======
+file(WRITE "/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/${CMAKE_INSTALL_MANIFEST}"
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
