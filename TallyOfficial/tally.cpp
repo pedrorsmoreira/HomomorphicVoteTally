@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "../utils/utils.cpp"
 
@@ -156,6 +157,12 @@ int main(int argc, char* argv[])
 	std::vector<Ciphertext> voteVecCiphertext;
 	bool valid = true;
 
+	std::string ballotVoter 		= "";
+	std::string counterFile 		= "";
+	std::string votePath 			= "";
+	std::string voterCrt 			= "";
+	std::string candidatesVotePath 	= "";
+
 	//Initializations
 	//get the voting parameters
 	if (!check_signature(ROOT_CRT_FILE, VOTE_INPUT, VOTE_INPUT_SIGNED)){
@@ -179,8 +186,8 @@ printf("RESULTS AND CHECKSUM DONE\n");
 	std::string weightsFile = "";
 	std::string weightsFileSigned = "";
 	for (int i = 0; i < nrVoters; ++i) {
-		weightsFile 		= string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + DAT_EXTENSION;
-		weightsFileSigned 	= string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + SIGNED_EXTENSION;
+		weightsFile 		= std::string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + DAT_EXTENSION;
+		weightsFileSigned 	= std::string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + SIGNED_EXTENSION;
 		if (!check_signature(ROOT_CRT_FILE, weightsFile, weightsFileSigned)){
 			std::cout << "Weights NOT certified. Exiting...\n";
 			exit(-3);
@@ -212,10 +219,10 @@ printf("WEIGHTS DONE\n");
 printf("---> %s\n", voter);
 		
 		//Voter directory in the Ballot Box
-		std::string ballotVoter = BALLOT_BOX + std::string("/") + voter;
+		ballotVoter = BALLOT_BOX + std::string("/") + voter;
 
 		//get the number of votes casts by this voter
-		std::string counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
+		counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
 		int counter = std::atoi((counterFile.substr(7)).c_str());
 
 printf("counter %d\n", counter);
