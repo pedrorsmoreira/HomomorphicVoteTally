@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/weights.cpp
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/Weights/weights.cpp
 iostream
 -
 fstream
@@ -16,7 +16,7 @@ string
 ctime
 -
 seal/seal.h
-/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/seal/seal.h
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/Weights/seal/seal.h
 
 /usr/local/include/SEAL-3.4/seal/batchencoder.h
 vector

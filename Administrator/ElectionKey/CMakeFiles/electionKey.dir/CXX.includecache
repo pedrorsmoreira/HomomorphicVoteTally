@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/ElectionKey/electionKey.cpp
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/ElectionKey/electionKey.cpp
 iostream
 -
 fstream
 -
 seal/seal.h
-/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/ElectionKey/seal/seal.h
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/ElectionKey/seal/seal.h
 
 /usr/local/include/SEAL-3.4/seal/batchencoder.h
 vector

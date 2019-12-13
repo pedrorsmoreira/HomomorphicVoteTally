@@ -6,29 +6,17 @@
 
 #IncludeRegexTransform: 
 
-<<<<<<< HEAD
-/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/tally.cpp
-=======
 /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/tally.cpp
->>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 iostream
 -
 fstream
 -
 ../utils/utils.cpp
-<<<<<<< HEAD
-/home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
-seal/seal.h
-/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/seal/seal.h
-
-/home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
-=======
 /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/utils/utils.cpp
 seal/seal.h
 /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/seal/seal.h
 
 /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/utils/utils.cpp
->>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 iostream
 -
 

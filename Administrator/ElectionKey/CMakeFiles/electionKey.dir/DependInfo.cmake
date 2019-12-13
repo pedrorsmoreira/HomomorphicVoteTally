@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/ElectionKey/electionKey.cpp" "/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/electionKey.dir/electionKey.cpp.o"
+  "/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/ElectionKey/electionKey.cpp" "/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/electionKey.dir/electionKey.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
