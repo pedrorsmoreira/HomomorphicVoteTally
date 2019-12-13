@@ -2,7 +2,7 @@
 
 VOTERS=3
 
-rm -Rf ../Counter 
+rm -Rf ../Counter ../BallotBox 
 
 for (( counter=1; counter<=$VOTERS; counter++ ))
 do
