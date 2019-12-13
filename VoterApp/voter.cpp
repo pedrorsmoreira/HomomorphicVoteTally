@@ -1,5 +1,7 @@
 #include <iostream>
-#include "boost/filesystem.hpp"  
+#include "boost/filesystem.hpp"
+
+#include "seal_encrypt.h"
 
 //directories
 #define VOTERS_DIR 			".."
@@ -28,10 +30,13 @@
 #define VOTE_INPUT 					"input.txt"
 #define VOTE_INPUT_SIGNED 			"input.sign"
 
+//name of the directory that will contain the vote
+#define VOTE_DIR	"Vote" //vote counter will be appended
+
 //names of the files to create
-#define VOTE 			"vote.txt"
+#define VOTE_FILE 		"vote.txt"
 #define VOTE_ENCRYPTED 	"vote.seal"
-#define VOTE_SIGNED 	"vote.sign" 
+#define VOTE_SIGNED 	"vote.sign"
 
 //for debugging
 void print(std::string& s){
@@ -139,8 +144,11 @@ int main(int argc, char* argv[]) {
 	std::string input 				= voterPath  + std::string("/") + VOTE_INPUT;
 	std::string input_signed		= voterPath  + std::string("/") + VOTE_INPUT_SIGNED;
 
+	//directory that will contain the vote
+	std::string vote_directory		= VOTE_DIR;
+
 	//files to create
-	std::string vote				= voterPath  + std::string("/") + VOTE;
+	std::string vote_file			= voterPath  + std::string("/") + VOTE_FILE;
 	std::string vote_encrypted 		= voterPath  + std::string("/") + VOTE_ENCRYPTED;
 	std::string vote_signed			= voterPath	 + std::string("/") + VOTE_SIGNED;
 
@@ -205,18 +213,14 @@ int main(int argc, char* argv[]) {
 		std::cout << "\n\n";
 	}
 
-	//write the vote (vector final_vote) in an ouput file (vote)
-	write_vote(vote, final_vote);
+	//write the vote (the vector final_vote) in an ouput file (vote_file)
+	write_vote(vote_file, final_vote);
 
-	/////////////////////////////////////////////////////
-	////  encrypt the vote file ---> vote_encrypted  ////
-	/////////////////////////////////////////////////////			
-
-
-	/////////////////////////////////////////////////////
-	////  sign the encrypted vote ---> vote_signed  /////
-	/////////////////////////////////////////////////////			
-
+	//encrypt the vote with the SEAL library using the election key
+	seal_encrypt_with_public_key(vote_file, vote_encrypted, election_key);
+			
+	//sign the encrypted vote with the voter private key (output in vote_signed file)
+	system(("openssl dgst -sha256 -sign " + voter_key + " -out " + vote_signed + " " + vote_encrypted).c_str());
 
 	//write to Ballot Box
 	//Voter directory in the Ballot Box
@@ -235,7 +239,7 @@ int main(int argc, char* argv[]) {
 	system(("mv " + ballotVoter + std::string("/") + counterFile + " " + ballotVoter + std::string("/") + "counter" + std::to_string(counter)).c_str());
 
 	//create directory with the vote to send to the Ballot Box
-	std::string voteDirectory = "vote" + std::to_string(counter);
+	std::string voteDirectory = vote_directory + std::to_string(counter);
 	system(("mkdir "+voteDirectory).c_str());
 	system(("cp " + voter_crt + " " + voteDirectory).c_str());
 	system(("mv " + vote_encrypted + " " + voteDirectory).c_str());
@@ -245,7 +249,7 @@ int main(int argc, char* argv[]) {
 	system(("mv "+ voteDirectory + " " + ballotVoter).c_str());
 
 	//erase the raw vote text file
-	system(("rm " + vote).c_str());	
+	system(("rm " + vote_file).c_str());	
 
 	return 0;
 }
