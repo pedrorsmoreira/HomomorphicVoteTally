@@ -4,14 +4,15 @@
 #include <fstream>
 #include <vector>
 #include <assert.h>
+
+#include "seal/seal.h"
+using namespace seal;
+using namespace std;
+
 #include "../Administrator/ShamirSecretSharing/sss/sss.h"
 #include "../Administrator/ShamirSecretSharing/sss/randombytes.h"
-#include "boost/filesystem.hpp"
-#include "seal_encrypt.h"
-#include "utils.cpp"
 
-using namespace std;
-using namespace seal;
+#include "../utils/utils.cpp"
 
 //#define COUNTER 					"../counter"
 
