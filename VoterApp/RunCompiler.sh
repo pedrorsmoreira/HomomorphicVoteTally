@@ -1,1 +1,1 @@
-g++ -lboost_filesystem voter.cpp -o vote 2>&1; ./vote
+g++ voter.cpp -lboost_filesystem -lboost_system -o vote 2&>1; ./vote
