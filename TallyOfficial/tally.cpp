@@ -224,9 +224,9 @@ int main(int argc, char* argv[])
 		for (int id = counter; id > 0; id--) {
 			std::cout << id << "\n";
 
-			votePath 		= ballotVoter 	+ std::string("/") + VOTE_DIR + id;
+			votePath 		= ballotVoter 	+ std::string("/") + VOTE_DIR + std::to_string(id);
 
-			voter_crt 		= votePath 		+ std::string("/") + VOTER_CRT + id + VOTER_CRT_EXTENSION;
+			voter_crt 		= votePath 		+ std::string("/") + VOTER_CRT + std::to_string(id) + VOTER_CRT_EXTENSION;
 			vote_encrypted 	= votePath 	+ std::string("/") + VOTE_ENCRYPTED;
 			vote_signed 	= votePath 	+ std::string("/") + VOTE_SIGNED;
 
