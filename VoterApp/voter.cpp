@@ -1,4 +1,4 @@
-#include "boost/filesystem.hpp"
+//#include "boost/filesystem.hpp"
 
 #include "../utils/utils.cpp"
 
@@ -64,11 +64,13 @@ int main(int argc, char* argv[]) {
 
 	//check if user (directory) exists
 	std::string voterPath = VOTERS_DIR + std::string("/") + VOTER_PRIVATE_DIR + id;
-	if ( ! boost::filesystem::exists( voterPath ) ) {
+	//if ( ! boost::filesystem::exists( voterPath ) ) {
+	if (ssystem(("ls " + voterPath + " | grep counter").c_str()) == "") {
 		std::cout << "Provided ID does not match any existing voter\n.";
 		exit(-2);
 	}
 
+	/*
 	std::cout << "\n\nVoter " + id + " successefully identified.\n";
 
 	//put the paths for the needed files in strings (for the sake of easiness)
@@ -178,7 +180,7 @@ int main(int argc, char* argv[]) {
 
 	//create directory with the vote to send to the Ballot Box
 	std::string voteDirectory = vote_directory + std::to_string(counter);
-	system(("mkdir "+voteDirectory).c_str());
+	system(("mkdir " + voteDirectory).c_str());
 	system(("cp " + voter_crt + " " + voteDirectory).c_str());
 	system(("mv " + vote_encrypted + " " + voteDirectory).c_str());
 	system(("mv " + vote_signed + " " + voteDirectory).c_str());
@@ -191,5 +193,6 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "\n-----------Vote successefully submitted-----------\n\n";	
 
+	*/
 	return 0;
 }
