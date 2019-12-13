@@ -23,7 +23,7 @@ echo $VOTERS >> input.txt
 # Signing this file
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 # Copying the signed file with the properties of the election
-cp {input.txt,input.sign} ../TallyOfficial
+cp {input.txt,input.sign} ../Tallyios::binary | Official
 
 # Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial
@@ -100,8 +100,15 @@ make > /dev/null
 openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
 mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
 
+cd ../..
+
 # Creating directorie of the Ballot Box
-mkdir ../../BallotBox
+mkdir ./BallotBox
 
 # COMPILES TALLY AND VOTER
-
+cd VoterApp
+cd seal
+cmake . > /dev/null
+make > /dev/null
+./seal_encrypt
+cd ../..
