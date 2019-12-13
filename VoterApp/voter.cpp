@@ -1,8 +1,6 @@
 #include <iostream>
 #include "boost/filesystem.hpp"
 
-#include "seal_encrypt.h"
-
 //directories
 #define VOTERS_DIR 			".."
 #define VOTER_PRIVATE_DIR 	"Voter" //append ID
@@ -33,6 +31,9 @@
 //name of the directory that will contain the vote
 #define VOTE_DIR	"Vote" //vote counter will be appended
 
+//executable to encrypt a file with the SEAL library
+#define SEAL_ENCRYPT	"seal/seal_encrypt"
+
 //names of the files to create
 #define VOTE_FILE 		"vote.txt"
 #define VOTE_ENCRYPTED 	"vote.seal"
@@ -48,7 +49,7 @@ void print(std::string& s){
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 //get the voter ID
-void idenify_voter(int& argc, char* argv[], std::string& id){
+void identify_voter(int& argc, char* argv[], std::string& id){
 	if (argc == 2)
 		id = argv[1];
 	else if (argc == 1){
@@ -119,7 +120,7 @@ int main(int argc, char* argv[]) {
 	std::string  id;
 	unsigned int id_int = 0;
 	//get user ID
-	idenify_voter(argc, argv, id);
+	identify_voter(argc, argv, id);
 	id_int = std::atoi(id.c_str());
 
 
@@ -217,7 +218,7 @@ int main(int argc, char* argv[]) {
 	write_vote(vote_file, final_vote);
 
 	//encrypt the vote with the SEAL library using the election key
-	seal_encrypt_with_public_key(vote_file, vote_encrypted, election_key);
+	system((SEAL_ENCRYPT + std::string(" ") + vote_file + std::string(" ") + vote_encrypted + std::string(" ") + election_key).c_str());
 			
 	//sign the encrypted vote with the voter private key (output in vote_signed file)
 	system(("openssl dgst -sha256 -sign " + voter_key + " -out " + vote_signed + " " + vote_encrypted).c_str());
@@ -249,7 +250,9 @@ int main(int argc, char* argv[]) {
 	system(("mv "+ voteDirectory + " " + ballotVoter).c_str());
 
 	//erase the raw vote text file
-	system(("rm " + vote_file).c_str());	
+	system(("rm " + vote_file).c_str());
+
+	std::cout << "\n-----------Vote successefully submitted-----------\n\n";	
 
 	return 0;
 }
