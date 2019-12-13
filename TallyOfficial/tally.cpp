@@ -101,7 +101,7 @@ printf("xixi\n");
 	std::fstream ct;
 	Ciphertext result;
 
-	ct.open("aux_file.txt", std::fstream::binary | std::fstream::out | std::fstream::trunc | std::fstream::in);
+	ct.open("aux_file.txt", std::ios::binary | std::ios::trunc);
 	ct << word;
 	result.unsafe_load(context, ct);
 	ct.close();
@@ -131,7 +131,7 @@ printf("file_encrypted %s\n", file_encrypted.c_str());
     return votesOfVoter;
 }
 
-Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
+Evaluator generateEvaluator()
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -152,6 +152,14 @@ Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
 	auto context = SEALContext::Create(parms);
 
 	Evaluator evaluator(context);
+
+	return evaluator; 
+}
+
+
+Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
+{
+	Evaluator evaluator = generateEvaluator();
 
 	evaluator.add_inplace(encrypted1, encrypted2);
 
