@@ -4,7 +4,6 @@
 
 //voter space directories
 #define VOTERS_DIR 			".."
-#define VOTER_PRIVATE_DIR 	"Voter" //append ID
 
 //names of the existing files
 #define VOTER_KEY 					"voter" //append ID
