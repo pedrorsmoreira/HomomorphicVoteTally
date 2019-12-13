@@ -1,0 +1,3 @@
+/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/rebuild_cache.dir
+/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/tally.dir
+/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/edit_cache.dir
