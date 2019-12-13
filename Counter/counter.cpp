@@ -38,11 +38,10 @@ using namespace std;
 #define PRIVATE_KEY_FILE_PATH		"electionSecretKeyFile.dat"
 
 //get the number of candidates and number of votes to distribute
-void get_sss_info(string filePATH, int& trustees, int& threshold, int& candidates, int& voters){
+void get_sss_info(string filePATH, unsigned int& trustees, unsigned int& threshold, unsigned int& candidates, unsigned int& voters){
 	ifstream input(filePATH);
 	input >> trustees >> threshold >> candidates >> voters;
 }
-
 
 Plaintext Decrypt(Ciphertext cypher)
 {
@@ -85,11 +84,8 @@ int main(int argc, char* argv[])
 	vector<Ciphertext> results;
 
 	//get essential information
-	int num_shares = 0;
-	int shares_threshold = 0;
-	int candidates = 0;
-	int voters = 0;
-	get_voting_params(COUNTER_INPUT, num_shares, shares_threshold, candidates, voters);
+	unsigned int num_shares = 0, shares_threshold = 0, candidates = 0, voters = 0;
+	get_sss_info(COUNTER_INPUT, num_shares, shares_threshold, candidates, voters);
 
 	checksum = generateCiphertext(CHECKSUM_FILE);
 	for (int i = 0; i < candidates; i++)
