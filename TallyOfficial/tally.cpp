@@ -167,6 +167,7 @@ Ciphertext multiplyResult(Ciphertext encrypted1, Ciphertext encrypted2)
 
 int main(int argc, char* argv[])
 {
+	int j = 0;
 	std::vector<Ciphertext> voteVecCiphertext;
 	Ciphertext checksum;
 	std::vector<Ciphertext> results;
@@ -248,8 +249,10 @@ int main(int argc, char* argv[])
 			// the checksum for each vote and adds it to an accumulator
 			checksum = sumResult(checksum, voteVecCiphertext[i]);
 			// the result of the election
-			results[i] = sumResult(results[i], multiplyResult(voteVecCiphertext[i], weights[voter]));
+			results[i] = sumResult(results[i], multiplyResult(voteVecCiphertext[i], weights[j]));
 		}
+		
+		j++;
 	}
 
 	return 0;
