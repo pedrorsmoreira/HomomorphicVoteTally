@@ -7,7 +7,7 @@
 #IncludeRegexTransform: 
 
 /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/tally.cpp
-std::iostream
+iostream
 -
 fstream
 -
