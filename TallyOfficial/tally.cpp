@@ -239,7 +239,7 @@ printf("77777777777777777777777\n");
 		std::string counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
 		int counter = std::atoi((counterFile.substr(7)).c_str());
 
-printf("8888888888888888888888888 counter %d\n", counter)
+printf("8888888888888888888888888 counter %d\n", counter);
 
 		//we start with the last vote
 		for (int id = counter; id > 0; id--) {
@@ -257,7 +257,7 @@ printf("8888888888888888888888888 counter %d\n", counter)
 			else {
 				std::cout << "Vote " + std::to_string(id) + " NOT certified. Cheking next one...\n";
 			}
-printf("999999999999999999999999999\n")
+printf("999999999999999999999999999\n");
 		}
 
 		voteVecCiphertext = generateVectorOfCiphertext(vote_encrypted);
