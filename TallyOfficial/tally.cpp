@@ -98,10 +98,10 @@ printf("xixi\n");
 	return newCiphertext;
 	*/
 
-	fstream ct;
+	std::fstream ct;
 	Ciphertext result;
 
-	ct.open("aux_file.txt", fstream::binary | fstream::out | fstream::trunc | fstream::in);
+	ct.open("aux_file.txt", std::fstream::binary | std::fstream::out | std::fstream::trunc | std::fstream::in);
 	ct << aux;
 	result.unsafe_load(context, ct);
 	ct.close();
