@@ -1,3 +1,5 @@
+#include <iostream>
+
 #define WEIGHTS 		"encryptedWeightsFile.dat"
 #define WEIGHTS_SIGNED 	"encryptedWeightsFile.sign"
 
@@ -169,8 +171,7 @@ int main(int argc, char* argv[])
 	//get the voting parameters
 	unsigned int candidates = 0;
 	unsigned int votes = 0;
-	unsigned int nrVoters = 0;
-	get_voting_params(input, candidates, votes, nrVoters);
+	get_voting_params(input, candidates, votes);
 
 	checksum = zeroInChypertext();
 	for (int i = 0; i < candidates; ++i)
