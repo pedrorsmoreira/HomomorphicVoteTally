@@ -2,7 +2,7 @@
 
 VOTERS=3
 
-rm -Rf ../Counter ../BallotBox 
+rm -Rf ../BallotBox ../Counter
 
 for (( counter=1; counter<=$VOTERS; counter++ ))
 do
@@ -10,7 +10,6 @@ do
 done
 
 rm input.sign input.txt
-
 rm rootCA.key rootCA.crt
 
 cd ElectionKey
@@ -33,8 +32,10 @@ cd ../TallyOfficial
 rm -Rf CMakeFiles
 rm CMakeCache.txt cmake_install.cmake Makefile
 rm rootCA.crt
-rm electionPublicKeyFile.dat electionPublicKeyFile.sign e
-rm encryptedWeightsFile.dat encryptedWeightsFile.sign
+rm input.sign input.txt
+rm electionPublicKeyFile.dat electionPublicKeyFile.sign
+rm tally
+rm -Rf WeightsEncrypted
 cd ..
 
 cd VoterApp
