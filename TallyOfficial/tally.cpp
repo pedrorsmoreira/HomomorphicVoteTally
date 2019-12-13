@@ -231,8 +231,8 @@ int main(int argc, char* argv[])
 			votePath 		= ballotVoter 	+ std::string("/") + VOTE_DIR + std::to_string(id);
 
 			voter_crt 		= votePath 		+ std::string("/") + VOTER_CRT + std::to_string(id) + VOTER_CRT_EXTENSION;
-			vote_encrypted 	= votePath 	+ std::string("/") + VOTE_ENCRYPTED;
-			vote_signed 	= votePath 	+ std::string("/") + VOTE_SIGNED;
+			vote_encrypted 	= votePath 		+ std::string("/") + VOTE_ENCRYPTED;
+			vote_signed 	= votePath 		+ std::string("/") + VOTE_SIGNED;
 
 			//validate existing files
 			if (check_signature(voter_crt, vote_encrypted, vote_signed))
@@ -251,7 +251,7 @@ int main(int argc, char* argv[])
 			// the result of the election
 			results[i] = sumResult(results[i], multiplyResult(voteVecCiphertext[i], weights[j]));
 		}
-		
+
 		j++;
 	}
 
