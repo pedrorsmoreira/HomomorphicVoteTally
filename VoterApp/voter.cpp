@@ -1,7 +1,7 @@
-#include <iostream>
+
 #include "boost/filesystem.hpp"
 
-#include "../utils/utils.c"
+#include "../utils/utils.cpp"
 
 //directories
 #define VOTERS_DIR 			".."
