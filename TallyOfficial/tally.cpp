@@ -1,3 +1,18 @@
+void computesHomomofphically(std::string vote_encrypted)
+{
+	ifstream voteEncryptedFile;
+
+	voteEncryptedFile.open(vote_encrypted, ios::binary);
+	if (!voteEncryptedFile.is_open()) {
+		cout << "Unable to open Vote Encrypted File" << endl;
+		return 1;
+	}
+
+	
+
+
+}
+
 
 
 int main(int argc, char* argv[])
@@ -53,7 +68,7 @@ int main(int argc, char* argv[])
 		}
 
 		// RESTO DAS MERDAS
-		
+
 	} 
 
 
