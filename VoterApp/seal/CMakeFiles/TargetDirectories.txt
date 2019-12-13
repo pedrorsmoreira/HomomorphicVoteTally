@@ -1,0 +1,3 @@
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/VoterApp/seal/CMakeFiles/rebuild_cache.dir
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/VoterApp/seal/CMakeFiles/seal_encrypt.dir
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/VoterApp/seal/CMakeFiles/edit_cache.dir

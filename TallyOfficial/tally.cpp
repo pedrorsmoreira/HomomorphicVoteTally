@@ -33,15 +33,9 @@ Plaintext Decrypt(Ciphertext cypher)
 	auto context = SEALContext::Create(parms);
 
 	// Loading the election public key from the file
-	ifstream secretKeyFile;
+	std::ifstream secretKeyFile;
 	SecretKey secret_key;
-	secretKeyFile.open(electionSecretKeyFile.dat, ios::binary);
-	if (secretKeyFile.is_open())
-		secret_key.unsafe_load(context, secretKeyFile);
-	else {
-		cout << "Unable to open Private Key File" << endl;
-		exit(-1);
-	}
+	secretKeyFile.open("electionSecretKeyFile.dat", std::ios::binary);
 	secretKeyFile.close();
 
 	// Constructing an instance of Decryptor - to be able to decrypt
@@ -296,7 +290,7 @@ printf("id %d\n", id);
 				}
 
 				voteVecCiphertext[j] = generateCiphertext(candidateVoteFile);
-				cout << "0x" << Decrypt(voteVecCiphertext[j]).to_string() << " ...... Correct." << endl;
+				std::cout << "0x" << Decrypt(voteVecCiphertext[j]).to_string() << " ...... Correct." << std::endl;
 			}
 
 			if (valid) break;
