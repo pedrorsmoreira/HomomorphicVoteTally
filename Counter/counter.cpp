@@ -43,6 +43,7 @@ using namespace std;
 
 
 
+unsigned int numCandidates, numVoters, shares_threshold;
 
 
 
@@ -61,14 +62,14 @@ void getpass()
 	
 	for (int j = 0;j < shares_threshold; j++)
 	{
-		snprintf(file_name, sizeof(file_name), "pass_%d.txt", j+1);
-		snprintf(file_sign_name, sizeof(file_sign_name), "pass_%d.sha256", j+1);
+		snprintf(file_name, sizeof(file_name), "share%d.txt", j+1);
+		/*snprintf(file_sign_name, sizeof(file_sign_name), "pass_%d.sha256", j+1);
 		
 		if( !verifySignature("rootCA.crt", file_sign_name, file_name) ){
 			cout << "At least one of the electionPrivateKey shares signature is wrong!" << endl;
 			exit(EXIT_FAILURE);
 		}
-		
+		*/
 		fp.open(file_name, ios::binary);
 		test.open("test.txt", ios::trunc | ios::binary);
 		int w = 0;
@@ -111,10 +112,10 @@ void getpass()
 
 
 
-//get the number of candidates and number of votes to distribute
-void get_sss_info(string filePATH, unsigned int& trustees, unsigned int& threshold, unsigned int& candidates, unsigned int& voters){
+//get the number of numCandidates and number of votes to distribute
+void get_sss_info(string filePATH, unsigned int& trustees, unsigned int& threshold, unsigned int& numCandidates, unsigned int& voters){
 	ifstream input(filePATH);
-	input >> trustees >> threshold >> candidates >> voters;
+	input >> trustees >> threshold >> numCandidates >> voters;
 }
 
 Plaintext Decrypt(Ciphertext cypher)
@@ -199,11 +200,12 @@ int main(int argc, char* argv[])
 	}
 
 	//get essential information
-	unsigned int num_shares = 0, shares_threshold = 0, candidates = 0, voters = 0;
-	get_sss_info(COUNTER_INPUT, num_shares, shares_threshold, candidates, voters);
+	unsigned int num_shares = 0;//, shares_threshold = 0, numCandidates = 0, voters = 0;
+	get_sss_info(COUNTER_INPUT, num_shares, shares_threshold, numCandidates, numVoters);
 
 	checksum = generateCiphertext(CHECKSUM_FILE);
-	for (int i = 0; i < candidates; i++)
+	printf("NC é %d\n", numCandidates);
+	for (int i = 0; i < numCandidates; i++)
 		results.push_back(generateCiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION));
 
 	getpass();
@@ -289,8 +291,8 @@ int main(int argc, char* argv[])
 	checksum_dec = atoi(((Decrypt(checksum)).to_string()).c_str());
 	printf("CHECK É %d\n", checksum_dec);
 	//checks the checksum validity
-	if(checksum_dec == candidates * voters)
-	{
+	//if(checksum_dec == numCandidates * numVoters)
+	//{
 		cout << "Elections results:\n";
 
 		//decryptes the elections results
@@ -299,5 +301,5 @@ int main(int argc, char* argv[])
 			cout << "Candidate" + to_string(i+1) + ": " + to_string(results_dec[i]) + "votes\n";
 		}
 		cout << "\n";
-	}
+	//}
 }

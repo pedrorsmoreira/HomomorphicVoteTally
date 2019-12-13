@@ -1,4 +1,4 @@
 #VoterApp
 
 To run do:
-bash compiler.sh
+bash run.sh
