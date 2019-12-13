@@ -38,13 +38,13 @@ using namespace std;
 #define PRIVATE_KEY_FILE			"electionSecretKeyFile.dat"
 
 //get the number of candidates and number of votes to distribute
-void get_sss_info(string filePATH, int& num_shares, int& shares_threshold, int& candidates, int& voters){
+void get_sss_info(string filePATH, int& trustees, int& threshold, int& candidates, int& voters){
 	ifstream input(filePATH);
 	input >> trustees >> threshold >> candidates >> voters;
 }
 
 
-Plaintext Decrypt(Chypertext cypher)
+Plaintext Decrypt(Ciphertext cypher)
 {
 	// Scheme : BFV
 	EncryptionParameters parms(scheme_type::BFV);
@@ -81,12 +81,12 @@ Plaintext Decrypt(Chypertext cypher)
 
 int main(int argc, char* argv[])
 {
-	Chypertext checksum;
-	vector<Chypertext> results;
+	Ciphertext checksum;
+	vector<Ciphertext> results;
 
-	checksum = generateChypertext(CHECKSUM_FILE);
+	checksum = generateCiphertext(CHECKSUM_FILE);
 	for (int i = 0; i < candidates; i++)
-		results[i] = generateChypertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION);
+		results[i] = generateCiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION);
 
 	string root_crt = ROOT_CRT_FILE;
 	string input = COUNTER_INPUT;
