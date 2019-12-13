@@ -102,7 +102,7 @@ printf("xixi\n");
 	Ciphertext result;
 
 	ct.open("aux_file.txt", std::fstream::binary | std::fstream::out | std::fstream::trunc | std::fstream::in);
-	ct << aux;
+	ct << word;
 	result.unsafe_load(context, ct);
 	ct.close();
 	remove("aux_file.txt");
