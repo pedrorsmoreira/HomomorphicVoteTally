@@ -159,11 +159,13 @@ int main(int argc, char* argv[])
 	int voterID = 0;
 
 
-	std::string ballotVoter 		= "";
-	std::string counterFile 		= "";
-	std::string votePath 			= "";
-	std::string voterCrt 			= "";
-	std::string candidatesVotePath 	= "";
+	std::string ballotVoter 			= "";
+	std::string counterFile 			= "";
+	std::string votePath 				= "";
+	std::string voterCrt 				= "";
+	std::string candidatesVotePath 		= "";
+	std::string candidateVoteFile 		= "";
+	std::string candidateVoteFileSigned = "";
 
 	//Initializations
 	//get the voting parameters
