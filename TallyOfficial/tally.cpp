@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "../utils/utils.cpp"
+
 #include "seal/seal.h"
 using namespace seal;
 
