@@ -1,23 +1,188 @@
-void computesHomomofphically(std::string vote_encrypted)
+#define WEIGHTS 		"encryptedWeightsFile.dat"
+#define WEIGHTS_SIGNED 	"encryptedWeightsFile.sign"
+
+Chypertext zeroInChypertext()
+{
+	// BFV encryption scheme
+	EncryptionParameters parms(scheme_type::BFV);
+
+	// Defining encryption parameters
+
+	// degree of the `polynomial modulus'
+	size_t poly_modulus_degree = 4096;
+	parms.set_poly_modulus_degree(poly_modulus_degree);
+
+	// [ciphertext] `coefficient modulus'
+	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+
+	// plaintext modulus
+	parms.set_plain_modulus(1024);
+
+	// Constructing a SEALContext object
+	auto context = SEALContext::Create(parms);
+
+	if (!check_signature(ROOT_CRT_FILE, ELEC_KEY, ELEC_KEY_SIGNED)){
+		std::cout << "Election public key NOT certified. Exiting...\n";
+		exit(-3);
+	}
+
+	// Loading the election public key from the file
+	ifstream publicKeyFile;
+	publicKeyFile.open(ELEC_KEY, ios::binary);
+	if (publicKeyFile.is_open())
+		public_key.unsafe_load(context, publicKeyFile);
+	else {
+		cout << "Unable to open Public Key File" << endl;
+		return 1;
+	}
+	publicKeyFile.close();
+
+	// Constructing an instance of Encryptor - to be able to encrypt
+	Encryptor encryptor(context, public_key);
+
+	Plaintext zero_plain("0");
+	Ciphertext zero_encrypted;
+	encryptor.encrypt(zero_plain, zero_encrypted);
+
+	return zero_encrypted;
+}
+
+
+Chypertext stringToCiphertext(std::string word)
+{
+	// BFV encryption scheme
+	EncryptionParameters parms(scheme_type::BFV);
+
+	// Defining encryption parameters
+
+	// degree of the `polynomial modulus'
+	size_t poly_modulus_degree = 4096;
+	parms.set_poly_modulus_degree(poly_modulus_degree);
+
+	// [ciphertext] `coefficient modulus'
+	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+
+	// plaintext modulus
+	parms.set_plain_modulus(1024);
+
+	// Constructing a SEALContext object
+	auto context = SEALContext::Create(parms);
+
+	Chypertext newChypertext;
+	fstream file;
+	file.open("conversion.txt", ios::trunc);
+	if (!voteEncryptedFile.is_open()) {
+		cout << "Unable to open Conversion File - string to chypertext" << endl;
+		return 1;
+	}
+	file << word;
+
+	newChypertext.unsafe_load(context, file);
+
+	return newChypertext;
+}
+
+
+
+std::vector<Chypertext> generateVectorOfChypertext(std::string vote_encrypted)
 {
 	ifstream voteEncryptedFile;
-
 	voteEncryptedFile.open(vote_encrypted, ios::binary);
 	if (!voteEncryptedFile.is_open()) {
 		cout << "Unable to open Vote Encrypted File" << endl;
 		return 1;
 	}
 
-	
+	std::string line;
+	std::vector<Chypertext> votesOfVoter;
+	while ( getline (inputFile, line) ) {
+		cout << line << '\n';
 
+		votesOfVoter.push_back(stringToCiphertext(line));
+    }
 
+    return votesOfVoter;
 }
 
+Chypertext sumResult(Chypertext encrypted1, Chypertext encrypted2)
+{
+	// BFV encryption scheme
+	EncryptionParameters parms(scheme_type::BFV);
 
+	// Defining encryption parameters
+
+	// degree of the `polynomial modulus'
+	size_t poly_modulus_degree = 4096;
+	parms.set_poly_modulus_degree(poly_modulus_degree);
+
+	// [ciphertext] `coefficient modulus'
+	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+
+	// plaintext modulus
+	parms.set_plain_modulus(1024);
+
+	// Constructing a SEALContext object
+	auto context = SEALContext::Create(parms);
+
+	Evaluator evaluator(context);
+
+	evaluator.add_inplace(encrypted1, encrypted2);
+
+	return encrypted1;
+}
+
+Chypertext multiplyResult(Chypertext encrypted1, Chypertext encrypted2)
+{
+	// BFV encryption scheme
+	EncryptionParameters parms(scheme_type::BFV);
+
+	// Defining encryption parameters
+
+	// degree of the `polynomial modulus'
+	size_t poly_modulus_degree = 4096;
+	parms.set_poly_modulus_degree(poly_modulus_degree);
+
+	// [ciphertext] `coefficient modulus'
+	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+
+	// plaintext modulus
+	parms.set_plain_modulus(1024);
+
+	// Constructing a SEALContext object
+	auto context = SEALContext::Create(parms);
+
+	Evaluator evaluator(context);
+
+	evaluator.multiply_inplace(encrypted1, encrypted2);
+
+	return encrypted1;
+}
 
 int main(int argc, char* argv[])
 {
+	std::vector<Chypertext> voteVecChypertext;
+	Chypertext checksum;
+	std::vector<Chypertext> results;
+	std::vector<Chypertext> weights;
+
 	//Initializations
+	//get the voting parameters
+	unsigned int candidates = 0;
+	unsigned int votes = 0;
+	unsigned int nrVoters = 0;
+	get_voting_params(input, candidates, votes, nrVoters);
+
+	checksum = zeroInChypertext();
+	for (int i = 0; i < candidates; ++i)
+		results.push_back(zeroInChypertext());
+
+	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
+		std::cout << "Weights NOT certified. Exiting...\n";
+		exit(-3);
+	}
+
+	weights = generateVectorOfChypertext(WEIGHTS);
+
 	std::string votePath = "";
 	std::string voter_crt = "";
 	std::string vote_encrypted = "";
@@ -67,10 +232,16 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		// RESTO DAS MERDAS
+		voteVecChypertext = generateVectorOfChypertext(vote_encrypted);
 
-	} 
-
+		// Computes homomorphically:
+		for (int i = 0; i < candidates; ++i) {
+			// the checksum for each vote and adds it to an accumulator
+			checksum = sumResult(checksum, voteVecChypertext[i]);
+			// the result of the election
+			results[i] = sumResult(results[i], multiplyResult(voteVecChypertext[i], weights[voter]));
+		}
+	}
 
 	return 0;
 }
