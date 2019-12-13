@@ -187,24 +187,24 @@ printf("22222222222222222\n");
 	unsigned int votes = 0;
 	get_voting_params(VOTE_INPUT, candidates, votes);
 
-printf("111111111111111\n");
+printf("333333333333333333\n");
 
 	checksum = zeroInCiphertext();
 	for (int i = 0; i < candidates; ++i)
 		results.push_back(zeroInCiphertext());
 
-printf("111111111111111\n");
+printf("4444444444444444444\n");
 
 	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
 		std::cout << "Weights NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
-printf("111111111111111\n");
+printf("55555555555555555555\n");
 
 	std::vector<Ciphertext> weights = generateVectorOfCiphertext(WEIGHTS);
 
-printf("111111111111111\n");
+printf("66666666666666666666\n");
 
 	std::string votePath = "";
 	std::string voter_crt = "";
@@ -228,7 +228,7 @@ printf("111111111111111\n");
 	}
 	std::cout << voters << std::endl;
 
-printf("111111111111111\n");
+printf("77777777777777777777777\n");
 
 	for(const auto voter : votersVec) {
 		
@@ -239,7 +239,7 @@ printf("111111111111111\n");
 		std::string counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
 		int counter = std::atoi((counterFile.substr(7)).c_str());
 
-printf("111111111111111 counter %d\n", counter)
+printf("8888888888888888888888888 counter %d\n", counter)
 
 		//we start with the last vote
 		for (int id = counter; id > 0; id--) {
@@ -257,7 +257,7 @@ printf("111111111111111 counter %d\n", counter)
 			else {
 				std::cout << "Vote " + std::to_string(id) + " NOT certified. Cheking next one...\n";
 			}
-printf("111111111111111\n")
+printf("999999999999999999999999999\n")
 		}
 
 		voteVecCiphertext = generateVectorOfCiphertext(vote_encrypted);
