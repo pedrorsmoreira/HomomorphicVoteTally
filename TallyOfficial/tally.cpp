@@ -20,6 +20,7 @@ using namespace seal;
 
 Plaintext Decrypt(Ciphertext cypher)
 {
+	printf("ENTROU\n");
 	// Scheme : BFV
 	EncryptionParameters parms(scheme_type::BFV);
 	// 1st Parameter
@@ -32,18 +33,19 @@ Plaintext Decrypt(Ciphertext cypher)
 	// Starting
 	auto context = SEALContext::Create(parms);
 
+printf("WWWWWWWW\n");
 	// Loading the election public key from the file
 	std::ifstream secretKeyFile;
 	SecretKey secret_key;
 	secretKeyFile.open("electionSecretKeyFile.dat", std::ios::binary);
 	secretKeyFile.close();
-
+printf("RRRRRRRRRRRRR\n");
 	// Constructing an instance of Decryptor - to be able to decrypt
 	Decryptor decryptor(context, secret_key);
-
+printf("hhhhhhhhhhhhhh\n");
 	Plaintext plaintext;
 	decryptor.decrypt(cypher, plaintext);
-
+printf("lllllllllllllllllll\n");
 	return plaintext;
 }
 
@@ -130,7 +132,7 @@ printf("filename %s\n", filename.c_str());
     }
 
     newCiphertext.unsafe_load(context, encryptedFile);
-
+printf("ACABOUUUU\n");
     return newCiphertext;
 }
 
@@ -259,10 +261,10 @@ printf("WEIGHTS DONE\n");
 
 	for (int i = 0; i < nrVoters; ++i) {
 
-printf("---> %s\n", voter);
+printf("---> %d\n", i);
 		
 		//Voter directory in the Ballot Box
-		ballotVoter = BALLOT_BOX + std::string("/") + VOTER_PRIVATE_DIR + std::to_string(i);
+		ballotVoter = BALLOT_BOX + std::string("/") + VOTER_PRIVATE_DIR + std::to_string(i+1);
 
 		//get the number of votes casts by this voter
 		counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
@@ -276,19 +278,19 @@ printf("counter %d\n", counter);
 printf("id %d\n", id);
 			
 			votePath = ballotVoter + std::string("/") + VOTE_DIR + std::to_string(id);
-			voterCrt = votePath + std::string("/") + VOTER_CRT + std::to_string(id) + VOTER_CRT_EXTENSION;
+			voterCrt = votePath + std::string("/") + VOTER_CRT + std::to_string(i+1) + VOTER_CRT_EXTENSION;
 			candidatesVotePath = votePath + std::string("/") + CANDIDATE_VOTE_DIR;
 
 			for (int j = 0; j < nrCandidates; ++j) {
-				candidateVoteFile 		= candidatesVotePath + std::string("/") + std::to_string(j) + CANDIDATE_VOTE + SEAL_EXTENSION;
-				candidateVoteFileSigned = candidatesVotePath + std::string("/") + std::to_string(j) + CANDIDATE_VOTE + SIGNED_EXTENSION;
+				candidateVoteFile 		= candidatesVotePath + std::string("/") + std::to_string(j+1) + CANDIDATE_VOTE + SEAL_EXTENSION;
+				candidateVoteFileSigned = candidatesVotePath + std::string("/") + std::to_string(j+1) + CANDIDATE_VOTE + SIGNED_EXTENSION;
 				if (!check_signature(voterCrt, candidateVoteFile, candidateVoteFileSigned)) {
 					std::cout << "Candidate Vote NOT certified. Voter " << id << "NOT valid\n";
 					valid = false;
 					break;
 				}
 
-				voteVecCiphertext[j] = generateCiphertext(candidateVoteFile);
+				voteVecCiphertext.push_back( generateCiphertext(candidateVoteFile));printf("GUrdouuu\n");
 				std::cout << "0x" << Decrypt(voteVecCiphertext[j]).to_string() << " ...... Correct." << std::endl;
 			}
 
@@ -302,7 +304,7 @@ printf("id %d\n", id);
 				// the checksum for each vote and adds it to an accumulator
 				checksum = sumResult(checksum, voteVecCiphertext[j]);
 				// the result of the election - weight is the one of the voter
-				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[i]));
+				//results.push_back(sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[i])));
 			}
 		} else
 			std::cout << "No vote from the voter " << voterID << "\n";
