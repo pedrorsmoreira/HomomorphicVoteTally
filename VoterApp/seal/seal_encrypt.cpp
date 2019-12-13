@@ -44,7 +44,7 @@ void seal_encrypt_with_public_key(char* input, char* output, char* public_Key_Fi
 
 	// Output File
 	ofstream outputFile;
-	outputFile.open(output, ios::app);
+	outputFile.open(output, ios::binary | ios::app);
 	if (!outputFile.is_open()) {
 		cout << "Unable to open Output File" << endl;
 		return;
