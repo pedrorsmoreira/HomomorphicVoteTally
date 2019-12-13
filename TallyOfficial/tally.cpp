@@ -172,26 +172,39 @@ int main(int argc, char* argv[])
 	Ciphertext checksum;
 	std::vector<Ciphertext> results;
 
+printf("111111111111111\n");
+
 	//Initializations
 	//get the voting parameters
 	if (!check_signature(ROOT_CRT_FILE, VOTE_INPUT, VOTE_INPUT_SIGNED)){
 		std::cout << "Weights NOT certified. Exiting...\n";
 		exit(-3);
 	}
+
+printf("22222222222222222\n");
+
 	unsigned int candidates = 0;
 	unsigned int votes = 0;
 	get_voting_params(VOTE_INPUT, candidates, votes);
 
+printf("111111111111111\n");
+
 	checksum = zeroInCiphertext();
 	for (int i = 0; i < candidates; ++i)
 		results.push_back(zeroInCiphertext());
+
+printf("111111111111111\n");
 
 	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
 		std::cout << "Weights NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
+printf("111111111111111\n");
+
 	std::vector<Ciphertext> weights = generateVectorOfCiphertext(WEIGHTS);
+
+printf("111111111111111\n");
 
 	std::string votePath = "";
 	std::string voter_crt = "";
@@ -215,6 +228,8 @@ int main(int argc, char* argv[])
 	}
 	std::cout << voters << std::endl;
 
+printf("111111111111111\n");
+
 	for(const auto voter : votersVec) {
 		
 		//Voter directory in the Ballot Box
@@ -223,6 +238,8 @@ int main(int argc, char* argv[])
 		//get the number of votes casts by this voter
 		std::string counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
 		int counter = std::atoi((counterFile.substr(7)).c_str());
+
+printf("111111111111111 counter %d\n", counter)
 
 		//we start with the last vote
 		for (int id = counter; id > 0; id--) {
@@ -240,6 +257,7 @@ int main(int argc, char* argv[])
 			else {
 				std::cout << "Vote " + std::to_string(id) + " NOT certified. Cheking next one...\n";
 			}
+printf("111111111111111\n")
 		}
 
 		voteVecCiphertext = generateVectorOfCiphertext(vote_encrypted);

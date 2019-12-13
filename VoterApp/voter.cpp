@@ -58,8 +58,8 @@ int main(int argc, char* argv[]) {
 
 	//check if user (directory) exists
 	std::string voterPath = VOTERS_DIR + std::string("/") + VOTER_PRIVATE_DIR + id;
-	if ( ! boost::filesystem::exists( voterPath ) ) {
-	//if (ssystem(("ls " + voterPath).c_str()) == "") {
+	//if ( ! boost::filesystem::exists( voterPath ) ) {
+	if (ssystem(("ls " + voterPath).c_str()) == "") {
 		std::cout << "Provided ID does not match any existing voter\n.";
 		exit(-2);
 	}
