@@ -65,7 +65,7 @@ printf("olaaaaaaaaaaaaa\n");
 
 	// Defining encryption parameters
 
-	// degree of the `polynomial modulus'
+	// degree o                                f the `polynomial modulus'
 	size_t poly_modulus_degree = 4096;
 	parms.set_poly_modulus_degree(poly_modulus_degree);
 
