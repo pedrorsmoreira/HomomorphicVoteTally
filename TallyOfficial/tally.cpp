@@ -190,8 +190,8 @@ printf("RESULTS AND CHECKSUM DONE\n");
 	std::string weightsFile = "";
 	std::string weightsFileSigned = "";
 	for (int i = 0; i < nrVoters; ++i) {
-		weightsFile 		= std::string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + DAT_EXTENSION;
-		weightsFileSigned 	= std::string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + SIGNED_EXTENSION;
+		weightsFile 		= std::string("./WeightsEncrypted/") + WEIGHTS + std::to_string(i+1) + DAT_EXTENSION;
+		weightsFileSigned 	= std::string("./WeightsEncrypted/") + WEIGHTS + std::to_string(i+1) + SIGNED_EXTENSION;
 		if (!check_signature(ROOT_CRT_FILE, weightsFile, weightsFileSigned)){
 			std::cout << "Weights NOT certified. Exiting...\n";
 			exit(-3);
@@ -242,7 +242,7 @@ printf("id %d\n", id);
 			candidatesVotePath = votePath + std::string("/") + CANDIDATE_VOTE_DIR;
 
 			for (int j = 0; j < nrCandidates; ++j) {
-				candidateVoteFile 		= candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + DAT_EXTENSION/TXT_EXTENSION;
+				candidateVoteFile 		= candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + DAT_EXTENSION;///TXT_EXTENSION;
 				candidateVoteFileSigned = candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + SIGNED_EXTENSION;
 				if (!check_signature(voterCrt, candidateVoteFile, candidateVoteFileSigned)) {
 					std::cout << "Candidate Vote NOT certified. Voter " << id << "NOT valid\n";
