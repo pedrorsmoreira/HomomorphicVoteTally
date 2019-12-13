@@ -46,8 +46,8 @@ cmake . > /dev/null
 make > /dev/null
 ./electionKey
 # Signing the file
-openssl dgst -sha256 -sign ../rootCA.key -out electionPublicKeyFile.sign electionPublicKeyFile.dat 
-cp {electionPublicKeyFile.dat,electionPublicKeyFile.sign} ../../TallyOfficial
+openssl dgst -sha256 -sign ../rootCA.key -out electionPublicKeyFile.sign electionPublicKeyFile.txt 
+cp {electionPublicKeyFile.txt,electionPublicKeyFile.sign} ../../TallyOfficial
 cd ..
 
 # Installing on each voter app
@@ -74,16 +74,16 @@ do
 	openssl dgst -sha256 -sign ../Administrator/rootCA.key -out voter$i.crt.sign voter$i.crt
 
 	# Installing the eletion public key
-	cp ../Administrator/ElectionKey/{electionPublicKeyFile.dat,electionPublicKeyFile.sign} ../Voter$i
+	cp ../Administrator/ElectionKey/{electionPublicKeyFile.txt,electionPublicKeyFile.sign} ../Voter$i
 done
 
 cd ../Administrator/ShamirSecretSharing
 
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
 openssl rand -hex 16 > pass.txt
-openssl enc -aes-256-cbc -salt -in ../ElectionKey/electionSecretKeyFile.dat -out ../ElectionKey/electionSecretKeyFile.dat.enc -pass file:pass.txt -iter 10
-#rm ../ElectionKey/electionSecretKeyFile.dat
-mv ../ElectionKey/electionSecretKeyFile.dat.enc ../../Counter
+openssl enc -aes-256-cbc -salt -in ../ElectionKey/electionSecretKeyFile.txt -out ../ElectionKey/electionSecretKeyFile.txt.enc -pass file:pass.txt -iter 10
+#rm ../ElectionKey/electionSecretKeyFile.txt
+mv ../ElectionKey/electionSecretKeyFile.txt.enc ../../Counter
 
 # Spliting the password of the encrypted election private key using Shamir’s
 # secret sharing and distributing each of the shares by the trustees
@@ -108,11 +108,11 @@ mkdir WeightsEncrypted
 cmake . > /dev/null
 make > /dev/null
 rm -Rf ../../TallyOfficial/WeightsEncrypted > /dev/null 2>&1
-./weights ../ElectionKey/electionPublicKeyFile.dat $VOTERS
+./weights ../ElectionKey/electionPublicKeyFile.txt $VOTERS
 # Signing the files
 for (( i=1; i<=$VOTERS; i++ ))
 do
-	openssl dgst -sha256 -sign ../rootCA.key -out ./WeightsEncrypted/encryptedWeightsFile$i.sign ./WeightsEncrypted/encryptedWeightsFile$i.dat
+	openssl dgst -sha256 -sign ../rootCA.key -out ./WeightsEncrypted/encryptedWeightsFile$i.sign ./WeightsEncrypted/encryptedWeightsFile$i.txt
 done
 
 mv WeightsEncrypted/ ../../TallyOfficial/

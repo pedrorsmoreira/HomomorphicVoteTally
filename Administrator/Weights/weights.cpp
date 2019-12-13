@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 	string output;
 	for (int i = 0; i < numberOfVoters; ++i)
 	{
-		output = string("./WeightsEncrypted/encryptedWeightsFile") + to_string(i+1) + string(".dat");
+		output = string("./WeightsEncrypted/encryptedWeightsFile") + to_string(i+1) + string(".txt");
 		encryptedWeightsFile.open(output.c_str(), ios::binary | ios::app);
 
 		if (howToGenerateWeights == FILE)
