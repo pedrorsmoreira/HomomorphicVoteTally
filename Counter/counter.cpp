@@ -5,17 +5,14 @@
 #include <vector>
 #include <assert.h>
 
-#include "seal/seal.h"
-using namespace seal;
-using namespace std;
-
-//#include "../Administrator/ShamirSecretSharing/sss/sss.h"
-//#include "../Administrator/ShamirSecretSharing/sss/randombytes.h"
-
 #include "sss/sss.h"
 #include "sss/randombytes.h"
 
 #include "../utils/utils.cpp"
+
+#include "seal/seal.h"
+using namespace seal;
+using namespace std;
 
 //#define COUNTER 					"../counter"
 
