@@ -1,5 +1,9 @@
 #include "utils.h"
 
+#include "seal/seal.h"
+using namespace std;
+using namespace seal;
+
 //for debugging
 void print(std::string& s){
 	std::cout << "\n" + s + "\n";
@@ -50,7 +54,7 @@ void get_voting_params(std::string filePATH, unsigned int& candidates, unsigned 
 	input >> candidates >> votes_nr;
 }
 
-auto xx()
+SEALContext xx()
 {
     // BFV encryption scheme
     EncryptionParameters parms(scheme_type::BFV);
