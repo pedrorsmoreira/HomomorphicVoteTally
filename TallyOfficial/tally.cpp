@@ -10,7 +10,7 @@ using namespace seal;
 #define CANDIDATE_VOTE_DIR 	"votes_per_cand"
 #define CANDIDATE_VOTE 		"vote"
 #define WEIGHTS 			"encryptedWeightsFile"
-#define DAT_EXTENSION 		".dat"
+#define DAT_EXTENSION 		".txt"
 #define TXT_EXTENSION 		".txt"
 #define SIGNED_EXTENSION 	".sign"
 #define SEAL_EXTENSION 	 	".seal"
@@ -37,7 +37,8 @@ printf("WWWWWWWW\n");
 	// Loading the election public key from the file
 	std::ifstream secretKeyFile;
 	SecretKey secret_key;
-	secretKeyFile.open("electionSecretKeyFile.dat", std::ios::binary);
+	secretKeyFile.open("electionSecretKeyFile.txt", std::ios::binary);
+	secret_key.unsafe_load(context, secretKeyFile);
 	secretKeyFile.close();
 printf("RRRRRRRRRRRRR\n");
 	// Constructing an instance of Decryptor - to be able to decrypt

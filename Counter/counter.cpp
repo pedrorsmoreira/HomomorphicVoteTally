@@ -37,7 +37,7 @@ using namespace std;
 #define COUNTER_INPUT_SIGNED 		"inputCounter.sign"
 
 //name of the file to create with the private key
-#define PRIVATE_KEY_FILE_PATH		"electionSecretKeyFile.dat"
+#define PRIVATE_KEY_FILE_PATH		"electionSecretKeyFile.txt"
 
 //get the number of candidates and number of votes to distribute
 void get_sss_info(string filePATH, unsigned int& trustees, unsigned int& threshold, unsigned int& candidates, unsigned int& voters){
@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
 
 	int tmp;
 	// Combine some of the shares to restore the original secret (restore is the private key)
-	tmp = sss_combine_shares(restored, shares, shares_threshold);
+	tmp = sss_combine_shares(restored, shares, shares_threshold);printf("AAAQQQQUUIIII\n");
 	assert(tmp == 0);
 
 	// Escreve num ficheiro a pass dps de juntar as shares
@@ -175,8 +175,8 @@ int main(int argc, char* argv[])
 	fputc('\0', fp);
 	fclose(fp);
 
-	string path_to_enc_sk 	= "electionSecretKeyFile.dat.enc";
-	string path_to_sk 		= "electionSecretKeyFile.dat";
+	string path_to_enc_sk 	= "electionSecretKeyFile.txt.enc";
+	string path_to_sk 		= "electionSecretKeyFile.txt";
   
 	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
 

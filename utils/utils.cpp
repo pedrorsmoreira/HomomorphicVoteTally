@@ -8,7 +8,7 @@
 #define VOTER_CRT               "voter" //append ID
 #define VOTER_CRT_EXTENSION     ".crt"
 
-#define ELEC_KEY                "electionPublicKeyFile.dat"
+#define ELEC_KEY                "electionPublicKeyFile.txt"
 #define ELEC_KEY_SIGNED         "electionPublicKeyFile.sign"
 
 #define VOTE_INPUT              "input.txt"
@@ -21,6 +21,13 @@
 #define VOTE_FILE               "vote.txt"
 #define VOTE_ENCRYPTED          "vote.seal"
 #define VOTE_SIGNED             "vote.sign"
+
+
+
+
+
+#define VOTER_PRIVATE_DIR   "Voter" //append ID
+
 
 //for debugging
 void print(std::string& s){

@@ -1,3 +1,0 @@
-/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/rebuild_cache.dir
-/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/electionKey.dir
-/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/edit_cache.dir
