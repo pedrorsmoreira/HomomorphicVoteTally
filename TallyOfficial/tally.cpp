@@ -274,7 +274,7 @@ printf("id %d\n", id);
 	std::ofstream checksumFile;
 	checksumFile.open("checksum.txt", std::ios::binary | std::ios::app);
 	checksum.save(checksumFile);
-	checksumFile.close()
+	checksumFile.close();
 
 	std::ofstream resultsFile;
 	std::string output = "";
