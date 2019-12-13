@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
 	string path_to_enc_sk = "electionSecretKeyFile.dat.enc";
 	string path_to_sk = "electionSecretKeyFile.dat";
   
-	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE " -pass file:recovered_pass.txt -iter 10").c_str());
+	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
 
 	int checksum_dec;
 	vector<int> results_dec;
