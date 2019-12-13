@@ -131,7 +131,7 @@ printf("file_encrypted %s\n", file_encrypted.c_str());
     return votesOfVoter;
 }
 
-Evaluator generateEvaluator()
+Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -152,14 +152,6 @@ Evaluator generateEvaluator()
 	auto context = SEALContext::Create(parms);
 
 	Evaluator evaluator(context);
-
-	return evaluator; 
-}
-
-
-Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
-{
-	Evaluator evaluator = generateEvaluator();
 
 	evaluator.add_inplace(encrypted1, encrypted2);
 
