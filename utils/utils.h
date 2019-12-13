@@ -2,9 +2,6 @@
 #define UTILS
 
 #include <iostream>
-#include <vector>
-#include <string>
-#include <fstream>
 
 #define BALLOT_BOX              "../BallotBox"
 
@@ -27,6 +24,8 @@
 #define VOTE_SIGNED             "vote.sign"
 
 
+
+void print(std::string& s);
 
 void print(std::string& s);
 
