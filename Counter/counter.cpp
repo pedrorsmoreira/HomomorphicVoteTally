@@ -105,10 +105,10 @@ int main(int argc, char* argv[])
 	int j = 0;
 
 	for (int i = 0; i < num_shares; i++) {
-		string share = SHARE + to_string(i+1) + SHARE_EXTENSION;
+		string share 		= SHARE + to_string(i+1) + SHARE_EXTENSION;
 		string share_signed = SHARE + to_string(i+1) + SHARE_SIGNED_EXTENSION;
 
-		if (! check_signature(root_crt, share, share_signed)){
+		if (! check_signature(ROOT_CRT_FILE, share, share_signed)){
 			std::cout << "Trustee NOT certified. Exiting...\n";
 			exit(-1);
 		}
