@@ -6,7 +6,7 @@ void print(std::string& s){
 }
 
 //executes the input string on the terminal and returns the output of the command
-std::string ssystem (char *command) {
+std::string ssystem (const char *command) {
     char tmpname [L_tmpnam];
     std::tmpnam ( tmpname );
     std::string scommand = command;
