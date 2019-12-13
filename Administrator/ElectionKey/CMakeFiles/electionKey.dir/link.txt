@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/electionKey.dir/electionKey.cpp.o  -o electionKey  /usr/local/lib/libseal-3.4.a -pthread /usr/lib/libz.so 

@@ -22,6 +22,8 @@ echo $VOTES >> input.txt
 echo $VOTERS >> input.txt
 # Signing this file
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
+# Copying the signed file with the properties of the election
+cp {input.txt,input.sign} ../TallyOfficial
 
 # Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial
@@ -91,15 +93,30 @@ done
 
 # Assigning a weight to each voter and encrypts it with the election public key
 cd ../Weights
+
+rm -Rf WeightsEncrypted > /dev/null 2>&1
+mkdir WeightsEncrypted
 cmake . > /dev/null
 make > /dev/null
+rm -Rf ../../TallyOfficial/WeightsEncrypted > /dev/null 2>&1
 ./weights ../ElectionKey/electionPublicKeyFile.dat $VOTERS
-# Signing the file
-openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
-mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
+# Signing the files
+for (( i=1; i<=$VOTERS; i++ ))
+do
+	openssl dgst -sha256 -sign ../rootCA.key -out ./WeightsEncrypted/encryptedWeightsFile$i.sign ./WeightsEncrypted/encryptedWeightsFile$i.dat
+done
+
+mv WeightsEncrypted/ ../../TallyOfficial/
+
+cd ../..
 
 # Creating directorie of the Ballot Box
-mkdir ../../BallotBox
+mkdir ./BallotBox
 
 # COMPILES TALLY AND VOTER
-
+cd VoterApp
+cd seal
+cmake . > /dev/null
+make > /dev/null
+./seal_encrypt
+cd ../..

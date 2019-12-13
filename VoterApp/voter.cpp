@@ -1,13 +1,10 @@
-#include <iostream>
 #include "boost/filesystem.hpp"
+
+#include "../utils/utils.cpp"
 
 //directories
 #define VOTERS_DIR 			".."
 #define VOTER_PRIVATE_DIR 	"Voter" //append ID
-#define BALLOT_BOX 			"../BallotBox"
-
-//root CA certificate
-#define ROOT_CRT_FILE 				"rootCA.crt"
 
 //names of the existing files
 #define VOTER_KEY 					"voter" //append ID
@@ -16,33 +13,14 @@
 #define VOTER_KEY_SIGNED 			"voter" //append ID
 #define VOTER_KEY_SIGNED_EXTENSION 	".sign"
 
-#define VOTER_CRT 					"voter" //append ID
-#define VOTER_CRT_EXTENSION 		".crt"
-
 #define VOTER_CRT_SIGNED 			"voter" //append ID
 #define VOTER_CRT_SIGNED_EXTENSION 	".crt.sign"
-
-#define ELEC_KEY 					"electionPublicKeyFile.dat"
-#define ELEC_KEY_SIGNED 			"electionPublicKeyFile.sign"
-
-#define VOTE_INPUT 					"input.txt"
-#define VOTE_INPUT_SIGNED 			"input.sign"
-
-//name of the directory that will contain the vote
-#define VOTE_DIR	"Vote" //vote counter will be appended
 
 //executable to encrypt a file with the SEAL library
 #define SEAL_ENCRYPT	"seal/seal_encrypt"
 
 //names of the files to create
 #define VOTE_FILE 		"vote.txt"
-#define VOTE_ENCRYPTED 	"vote.seal"
-#define VOTE_SIGNED 	"vote.sign"
-
-//for debugging
-void print(std::string& s){
-	std::cout << "\n" + s + "\n";
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////         auxiliar functions         ////////////////////////////////
@@ -61,57 +39,11 @@ void identify_voter(int& argc, char* argv[], std::string& id){
 	}
 }
 
-//executes the input string on the terminal and returns the output of the command
-std::string ssystem (const char *command) {
-    char tmpname [L_tmpnam];
-    std::tmpnam ( tmpname );
-    std::string scommand = command;
-    std::string cmd = scommand + " >> " + tmpname;
-    std::system(cmd.c_str());
-    std::ifstream file(tmpname, std::ios::in | std::ios::binary );
-    std::string result;
-    if (file) {
-        while (!file.eof()) result.push_back(file.get())
-            ;
-        file.close();
-    }
-    remove(tmpname);
-
-    //remove \0 and \n
-    if (! result.empty())
-    	result.pop_back();
-    if (! result.empty())
-    	result.pop_back();
-
-    return result;
-}
-
-//check if a subject's signature is certified
-bool check_signature(std::string& CA, std::string& subject, std::string& signed_subject){
-	std::string key = "CApublic.key";
-	std::string result = "";
-	std::string certified = "Verified OK";
-
-	system(("openssl x509 -pubkey -noout -in " + CA + " > " + key).c_str());
-	result = ssystem( ("openssl dgst -sha256 -verify " + key + " -signature " + signed_subject + " " + subject).c_str());
-
-	remove("CApublic.key");
-
-	return result == certified;//return result.find(certified) != std::string::npos;
-}
-
-//get the number of candidates and number of votes to distribute
-void get_voting_params(std::string filePATH, unsigned int& candidates, unsigned int& votes_nr){
-	std::ifstream input(filePATH);
-	input >> candidates >> votes_nr;
-}
-
 //write the vote in an output file
 void write_vote(std::string filePATH, std::vector<unsigned int>& v){
 	std::ofstream ouput(filePATH);
 	for (const auto val : v)ouput << val << "\n";
 }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////         main         ///////////////////////////////////////
@@ -175,39 +107,39 @@ int main(int argc, char* argv[]) {
 	std::cout << "Voter " + id + " successefully certified.\n\n";
 
 	//get the voting parameters
-	unsigned int candidates = 0;
-	unsigned int votes = 0;
-	get_voting_params(input, candidates, votes);
+	unsigned int nrCandidates = 0;
+	unsigned int nrVotes = 0;
+	get_voting_params(input, nrCandidates, nrVotes);
 	
 	//create the vector that will contain the votes
-	std::vector<unsigned int> final_vote (candidates, 0); 	
+	std::vector<unsigned int> final_vote (nrCandidates, 0); 	
 
 	//read the vote from the voter (from the cmd)
-	while (votes > 0){
+	while (nrVotes > 0){
 		std::string aux;
 		unsigned int selectedCand, selectedVotes;
 
-		std::cout << "There are " + std::to_string(candidates) + " available candidates to vote on, and "  << votes << " vote(s) to distribute." << std::endl;
+		std::cout << "There are " + std::to_string(nrCandidates) + " available candidates to vote on, and "  << nrVotes << " vote(s) to distribute." << std::endl;
 
-		std::cout << "Choose a candidate to vote on (from 1 to " << std::to_string(candidates) << "):";
+		std::cout << "Choose a candidate to vote on (from 1 to " << std::to_string(nrCandidates) << "):";
 		std::getline(std::cin, aux);
 		selectedCand = std::atoi(aux.c_str());
 
-		if (selectedCand < 1 || selectedCand > candidates){
+		if (selectedCand < 1 || selectedCand > nrCandidates){
 			std::cout << "Invalid candidate.\n\n";
 			continue;
 		}
 
-		std::cout << "\nChoose the number of votes for the candidate ([" << std::to_string(votes) << ']' << "votes left):";
+		std::cout << "\nChoose the number of votes for the candidate ([" << std::to_string(nrVotes) << ']' << "votes left):";
 		std::getline(std::cin, aux);
 		selectedVotes = std::atoi(aux.c_str());
 
-		if (selectedVotes < 1 || selectedVotes > votes){
+		if (selectedVotes < 1 || selectedVotes > nrVotes){
 			std::cout << "\n\n------Invalid value-------\n\n";
 			continue;
 		}
 
-		votes -= selectedVotes;
+		nrVotes -= selectedVotes;
 		final_vote[selectedCand-1] += selectedVotes;
 
 		std::cout << "\n\n";

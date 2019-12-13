@@ -1,7 +1,18 @@
-#define WEIGHTS 		"encryptedWeightsFile.dat"
-#define WEIGHTS_SIGNED 	"encryptedWeightsFile.sign"
+#include <iostream>
+#include <fstream>
 
-Chypertext zeroInChypertext()
+#include "../utils/utils.cpp"
+
+#include "seal/seal.h"
+using namespace seal;
+
+#define CANDIDATE_VOTE_DIR 		"XXX"
+#define CANDIDATE_VOTE 			"XXX"
+#define WEIGHTS 				"encryptedWeightsFile"
+#define DAT_EXTENSION 		 	".dat"
+#define SIGNED_EXTENSION 	 	".sign"
+
+Ciphertext zeroInCiphertext()
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -23,17 +34,18 @@ Chypertext zeroInChypertext()
 
 	if (!check_signature(ROOT_CRT_FILE, ELEC_KEY, ELEC_KEY_SIGNED)){
 		std::cout << "Election public key NOT certified. Exiting...\n";
-		exit(-3);
+		exit(-1);
 	}
 
 	// Loading the election public key from the file
-	ifstream publicKeyFile;
-	publicKeyFile.open(ELEC_KEY, ios::binary);
+	PublicKey public_key;
+	std::ifstream publicKeyFile;
+	publicKeyFile.open(ELEC_KEY, std::ios::binary);
 	if (publicKeyFile.is_open())
 		public_key.unsafe_load(context, publicKeyFile);
 	else {
-		cout << "Unable to open Public Key File" << endl;
-		return 1;
+		std::cout << "Unable to open Public Key File" << std::endl;
+		exit(-1);
 	}
 	publicKeyFile.close();
 
@@ -47,15 +59,15 @@ Chypertext zeroInChypertext()
 	return zero_encrypted;
 }
 
-
-Chypertext stringToCiphertext(std::string word)
+Ciphertext generateCiphertext(std::string fileToBeEncrypted)
 {
+printf("fileToBeEncrypted %s\n", fileToBeEncrypted.c_str());
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
 
 	// Defining encryption parameters
 
-	// degree of the `polynomial modulus'
+	// degree o                                f the `polynomial modulus'
 	size_t poly_modulus_degree = 4096;
 	parms.set_poly_modulus_degree(poly_modulus_degree);
 
@@ -67,44 +79,22 @@ Chypertext stringToCiphertext(std::string word)
 
 	// Constructing a SEALContext object
 	auto context = SEALContext::Create(parms);
+	
+	Ciphertext newCiphertext;
 
-	Chypertext newChypertext;
-	fstream file;
-	file.open("conversion.txt", ios::trunc);
-	if (!voteEncryptedFile.is_open()) {
-		cout << "Unable to open Conversion File - string to chypertext" << endl;
-		return 1;
-	}
-	file << word;
-
-	newChypertext.unsafe_load(context, file);
-
-	return newChypertext;
-}
-
-
-
-std::vector<Chypertext> generateVectorOfChypertext(std::string vote_encrypted)
-{
-	ifstream voteEncryptedFile;
-	voteEncryptedFile.open(vote_encrypted, ios::binary);
-	if (!voteEncryptedFile.is_open()) {
-		cout << "Unable to open Vote Encrypted File" << endl;
-		return 1;
+	std::ifstream encryptedFile;
+	encryptedFile.open(fileToBeEncrypted, std::ios::binary);
+	if (!encryptedFile.is_open()) {
+		std::cout << "Unable to open Encrypted File" << std::endl;
+		exit(-3);
 	}
 
-	std::string line;
-	std::vector<Chypertext> votesOfVoter;
-	while ( getline (inputFile, line) ) {
-		cout << line << '\n';
+	newCiphertext.unsafe_load(context, encryptedFile);
 
-		votesOfVoter.push_back(stringToCiphertext(line));
-    }
-
-    return votesOfVoter;
+    return newCiphertext;
 }
 
-Chypertext sumResult(Chypertext encrypted1, Chypertext encrypted2)
+Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -131,7 +121,7 @@ Chypertext sumResult(Chypertext encrypted1, Chypertext encrypted2)
 	return encrypted1;
 }
 
-Chypertext multiplyResult(Chypertext encrypted1, Chypertext encrypted2)
+Ciphertext multiplyResult(Ciphertext encrypted1, Ciphertext encrypted2)
 {
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
@@ -160,39 +150,51 @@ Chypertext multiplyResult(Chypertext encrypted1, Chypertext encrypted2)
 
 int main(int argc, char* argv[])
 {
-	std::vector<Chypertext> voteVecChypertext;
-	Chypertext checksum;
-	std::vector<Chypertext> results;
-	std::vector<Chypertext> weights;
+	Ciphertext checksum;
+	std::vector<Ciphertext> results;
+	std::vector<Ciphertext> weights;
+	std::vector<Ciphertext> voteVecCiphertext;
+	bool valid = true;
 
 	//Initializations
 	//get the voting parameters
-	unsigned int candidates = 0;
-	unsigned int votes = 0;
-	unsigned int nrVoters = 0;
-	get_voting_params(input, candidates, votes, nrVoters);
-
-	checksum = zeroInChypertext();
-	for (int i = 0; i < candidates; ++i)
-		results.push_back(zeroInChypertext());
-
-	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
-		std::cout << "Weights NOT certified. Exiting...\n";
-		exit(-3);
+	if (!check_signature(ROOT_CRT_FILE, VOTE_INPUT, VOTE_INPUT_SIGNED)){
+		std::cout << "Input file NOT certified. Exiting...\n";
+		exit(-1);
 	}
 
-	weights = generateVectorOfChypertext(WEIGHTS);
+	unsigned int nrCandidates = 0;
+	unsigned int nrVotes = 0;
+	unsigned int nrVoters = 0;
+	get_voting_params(VOTE_INPUT, nrCandidates, nrVotes, nrVoters);
 
-	std::string votePath = "";
-	std::string voter_crt = "";
-	std::string vote_encrypted = "";
-	std::string vote_signed = "";
+printf("nrCandidates %d nrVotes %d nrVoters %d\n", nrCandidates, nrVotes, nrVoters);
+
+	checksum = zeroInCiphertext();
+	for (int i = 0; i < nrCandidates; ++i)
+		results.push_back(zeroInCiphertext());
+
+printf("RESULTS AND CHECKSUM DONE\n");
+
+	std::string weightsFile = "";
+	std::string weightsFileSigned = "";
+	for (int i = 0; i < nrVoters; ++i) {
+		weightsFile 		= string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + DAT_EXTENSION;
+		weightsFileSigned 	= string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + SIGNED_EXTENSION;
+		if (!check_signature(ROOT_CRT_FILE, weightsFile, weightsFileSigned)){
+			std::cout << "Weights NOT certified. Exiting...\n";
+			exit(-3);
+		}
+
+		weights.push_back(generateCiphertext(weightsFile));
+	}
+
+printf("WEIGHTS DONE\n");
+	
+	//get a string with all the folders of the voters
+	std::string voters = ssystem((std::string("ls ") + BALLOT_BOX).c_str());
 
 	std::vector<std::string> votersVec;
-
-	//get a string with all the folders of the voters
-	std::string voters = ssystem(("ls " + BALLOT_BOX).c_str());
-
 	//get each voter folder (string) to the vector
 	std::string delimiter = " ";
 	size_t pos = 0;
@@ -206,42 +208,56 @@ int main(int argc, char* argv[])
 	std::cout << voters << std::endl;
 
 	for(const auto voter : votersVec) {
+
+printf("---> %s\n", voter);
 		
 		//Voter directory in the Ballot Box
 		std::string ballotVoter = BALLOT_BOX + std::string("/") + voter;
-		
+
 		//get the number of votes casts by this voter
 		std::string counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
 		int counter = std::atoi((counterFile.substr(7)).c_str());
 
+printf("counter %d\n", counter);
+		
 		//we start with the last vote
 		for (int id = counter; id > 0; id--) {
-			cout << id << "\n";
 
-			votePath 		= ballotVoter 	+ std::string("/") + VOTE_DIR + id;
+printf("id %d\n", id);
+			
+			votePath = ballotVoter + std::string("/") + VOTE_DIR + std::to_string(id);
+			voterCrt = votePath + std::string("/") + VOTER_CRT + std::to_string(id) + VOTER_CRT_EXTENSION;
+			candidatesVotePath = votePath + std::string("/") + CANDIDATE_VOTE_DIR;
 
-			voter_crt 		= votePath 		+ std::string("/") + VOTER_CRT + id + VOTER_CRT_EXTENSION;
-			vote_encrypted 	= voterPath 	+ std::string("/") + VOTE_ENCRYPTED;
-			vote_signed 	= voterPath 	+ std::string("/") + VOTE_SIGNED;
+			for (int j = 0; j < nrCandidates; ++j) {
+				candidateVoteFile 		= candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + DAT_EXTENSION/TXT_EXTENSION;
+				candidateVoteFileSigned = candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + SIGNED_EXTENSION;
+				if (!check_signature(voterCrt, candidateVoteFile, candidateVoteFileSigned)) {
+					std::cout << "Candidate Vote NOT certified. Voter " << id << "NOT valid\n";
+					valid = false;
+					break;
+				}
 
-			//validate existing files
-			if (check_signature(voter_crt, vote_encrypted, vote_signed))
-				break;
-			else {
-				std::cout << "Vote " + id + " NOT certified. Cheking next one...\n";
+				voteVecCiphertext[j] = generateCiphertext(candidateVoteFile);
 			}
+
+			if (valid) break;
+			else valid = true;
 		}
 
-		voteVecChypertext = generateVectorOfChypertext(vote_encrypted);
-
-		// Computes homomorphically:
-		for (int i = 0; i < candidates; ++i) {
-			// the checksum for each vote and adds it to an accumulator
-			checksum = sumResult(checksum, voteVecChypertext[i]);
-			// the result of the election
-			results[i] = sumResult(results[i], multiplyResult(voteVecChypertext[i], weights[voter]));
-		}
+		if (valid) {
+			for (int j = 0; j < nrCandidates; ++j) {
+				// Computes homomorphically:
+				// the checksum for each vote and adds it to an accumulator
+				checksum = sumResult(checksum, voteVecCiphertext[j]);
+				// the result of the election - weight is the one of the voter
+				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[id]));
+			}
+		} else
+			std::cout << "No vote from the voter " << id << "\n";
 	}
 
 	return 0;
 }
+
+
