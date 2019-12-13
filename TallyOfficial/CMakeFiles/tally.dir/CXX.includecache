@@ -9,8 +9,14 @@
 /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/tally.cpp
 iostream
 -
+../utils/utils.cpp
+/home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
 seal/seal.h
 /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/seal/seal.h
+
+/home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
+iostream
+-
 
 /usr/local/include/SEAL-3.4/seal/batchencoder.h
 vector

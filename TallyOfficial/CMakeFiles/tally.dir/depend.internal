@@ -3,6 +3,7 @@
 
 CMakeFiles/tally.dir/tally.cpp.o
  /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/tally.cpp
+ /home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
  /usr/local/include/SEAL-3.4/seal/batchencoder.h
  /usr/local/include/SEAL-3.4/seal/biguint.h
  /usr/local/include/SEAL-3.4/seal/ciphertext.h
