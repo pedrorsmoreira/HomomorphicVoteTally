@@ -1,8 +1,25 @@
 //#include "utils.h"
-//#include <iostream>
+#include <iostream>
 
-#include "utils.h"
+#define BALLOT_BOX              "../BallotBox"
 
+//root CA certificate
+#define ROOT_CRT_FILE           "rootCA.crt"
+
+#define VOTER_CRT               "voter" //append ID
+#define VOTER_CRT_EXTENSION     ".crt"
+
+#define ELEC_KEY                "electionPublicKeyFile.dat"
+#define ELEC_KEY_SIGNED         "electionPublicKeyFile.sign"
+
+#define VOTE_INPUT              "input.txt"
+#define VOTE_INPUT_SIGNED       "input.sign"
+
+//name of the directory that will contain the vote
+#define VOTE_DIR                "Vote" //vote counter will be appended
+
+#define VOTE_ENCRYPTED          "vote.seal"
+#define VOTE_SIGNED             "vote.sign"
 
 //for debugging
 void print(std::string& s){
@@ -10,7 +27,7 @@ void print(std::string& s){
 }
 
 //executes the input string on the terminal and returns the output of the command
-std::string ssystem (char *command) {
+std::string ssystem (const char *command) {
     char tmpname [L_tmpnam];
     std::tmpnam ( tmpname );
     std::string scommand = command;
