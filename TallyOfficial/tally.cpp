@@ -42,7 +42,7 @@ Ciphertext zeroInCiphertext()
 		public_key.unsafe_load(context, publicKeyFile);
 	else {
 		std::cout << "Unable to open Public Key File" << std::endl;
-		//return 1;
+		exit(-3);
 	}
 	publicKeyFile.close();
 
@@ -82,7 +82,7 @@ Ciphertext stringToCiphertext(std::string word)
 	file.open("conversion.txt", std::ios::trunc);
 	if (!voteEncryptedFile.is_open()) {
 		std::cout << "Unable to open Conversion File - string to Ciphertext" << std::endl;
-		//return 1;
+		exit(-3);
 	}
 	file << word;
 
@@ -97,7 +97,7 @@ std::vector<Ciphertext> generateVectorOfCiphertext(std::string vote_encrypted)
 	voteEncryptedFile.open(vote_encrypted, std::ios::binary);
 	if (!voteEncryptedFile.is_open()) {
 		std::cout << "Unable to open Vote Encrypted File" << std::endl;
-		//return 1;
+		exit(-3);
 	}
 
 	std::string line;
@@ -170,7 +170,6 @@ int main(int argc, char* argv[])
 	std::vector<Ciphertext> voteVecCiphertext;
 	Ciphertext checksum;
 	std::vector<Ciphertext> results;
-	std::vector<Ciphertext> weights;
 
 	//Initializations
 	//get the voting parameters
@@ -187,7 +186,7 @@ int main(int argc, char* argv[])
 		exit(-3);
 	}
 
-	weights = generateVectorOfCiphertext(WEIGHTS);
+	std::vector<Ciphertext> weights = generateVectorOfCiphertext(WEIGHTS);
 
 	std::string votePath = "";
 	std::string voter_crt = "";
