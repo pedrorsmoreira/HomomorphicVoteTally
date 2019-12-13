@@ -3,14 +3,13 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
+#include "../Administrator/ShamirSecretSharing/sss/sss.h"
+#include "../Administrator/ShamirSecretSharing/sss/randombytes.h"
 #include <assert.h>
 
 #include "seal/seal.h"
 using namespace seal;
 using namespace std;
-
-#include "../Administrator/ShamirSecretSharing/sss/sss.h"
-#include "../Administrator/ShamirSecretSharing/sss/randombytes.h"
 
 #include "../utils/utils.cpp"
 
