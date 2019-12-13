@@ -16,9 +16,6 @@
 #define VOTER_CRT_SIGNED 			"voter" //append ID
 #define VOTER_CRT_SIGNED_EXTENSION 	".crt.sign"
 
-#define ELEC_KEY 					"electionPublicKeyFile.dat"
-#define ELEC_KEY_SIGNED 			"electionPublicKeyFile.sign"
-
 #define VOTE_INPUT 					"input.txt"
 #define VOTE_INPUT_SIGNED 			"input.sign"
 
