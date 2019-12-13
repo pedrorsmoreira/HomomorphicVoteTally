@@ -7,12 +7,13 @@
 #include "seal/seal.h"
 using namespace seal;
 
-#define CANDIDATE_VOTE_DIR 		"XXX"
-#define CANDIDATE_VOTE 			"XXX"
-#define WEIGHTS 				"encryptedWeightsFile"
-#define DAT_EXTENSION 		 	".dat"
-#define TXT_EXTENSION 		 	".txt"
-#define SIGNED_EXTENSION 	 	".sign"
+#define CANDIDATE_VOTE_DIR 	"votes_per_cand"
+#define CANDIDATE_VOTE 		"vote"
+#define WEIGHTS 			"encryptedWeightsFile"
+#define DAT_EXTENSION 		".dat"
+#define TXT_EXTENSION 		".txt"
+#define SIGNED_EXTENSION 	".sign"
+#define SEAL_EXTENSION 	 	".seal"
 
 Ciphertext zeroInCiphertext()
 {
@@ -243,8 +244,8 @@ printf("id %d\n", id);
 			candidatesVotePath = votePath + std::string("/") + CANDIDATE_VOTE_DIR;
 
 			for (int j = 0; j < nrCandidates; ++j) {
-				candidateVoteFile 		= candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + DAT_EXTENSION;///TXT_EXTENSION;
-				candidateVoteFileSigned = candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + SIGNED_EXTENSION;
+				candidateVoteFile 		= candidatesVotePath + std::string("/") + std::to_string(j) + CANDIDATE_VOTE + SEAL_EXTENSION;
+				candidateVoteFileSigned = candidatesVotePath + std::string("/") + std::to_string(j) + CANDIDATE_VOTE + SIGNED_EXTENSION;
 				if (!check_signature(voterCrt, candidateVoteFile, candidateVoteFileSigned)) {
 					std::cout << "Candidate Vote NOT certified. Voter " << id << "NOT valid\n";
 					valid = false;
