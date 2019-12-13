@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 	int w=0;
 	FILE *fp;
 	
-	fp = fopen("../pass.txt", "rb");
+	fp = fopen("pass.txt", "rb");
 	while ( w<64 ) {
 		pass[w] = fgetc(fp);
 		w++;
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	sss_create_shares(shares, pass, num_shares, shares_threshold);
 	char file_name[30];
 	for (int i = 0;i<num_shares;i++) {
-		snprintf(file_name, sizeof(file_name), "pass_%d.txt", i+1);
+		snprintf(file_name, sizeof(file_name), "share%d.txt", i+1);
 		fp = fopen(file_name, "w");
 		for (int j = 0;j< sss_SHARE_LEN;j++) {
 			fputc(shares[i][j], fp);
