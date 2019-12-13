@@ -1,5 +1,8 @@
 #include <iostream>
 
+#include "seal/seal.h"
+using namespace seal;
+
 #define WEIGHTS 		"encryptedWeightsFile.dat"
 #define WEIGHTS_SIGNED 	"encryptedWeightsFile.sign"
 
