@@ -16,7 +16,7 @@ openssl genrsa -out rootCA.key 2048 > /dev/null 2>&1
 openssl req -new -x509 -days 3650 -key rootCA.key -out rootCA.crt -subj "/C=PT/ST=Lisbon/L=Lisbon/O=CSC-10/OU=CA-10/CN=CA10/emailAddress=example@tecnico.ulisboa.pt"
 
 # Creating a file with the properties of the election 
-# that will be the input in the voter app
+# that will be the input in the voter app and in the tally official app
 echo $CANDIDATES > input.txt
 echo $VOTES >> input.txt
 echo $VOTERS >> input.txt
@@ -24,6 +24,16 @@ echo $VOTERS >> input.txt
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 # Copying the signed file with the properties of the election
 cp {input.txt,input.sign} ../TallyOfficial
+
+# Preparing a file to send to the counter
+echo $TRUSTEES > inputCounter.txt
+echo $THRESHOLD_TRUSTEES >> inputCounter.txt
+echo $CANDIDATES >> inputCounter.txt
+echo $VOTERS >> inputCounter.txt
+# Signing this file
+openssl dgst -sha256 -sign rootCA.key -out inputCounter.sign inputCounter.txt
+# Copying the signed file with the properties of the election
+mv {inputCounter.txt,inputCounter.sign} ../Counter
 
 # Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial
@@ -72,6 +82,7 @@ cd ../Administrator/ShamirSecretSharing
 openssl rand -hex 16 > pass.txt
 openssl enc -aes-256-cbc -salt -in ../ElectionKey/electionSecretKeyFile.dat -out ../ElectionKey/electionSecretKeyFile.dat.enc -pass file:pass.txt -iter 10
 rm ../ElectionKey/electionSecretKeyFile.dat
+mv ../ElectionKey/electionSecretKeyFile.dat.enc ../../Counter
 
 # Spliting the password of the encrypted election private key using Shamir’s
 # secret sharing and distributing each of the shares by the trustees
@@ -79,9 +90,6 @@ make > /dev/null
 ./splitKeyShares $TRUSTEES $THRESHOLD_TRUSTEES
 rm pass.txt # Deleting the original password
 #make clean > /dev/null
-
-# Creating directorie of the counter
-mkdir ../../Counter
 
 for (( i=1; i<=$TRUSTEES; i++ ))
 do
@@ -118,5 +126,4 @@ cd VoterApp
 cd seal
 cmake . > /dev/null
 make > /dev/null
-./seal_encrypt
 cd ../..

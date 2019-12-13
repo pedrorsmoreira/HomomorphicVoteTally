@@ -2,7 +2,7 @@
 
 VOTERS=3
 
-rm -Rf ../BallotBox ../Counter
+rm -Rf ../BallotBox
 
 for (( counter=1; counter<=$VOTERS; counter++ ))
 do
@@ -15,7 +15,7 @@ rm rootCA.key rootCA.crt
 cd ElectionKey
 rm -Rf CMakeFiles
 rm CMakeCache.txt cmake_install.cmake Makefile
-rm electionKey electionPublicKeyFile.dat electionPublicKeyFile.sign electionSecretKeyFile.dat.enc
+rm electionKey electionPublicKeyFile.dat electionPublicKeyFile.sign
 cd ..
 
 cd ShamirSecretSharing

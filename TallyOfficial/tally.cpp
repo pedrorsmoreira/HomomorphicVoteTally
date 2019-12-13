@@ -11,6 +11,7 @@ using namespace seal;
 #define CANDIDATE_VOTE 			"XXX"
 #define WEIGHTS 				"encryptedWeightsFile"
 #define DAT_EXTENSION 		 	".dat"
+#define TXT_EXTENSION 		 	".txt"
 #define SIGNED_EXTENSION 	 	".sign"
 
 Ciphertext zeroInCiphertext()
@@ -267,6 +268,21 @@ printf("id %d\n", id);
 			}
 		} else
 			std::cout << "No vote from the voter " << voterID << "\n";
+	}
+
+	// Writes a file with the checksum 
+	ofstream checksumFile;
+	checksumFile.open("checksum.txt", ios::binary | ios::app);
+	checksum.save(checksumFile);
+	checksumFile.close()
+
+	std::ofstream resultsFile;
+	std::string output = "";
+	for (int i = 0; i < nrCandidates; ++i) {
+		output = std::string("results") + to_string(i+1) + TXT_EXTENSION;
+		resultsFile.open(output.c_str(), ios::binary | ios::app);
+		results[i].save(resultsFile);
+		resultsFile.close();
 	}
 
 	return 0;
