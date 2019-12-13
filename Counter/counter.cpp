@@ -89,20 +89,16 @@ int main(int argc, char* argv[])
 	int shares_threshold = 0;
 	int candidates = 0;
 	int voters = 0;
-	get_voting_params(input, num_shares, shares_threshold, candidates, voters);
+	get_voting_params(COUNTER_INPUT, num_shares, shares_threshold, candidates, voters);
 
 	checksum = generateCiphertext(CHECKSUM_FILE);
 	for (int i = 0; i < candidates; i++)
 		results[i] = generateCiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION);
 
-	string root_crt = ROOT_CRT_FILE;
-	string input = COUNTER_INPUT;
-	string input_signed = COUNTER_INPUT_SIGNED;
-
 	//validate input file
-	if (! check_signature(root_crt, input, input_signed)){
+	if (! check_signature(ROOT_CRT_FILE, COUNTER_INPUT, COUNTER_INPUT_SIGNED)){
 		std::cout << "Input file NOT certified. Exiting...\n";
-		exit(-3);
+		exit(-1);
 	}
 
 	uint8_t restored[sss_MLEN] = {0};
@@ -118,7 +114,7 @@ int main(int argc, char* argv[])
 
 		if (! check_signature(root_crt, share, share_signed)){
 			std::cout << "Trustee NOT certified. Exiting...\n";
-			exit(-3);
+			exit(-1);
 		}
 
 		strcpy(filename, share.c_str());
