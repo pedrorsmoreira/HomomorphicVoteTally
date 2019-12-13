@@ -272,15 +272,15 @@ printf("id %d\n", id);
 
 	// Writes a file with the checksum 
 	ofstream checksumFile;
-	checksumFile.open("checksum.txt", ios::binary | ios::app);
+	checksumFile.open("checksum.txt", std::ios::binary | std::ios::app);
 	checksum.save(checksumFile);
 	checksumFile.close()
 
 	std::ofstream resultsFile;
 	std::string output = "";
 	for (int i = 0; i < nrCandidates; ++i) {
-		output = std::string("results") + to_string(i+1) + TXT_EXTENSION;
-		resultsFile.open(output.c_str(), ios::binary | ios::app);
+		output = std::string("results") + std::to_string(i+1) + TXT_EXTENSION;
+		resultsFile.open(output.c_str(), std::ios::binary | std::ios::app);
 		results[i].save(resultsFile);
 		resultsFile.close();
 	}
