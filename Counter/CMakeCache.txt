@@ -234,7 +234,7 @@ counter_BINARY_DIR:STATIC=/home/diogoegrodrigues/TECNICO/Cripto/HomomorphicVoteT
 counter_SOURCE_DIR:STATIC=/home/diogoegrodrigues/TECNICO/Cripto/HomomorphicVoteTally/Counter
 
 //Dependencies for the target
-sss_LIB_DEPENDS:STATIC=general;hazmat;general;tweet;general;randombytes;
+sss_LIB_DEPENDS:STATIC=general;randombytes;general;hazmat;general;tweet;
 
 
 ########################

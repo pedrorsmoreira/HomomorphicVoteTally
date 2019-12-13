@@ -85,19 +85,19 @@ int main(int argc, char* argv[])
 	Ciphertext checksum;
 	vector<Ciphertext> results;
 
+	//validate input file
+	if (! check_signature(ROOT_CRT_FILE, COUNTER_INPUT, COUNTER_INPUT_SIGNED)){
+		std::cout << "Input file NOT certified. Exiting...\n";
+		exit(-1);
+	}
+
 	//get essential information
 	unsigned int num_shares = 0, shares_threshold = 0, candidates = 0, voters = 0;
 	get_sss_info(COUNTER_INPUT, num_shares, shares_threshold, candidates, voters);
 
 	checksum = generateCiphertext(CHECKSUM_FILE);
 	for (int i = 0; i < candidates; i++)
-		results[i] = generateCiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION);
-
-	//validate input file
-	if (! check_signature(ROOT_CRT_FILE, COUNTER_INPUT, COUNTER_INPUT_SIGNED)){
-		std::cout << "Input file NOT certified. Exiting...\n";
-		exit(-1);
-	}
+		results[i] = generateCgenerateCiphertextiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION);
 
 	uint8_t restored[sss_MLEN] = {0};
 	FILE *fp;
@@ -140,8 +140,8 @@ int main(int argc, char* argv[])
 	fputc('\0', fp);
 	fclose(fp);
 
-	string path_to_enc_sk = "electionSecretKeyFile.dat.enc";
-	string path_to_sk = "electionSecretKeyFile.dat";
+	string path_to_enc_sk 	= "electionSecretKeyFile.dat.enc";
+	string path_to_sk 		= "electionSecretKeyFile.dat";
   
 	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
 
