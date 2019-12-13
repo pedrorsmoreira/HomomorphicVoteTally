@@ -65,7 +65,7 @@ printf("olaaaaaaaaaaaaa\n");
 
 	// Defining encryption parameters
 
-	// degree of the `polynomial modulus'
+	// degree o                                f the `polynomial modulus'
 	size_t poly_modulus_degree = 4096;
 	parms.set_poly_modulus_degree(poly_modulus_degree);
 
@@ -101,7 +101,6 @@ std::vector<Ciphertext> generateVectorOfCiphertext(std::string file_encrypted)
 {
 printf("file_encrypted %s\n", file_encrypted.c_str());
 	std::ifstream voteEnusing namespace seal;
-cryptedFile;
 	voteEncryptedFile.open(file_encrypted, std::ios::binary);
 	if (!voteEncryptedFile.is_open()) {
 		std::cout << "Unable to open Vote Encrypted File" << std::endl;
