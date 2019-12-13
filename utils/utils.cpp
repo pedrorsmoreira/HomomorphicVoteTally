@@ -9,6 +9,9 @@
 #define VOTER_CRT               "voter" //append ID
 #define VOTER_CRT_EXTENSION     ".crt"
 
+#define ELEC_KEY                    "electionPublicKeyFile.dat"
+#define ELEC_KEY_SIGNED             "electionPublicKeyFile.sign"
+
 //name of the directory that will contain the vote
 #define VOTE_DIR                "Vote" //vote counter will be appended
 
