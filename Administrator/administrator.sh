@@ -1,8 +1,8 @@
 #!/bin/bash
 
 CANDIDATES=2
-VOTERS=3
 VOTES=$CANDIDATES
+VOTERS=3
 TRUSTEES=5
 THRESHOLD_TRUSTEES=4
 
@@ -19,6 +19,7 @@ openssl req -new -x509 -days 3650 -key rootCA.key -out rootCA.crt -subj "/C=PT/S
 # that will be the input in the voter app
 echo $CANDIDATES > input.txt
 echo $VOTES >> input.txt
+echo $VOTERS >> input.txt
 # Signing this file
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 
