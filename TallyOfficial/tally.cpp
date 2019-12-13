@@ -100,8 +100,7 @@ printf("xixi\n");
 std::vector<Ciphertext> generateVectorOfCiphertext(std::string file_encrypted)
 {
 printf("file_encrypted %s\n", file_encrypted.c_str());
-	std::ifstream voteEnusing namespace seal;
-cryptedFile;
+	std::ifstream voteEncryptedFile;
 	voteEncryptedFile.open(file_encrypted, std::ios::binary);
 	if (!voteEncryptedFile.is_open()) {
 		std::cout << "Unable to open Vote Encrypted File" << std::endl;
