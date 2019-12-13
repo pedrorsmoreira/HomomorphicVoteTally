@@ -7,11 +7,13 @@
 #include "seal/seal.h"
 using namespace seal;
 
-#define CANDIDATE_VOTE_DIR 		"XXX"
-#define CANDIDATE_VOTE 			"XXX"
-#define WEIGHTS 				"encryptedWeightsFile"
-#define DAT_EXTENSION 		 	".dat"
-#define SIGNED_EXTENSION 	 	".sign"
+#define CANDIDATE_VOTE_DIR 	"votes_per_cand"
+#define CANDIDATE_VOTE 		"vote"
+#define WEIGHTS 			"encryptedWeightsFile"
+#define DAT_EXTENSION 		".dat"
+#define TXT_EXTENSION 		".txt"
+#define SIGNED_EXTENSION 	".sign"
+#define SEAL_EXTENSION 	 	".seal"
 
 Ciphertext zeroInCiphertext()
 {
@@ -156,12 +158,16 @@ int main(int argc, char* argv[])
 	std::vector<Ciphertext> weights;
 	std::vector<Ciphertext> voteVecCiphertext;
 	bool valid = true;
+	int voterID = 0;
 
-	std::string ballotVoter 		= "";
-	std::string counterFile 		= "";
-	std::string votePath 			= "";
-	std::string voterCrt 			= "";
-	std::string candidatesVotePath 	= "";
+
+	std::string ballotVoter 			= "";
+	std::string counterFile 			= "";
+	std::string votePath 				= "";
+	std::string voterCrt 				= "";
+	std::string candidatesVotePath 		= "";
+	std::string candidateVoteFile 		= "";
+	std::string candidateVoteFileSigned = "";
 
 	//Initializations
 	//get the voting parameters
@@ -186,8 +192,8 @@ printf("RESULTS AND CHECKSUM DONE\n");
 	std::string weightsFile = "";
 	std::string weightsFileSigned = "";
 	for (int i = 0; i < nrVoters; ++i) {
-		weightsFile 		= std::string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + DAT_EXTENSION;
-		weightsFileSigned 	= std::string("./WeightsEncrypted/") + WEIGHTS + to_string(i+1) + SIGNED_EXTENSION;
+		weightsFile 		= std::string("./WeightsEncrypted/") + WEIGHTS + std::to_string(i+1) + DAT_EXTENSION;
+		weightsFileSigned 	= std::string("./WeightsEncrypted/") + WEIGHTS + std::to_string(i+1) + SIGNED_EXTENSION;
 		if (!check_signature(ROOT_CRT_FILE, weightsFile, weightsFileSigned)){
 			std::cout << "Weights NOT certified. Exiting...\n";
 			exit(-3);
@@ -215,6 +221,7 @@ printf("WEIGHTS DONE\n");
 	std::cout << voters << std::endl;
 
 	for(const auto voter : votersVec) {
+		++voterID;
 
 printf("---> %s\n", voter);
 		
@@ -237,8 +244,8 @@ printf("id %d\n", id);
 			candidatesVotePath = votePath + std::string("/") + CANDIDATE_VOTE_DIR;
 
 			for (int j = 0; j < nrCandidates; ++j) {
-				candidateVoteFile 		= candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + DAT_EXTENSION/TXT_EXTENSION;
-				candidateVoteFileSigned = candidatesVotePath + std::string("/") + CANDIDATE_VOTE + std::to_string(j) + SIGNED_EXTENSION;
+				candidateVoteFile 		= candidatesVotePath + std::string("/") + std::to_string(j) + CANDIDATE_VOTE + SEAL_EXTENSION;
+				candidateVoteFileSigned = candidatesVotePath + std::string("/") + std::to_string(j) + CANDIDATE_VOTE + SIGNED_EXTENSION;
 				if (!check_signature(voterCrt, candidateVoteFile, candidateVoteFileSigned)) {
 					std::cout << "Candidate Vote NOT certified. Voter " << id << "NOT valid\n";
 					valid = false;
@@ -258,10 +265,25 @@ printf("id %d\n", id);
 				// the checksum for each vote and adds it to an accumulator
 				checksum = sumResult(checksum, voteVecCiphertext[j]);
 				// the result of the election - weight is the one of the voter
-				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[id]));
+				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[voterID]));
 			}
 		} else
-			std::cout << "No vote from the voter " << id << "\n";
+			std::cout << "No vote from the voter " << voterID << "\n";
+	}
+
+	// Writes a file with the checksum 
+	std::ofstream checksumFile;
+	checksumFile.open("checksum.txt", std::ios::binary | std::ios::app);
+	checksum.save(checksumFile);
+	checksumFile.close();
+
+	std::ofstream resultsFile;
+	std::string output = "";
+	for (int i = 0; i < nrCandidates; ++i) {
+		output = std::string("results") + std::to_string(i+1) + TXT_EXTENSION;
+		resultsFile.open(output.c_str(), std::ios::binary | std::ios::app);
+		results[i].save(resultsFile);
+		resultsFile.close();
 	}
 
 	return 0;
