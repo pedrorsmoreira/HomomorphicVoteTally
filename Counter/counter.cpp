@@ -5,10 +5,10 @@
 #include <vector>
 #include <assert.h>
 
-#include "../utils/utils.cpp"
-
 #include "sss/sss.h"
 #include "sss/randombytes.h"
+
+#include "../utils/utils.cpp"
 
 #include "seal/seal.h"
 using namespace seal;
