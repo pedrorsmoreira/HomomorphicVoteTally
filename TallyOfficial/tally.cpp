@@ -161,7 +161,7 @@ printf("RESULTS AND CHECKSUM DONE\n");
 		weightsFileSigned 	= std::string("./WeightsEncrypted/") + WEIGHTS + std::to_string(i+1) + SIGNED_EXTENSION;
 		if (!check_signature(ROOT_CRT_FILE, weightsFile, weightsFileSigned)){
 			std::cout << "Weights NOT certified. Exiting...\n";
-			exit(-3);
+			exit(-1);
 		}
 
 		weights.push_back(generateCiphertext(weightsFile));
