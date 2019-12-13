@@ -3,10 +3,12 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
-#include <assert.h>
 
-#include "sss/sss.h"
-#include "sss/randombytes.h"
+extern "C"{
+	#include "sss/sss.h"
+	#include "sss/randombytes.h"
+	#include <assert.h>
+}
 
 #include "../utils/utils.cpp"
 
