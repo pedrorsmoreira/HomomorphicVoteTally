@@ -77,9 +77,12 @@ int main(int argc, char* argv[])
 
 	int weight = 0;
 	ofstream encryptedWeightsFile;
-	encryptedWeightsFile.open("encryptedWeightsFile.dat", ios::binary | ios::app);
+	string output;
 	for (int i = 0; i < numberOfVoters; ++i)
 	{
+		output = string("./WeightsEncrypted/encryptedWeightsFile") + to_string(i+1) + string(".dat");
+		encryptedWeightsFile.open(output.c_str(), ios::binary | ios::app);
+
 		if (howToGenerateWeights == FILE)
 			weightsFile >> weight;
 		else
@@ -88,11 +91,12 @@ int main(int argc, char* argv[])
 		Plaintext weight_plain(to_string(weight));
 		Ciphertext weight_encrypted;
 		encryptor.encrypt(weight_plain, weight_encrypted);
-		weight_encrypted.save(encryptedWeightsFile);		
+		weight_encrypted.save(encryptedWeightsFile);
+		
+		encryptedWeightsFile.close();		
 	}
 
 	weightsFile.close();
-	encryptedWeightsFile.close();
 
 	return 0;
 }
