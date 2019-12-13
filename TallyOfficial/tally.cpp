@@ -30,17 +30,18 @@ Ciphertext zeroInCiphertext()
 	auto context = SEALContext::Create(parms);
 
 	if (!check_signature(ROOT_CRT_FILE, ELEC_KEY, ELEC_KEY_SIGNED)){
-		std::cout << "Election public key NOT certified. Exiting...\n";
+		std::std::cout << "Election public key NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
 	// Loading the election public key from the file
+	PublicKey public_key
 	std::ifstream publicKeyFile;
 	publicKeyFile.open(ELEC_KEY, std::ios::binary);
 	if (publicKeyFile.is_open())
 		public_key.unsafe_load(context, publicKeyFile);
 	else {
-		cout << "Unable to open Public Key File" << endl;
+		std::cout << "Unable to open Public Key File" << std::endl;
 		return 1;
 	}
 	publicKeyFile.close();
@@ -80,7 +81,7 @@ Ciphertext stringToCiphertext(std::string word)
 	std::fstream file;
 	file.open("conversion.txt", std::ios::trunc);
 	if (!voteEncryptedFile.is_open()) {
-		cout << "Unable to open Conversion File - string to Ciphertext" << endl;
+		std::cout << "Unable to open Conversion File - string to Ciphertext" << std::endl;
 		return 1;
 	}
 	file << word;
@@ -95,14 +96,14 @@ std::vector<Ciphertext> generateVectorOfCiphertext(std::string vote_encrypted)
 	std::ifstream voteEncryptedFile;
 	voteEncryptedFile.open(vote_encrypted, std::ios::binary);
 	if (!voteEncryptedFile.is_open()) {
-		cout << "Unable to open Vote Encrypted File" << endl;
+		std::cout << "Unable to open Vote Encrypted File" << std::endl;
 		return 1;
 	}
 
 	std::string line;
 	std::vector<Ciphertext> votesOfVoter;
 	while ( getline (inputFile, line) ) {
-		cout << line << '\n';
+		std::cout << line << '\n';
 
 		votesOfVoter.push_back(stringToCiphertext(line));
     }
@@ -182,7 +183,7 @@ int main(int argc, char* argv[])
 		results.push_back(zeroInCiphertext());
 
 	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
-		std::cout << "Weights NOT certified. Exiting...\n";
+		std::std::cout << "Weights NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
@@ -205,10 +206,10 @@ int main(int argc, char* argv[])
 	while ((pos = voters.find(delimiter)) != std::string::npos) {
 		token = voters.substr(0, pos);
 		votersVec.push_back(token);
-	    std::cout << token << std::endl;
+	    std::std::cout << token << std::std::endl;
 	    voters.erase(0, pos + delimiter.length());
 	}
-	std::cout << voters << std::endl;
+	std::std::cout << voters << std::std::endl;
 
 	for(const auto voter : votersVec) {
 		
@@ -221,7 +222,7 @@ int main(int argc, char* argv[])
 
 		//we start with the last vote
 		for (int id = counter; id > 0; id--) {
-			cout << id << "\n";
+			std::cout << id << "\n";
 
 			votePath 		= ballotVoter 	+ std::string("/") + VOTE_DIR + id;
 
@@ -233,7 +234,7 @@ int main(int argc, char* argv[])
 			if (check_signature(voter_crt, vote_encrypted, vote_signed))
 				break;
 			else {
-				std::cout << "Vote " + id + " NOT certified. Cheking next one...\n";
+				std::std::cout << "Vote " + id + " NOT certified. Cheking next one...\n";
 			}
 		}
 
