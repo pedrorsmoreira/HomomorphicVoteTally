@@ -28,7 +28,7 @@ std::string ssystem (const char *command) {
     std::string cmd = scommand + " >> " + tmpname;
     std::system(cmd.c_str());
     std::ifstream file(tmpname, std::ios::in | std::ios::binary );
-    std::string result;
+    std::string result = "";
     if (file) {
         while (!file.eof()) result.push_back(file.get())
             ;

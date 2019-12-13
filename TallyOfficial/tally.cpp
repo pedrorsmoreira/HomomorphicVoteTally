@@ -84,8 +84,6 @@ Chypertext stringToCiphertext(std::string word)
 	return newChypertext;
 }
 
-
-
 std::vector<Chypertext> generateVectorOfChypertext(std::string vote_encrypted)
 {
 	ifstream voteEncryptedFile;
