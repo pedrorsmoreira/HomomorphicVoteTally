@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "../utils/utils.cpp"
 
@@ -156,8 +157,11 @@ int main(int argc, char* argv[])
 	std::vector<Ciphertext> voteVecCiphertext;
 	bool valid = true;
 
-	std::string ballotVoter = "";
-	std::string counterFile = "";
+	std::string ballotVoter 		= "";
+	std::string counterFile 		= "";
+	std::string votePath 			= "";
+	std::string voterCrt 			= "";
+	std::string candidatesVotePath 	= "";
 
 	//Initializations
 	//get the voting parameters
