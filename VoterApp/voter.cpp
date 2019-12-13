@@ -142,8 +142,8 @@ int main(int argc, char* argv[]) {
 
 	//get the voting parameters
 	unsigned int nrCandidates = 0;
-	unsigned int nrVotes = 0;
-	get_voting_params(input, nrCandidates, nrVotes);
+	unsigned int useless, nrVotes = 0;
+	get_voting_params(input, nrCandidates, nrVotes, useless);
 	
 	//create the vector that will contain the votes
 	std::vector<unsigned int> final_vote (nrCandidates, 0); 	
