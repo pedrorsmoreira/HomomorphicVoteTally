@@ -30,7 +30,7 @@ Ciphertext zeroInCiphertext()
 	auto context = SEALContext::Create(parms);
 
 	if (!check_signature(ROOT_CRT_FILE, ELEC_KEY, ELEC_KEY_SIGNED)){
-		std::std::cout << "Election public key NOT certified. Exiting...\n";
+		std::cout << "Election public key NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
@@ -183,7 +183,7 @@ int main(int argc, char* argv[])
 		results.push_back(zeroInCiphertext());
 
 	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
-		std::std::cout << "Weights NOT certified. Exiting...\n";
+		std::cout << "Weights NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
@@ -206,10 +206,10 @@ int main(int argc, char* argv[])
 	while ((pos = voters.find(delimiter)) != std::string::npos) {
 		token = voters.substr(0, pos);
 		votersVec.push_back(token);
-	    std::std::cout << token << std::std::endl;
+	    std::cout << token << std::endl;
 	    voters.erase(0, pos + delimiter.length());
 	}
-	std::std::cout << voters << std::std::endl;
+	std::cout << voters << std::endl;
 
 	for(const auto voter : votersVec) {
 		
@@ -234,7 +234,7 @@ int main(int argc, char* argv[])
 			if (check_signature(voter_crt, vote_encrypted, vote_signed))
 				break;
 			else {
-				std::std::cout << "Vote " + id + " NOT certified. Cheking next one...\n";
+				std::cout << "Vote " + id + " NOT certified. Cheking next one...\n";
 			}
 		}
 
