@@ -1,4 +1,4 @@
-#include <iostream>
+#include <std::iostream>
 #include <fstream>
 
 #include "../utils/utils.cpp"
@@ -36,7 +36,7 @@ Ciphertext zeroInCiphertext()
 
 	// Loading the election public key from the file
 	std::ifstream publicKeyFile;
-	publicKeyFile.open(ELEC_KEY, ios::binary);
+	publicKeyFile.open(ELEC_KEY, std::ios::binary);
 	if (publicKeyFile.is_open())
 		public_key.unsafe_load(context, publicKeyFile);
 	else {
@@ -78,7 +78,7 @@ Ciphertext stringToCiphertext(std::string word)
 
 	Ciphertext newCiphertext;
 	std::fstream file;
-	file.open("conversion.txt", ios::trunc);
+	file.open("conversion.txt", std::ios::trunc);
 	if (!voteEncryptedFile.is_open()) {
 		cout << "Unable to open Conversion File - string to Ciphertext" << endl;
 		return 1;
@@ -93,7 +93,7 @@ Ciphertext stringToCiphertext(std::string word)
 std::vector<Ciphertext> generateVectorOfCiphertext(std::string vote_encrypted)
 {
 	std::ifstream voteEncryptedFile;
-	voteEncryptedFile.open(vote_encrypted, ios::binary);
+	voteEncryptedFile.open(vote_encrypted, std::ios::binary);
 	if (!voteEncryptedFile.is_open()) {
 		cout << "Unable to open Vote Encrypted File" << endl;
 		return 1;
