@@ -33,6 +33,10 @@
 #define VOTE_ENCRYPTED 	"vote.seal"
 #define VOTE_SIGNED 	"vote.sign" 
 
+//for debugging
+void print(std::string& s){
+	std::cout << "\n" + s + "\n";
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////         auxiliar functions         ////////////////////////////////
@@ -66,6 +70,13 @@ std::string ssystem (const char *command) {
         file.close();
     }
     remove(tmpname);
+
+    //remove \0 and \n
+    if (! result.empty())
+    	result.pop_back();
+    if (! result.empty())
+    	result.pop_back();
+
     return result;
 }
 
@@ -76,11 +87,11 @@ bool check_signature(std::string& CA, std::string& subject, std::string& signed_
 	std::string certified = "Verified OK";
 
 	system(("openssl x509 -pubkey -noout -in " + CA + " > " + key).c_str());
-	certified = ssystem( ("openssl dgst -sha256 -verify " + key + " -signature " + signed_subject + " " + subject).c_str());
-	std::cout << "\n\n" + certified + "\n\n";
+	result = ssystem( ("openssl dgst -sha256 -verify " + key + " -signature " + signed_subject + " " + subject).c_str());
+
 	remove("CApublic.key");
 
-	return result == certified;
+	return result == certified;//return result.find(certified) != std::string::npos;
 }
 
 //get the number of candidates and number of votes to distribute
@@ -114,7 +125,7 @@ int main(int argc, char* argv[]) {
 		exit(-2);
 	}
 
-	std::cout << "\n\nVoter " + id + " successefully identified.\n\n";
+	std::cout << "\n\nVoter " + id + " successefully identified.\n";
 
 	//put the paths for the needed files in strings (for the sake of easiness)
 	//existing files
@@ -153,7 +164,7 @@ int main(int argc, char* argv[]) {
 	}
 
 
-	std::cout << "\n\nVoter " + id + " successefully certified.\n\n";
+	std::cout << "Voter " + id + " successefully certified.\n\n";
 
 	//get the voting parameters
 	unsigned int candidates = 0;
@@ -168,23 +179,23 @@ int main(int argc, char* argv[]) {
 		std::string aux;
 		unsigned int selectedCand, selectedVotes;
 
-		std::cout << candidates + "available candidates to vote on, and "  << votes << " votes to distribute.\n" << std::endl;
+		std::cout << "There are " + std::to_string(candidates) + " available candidates to vote on, and "  << votes << " vote(s) to distribute." << std::endl;
 
-		std::cout << "Choose a candidate to vote on (from 1 to " << candidates << "):";
+		std::cout << "Choose a candidate to vote on (from 1 to " << std::to_string(candidates) << "):";
 		std::getline(std::cin, aux);
-		selectedCand = std::atoi(argv[1]);
+		selectedCand = std::atoi(aux.c_str());
 
 		if (selectedCand < 1 || selectedCand > candidates){
 			std::cout << "Invalid candidate.\n\n";
 			continue;
 		}
 
-		std::cout << "\nChoose the number of votes for the candidate ([" << votes << ']' << "votes left):";
+		std::cout << "\nChoose the number of votes for the candidate ([" << std::to_string(votes) << ']' << "votes left):";
 		std::getline(std::cin, aux);
-		selectedVotes = std::atoi(argv[1]);
+		selectedVotes = std::atoi(aux.c_str());
 
 		if (selectedVotes < 1 || selectedVotes > votes){
-			std::cout << "Invalid value.\n\n";
+			std::cout << "\n\n------Invalid value-------\n\n";
 			continue;
 		}
 
@@ -221,8 +232,7 @@ int main(int argc, char* argv[]) {
 	int counter = std::atoi((counterFile.substr(7)).c_str()) + 1;
 
 	//update counter file
-	system(("mv " + ballotVoter + std::string("/") + counterFile + " " 
-		+ ballotVoter + std::string("/") + "counter" + std::to_string(counter)).c_str());
+	system(("mv " + ballotVoter + std::string("/") + counterFile + " " + ballotVoter + std::string("/") + "counter" + std::to_string(counter)).c_str());
 
 	//create directory with the vote to send to the Ballot Box
 	std::string voteDirectory = "vote" + std::to_string(counter);
