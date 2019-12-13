@@ -1,8 +1,5 @@
 #include <iostream>
 
-#include "seal/seal.h"
-using namespace seal;
-
 #define BALLOT_BOX              "../BallotBox"
 
 //root CA certificate
