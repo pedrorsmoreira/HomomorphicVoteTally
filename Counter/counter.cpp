@@ -235,7 +235,7 @@ int main(int argc, char* argv[])
 			*x = c;
 			if (feof(fp) || c == '\n') break;
 			shares[i][j++] = *x;
-		} while(1);*/
+		} while(1);
 
 		ifstream fp;
 		fstream pass_file, test;
@@ -280,7 +280,7 @@ int main(int argc, char* argv[])
 	string path_to_enc_sk 	= "electionSecretKeyFile.txt.enc";
 	string path_to_sk 		= "electionSecretKeyFile.txt";
   
-//	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
+	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
 
 	int checksum_dec;
 	vector<int> results_dec;
