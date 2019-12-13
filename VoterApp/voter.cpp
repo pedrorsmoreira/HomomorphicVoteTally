@@ -152,7 +152,6 @@ int main(int argc, char* argv[]) {
 	std::string vote_file			= voterPath  + std::string("/") + VOTE_FILE;
 	std::string vote_encrypted 		= voterPath  + std::string("/") + VOTE_ENCRYPTED;
 	std::string vote_signed			= voterPath	 + std::string("/") + VOTE_SIGNED;
-
 	
 	//validate existing files
 	if (! check_signature(root_crt, voter_key, voter_key_signed)){
