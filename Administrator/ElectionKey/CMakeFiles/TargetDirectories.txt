@@ -1,0 +1,3 @@
+/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/rebuild_cache.dir
+/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/electionKey.dir
+/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/ElectionKey/CMakeFiles/edit_cache.dir
