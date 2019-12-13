@@ -4,8 +4,8 @@
 #include <fstream>
 #include <vector>
 #include <assert.h>
-#include "../ShamirSecretSharing/sss/sss.h"
-#include "../ShamirSecretSharing/sss/randombytes.h"
+#include "../Administrator/ShamirSecretSharing/sss/sss.h"
+#include "../Administrator/ShamirSecretSharing/sss/randombytes.h"
 #include "boost/filesystem.hpp"
 #include "seal_encrypt.h"
 #include "utils.cpp"
