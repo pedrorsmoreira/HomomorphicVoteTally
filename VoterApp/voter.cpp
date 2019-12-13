@@ -5,10 +5,6 @@
 //directories
 #define VOTERS_DIR 			".."
 #define VOTER_PRIVATE_DIR 	"Voter" //append ID
-#define BALLOT_BOX 			"../BallotBox"
-
-//root CA certificate
-#define ROOT_CRT_FILE 				"rootCA.crt"
 
 //names of the existing files
 #define VOTER_KEY 					"voter" //append ID
@@ -17,29 +13,14 @@
 #define VOTER_KEY_SIGNED 			"voter" //append ID
 #define VOTER_KEY_SIGNED_EXTENSION 	".sign"
 
-#define VOTER_CRT 					"voter" //append ID
-#define VOTER_CRT_EXTENSION 		".crt"
-
 #define VOTER_CRT_SIGNED 			"voter" //append ID
 #define VOTER_CRT_SIGNED_EXTENSION 	".crt.sign"
-
-#define ELEC_KEY 					"electionPublicKeyFile.dat"
-#define ELEC_KEY_SIGNED 			"electionPublicKeyFile.sign"
-
-#define VOTE_INPUT 					"input.txt"
-#define VOTE_INPUT_SIGNED 			"input.sign"
-
-//name of the directory that will contain the vote
-#define VOTE_DIR	"Vote" //vote counter will be appended
 
 //executable to encrypt a file with the SEAL library
 #define SEAL_ENCRYPT	"seal/seal_encrypt"
 
 //names of the files to create
 #define VOTE_FILE 		"vote.txt"
-#define VOTE_ENCRYPTED 	"vote.seal"
-#define VOTE_SIGNED 	"vote.sign"
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////         auxiliar functions         ////////////////////////////////
