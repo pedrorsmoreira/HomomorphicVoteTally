@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
 	}
 
 	int tmp;
-	// Combine some of the shares to restore the original secret ( restore is the private key)
+	// Combine some of the shares to restore the original secret (restore is the private key)
 	tmp = sss_combine_shares(restored, shares, shares_threshold);
 	assert(tmp == 0);
 
