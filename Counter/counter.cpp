@@ -35,7 +35,7 @@ using namespace std;
 #define COUNTER_INPUT_SIGNED 		"inputCounter.sign"
 
 //name of the file to create with the private key
-#define PRIVATE_KEY_FILE			"electionSecretKeyFile.dat"
+#define PRIVATE_KEY_FILE_PATH		"electionSecretKeyFile.dat"
 
 //get the number of candidates and number of votes to distribute
 void get_sss_info(string filePATH, int& trustees, int& threshold, int& candidates, int& voters){
@@ -59,19 +59,19 @@ Plaintext Decrypt(Ciphertext cypher)
 	auto context = SEALContext::Create(parms);
 
 	// Loading the election public key from the file
-	ifstream privateKeyFile;
-	SecretKey privatekey;
-	privateKeyFile.open(PRIVATE_KEY_FILE_PATH, ios::binary);
-	if (privateKeyFile.is_open())
-		private_key.unsafe_load(context, privateKeyFile);
+	ifstream secretKeyFile;
+	SecretKey secret_key;
+	secretKeyFile.open(PRIVATE_KEY_FILE_PATH, ios::binary);
+	if (secretKeyFile.is_open())
+		secret_key.unsafe_load(context, secretKeyFile);
 	else {
 		cout << "Unable to open Private Key File" << endl;
-		return 1;
+		exit(-1);
 	}
-	privateKeyFile.close();
+	secretKeyFile.close();
 
 	// Constructing an instance of Decryptor - to be able to decrypt
-	Decryptor decryptor(context, private_key);
+	Decryptor decryptor(context, secret_key);
 
 	Plaintext plaintext;
 	decryptor.decrypt(cypher, plaintext);
@@ -83,6 +83,13 @@ int main(int argc, char* argv[])
 {
 	Ciphertext checksum;
 	vector<Ciphertext> results;
+
+	//get essential information
+	int num_shares = 0;
+	int shares_threshold = 0;
+	int candidates = 0;
+	int voters = 0;
+	get_voting_params(input, num_shares, shares_threshold, candidates, voters);
 
 	checksum = generateCiphertext(CHECKSUM_FILE);
 	for (int i = 0; i < candidates; i++)
@@ -97,13 +104,6 @@ int main(int argc, char* argv[])
 		std::cout << "Input file NOT certified. Exiting...\n";
 		exit(-3);
 	}
-
-	//get essential information
-	int num_shares = 0;
-	int shares_threshold = 0;
-	int candidates = 0;
-	int voters = 0;
-	get_voting_params(input, num_shares, shares_threshold, candidates, voters);
 
 	uint8_t restored[sss_MLEN] = {0};
 	FILE *fp;
