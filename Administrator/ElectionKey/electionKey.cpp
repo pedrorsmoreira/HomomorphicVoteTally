@@ -31,12 +31,12 @@ int main()
 
 	// Writing secret and public keys in a file
 	ofstream electionPublicKeyFile;
-	electionPublicKeyFile.open("electionPublicKeyFile.dat", ios::binary | ios::trunc);
+	electionPublicKeyFile.open("electionPublicKeyFile.txt", ios::binary | ios::trunc);
 	public_key.save(electionPublicKeyFile);
 	electionPublicKeyFile.close();
 
 	ofstream electionSecretKeyFile;
-	electionSecretKeyFile.open("electionSecretKeyFile.dat", ios::binary | ios::trunc);
+	electionSecretKeyFile.open("electionSecretKeyFile.txt", ios::binary | ios::trunc);
 	secret_key.save(electionSecretKeyFile);
 	electionSecretKeyFile.close();
 
