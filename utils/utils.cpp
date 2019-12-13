@@ -51,7 +51,7 @@ std::string ssystem (const char *command) {
 }
 
 //check if a subject's signature is certified
-bool check_signature(std::string& CA, std::string& subject, std::string& signed_subject){
+bool check_signature(std::string CA, std::string subject, std::string signed_subject){
     std::string key = "CApublic.key";
     std::string result = "";
     std::string certified = "Verified OK";
