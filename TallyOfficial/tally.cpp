@@ -110,25 +110,39 @@ printf("xixi\n");
 	return result;
 }
 
-std::vector<Ciphertext> generateVectorOfCiphertext(std::string file_encrypted)
+Ciphertext generateCiphertext(std::string file_encrypted)
 {
 printf("file_encrypted %s\n", file_encrypted.c_str());
-	std::ifstream voteEncryptedFile;
-	voteEncryptedFile.open(file_encrypted, std::ios::binary);
-	if (!voteEncryptedFile.is_open()) {
-		std::cout << "Unable to open Vote Encrypted File" << std::endl;
+	// BFV encryption scheme
+	EncryptionParameters parms(scheme_type::BFV);
+
+	// Defining encryption parameters
+
+	// degree o                                f the `polynomial modulus'
+	size_t poly_modulus_degree = 4096;
+	parms.set_poly_modulus_degree(poly_modulus_degree);
+
+	// [ciphertext] `coefficient modulus'
+	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+
+	// plaintext modulus
+	parms.set_plain_modulus(1024);
+
+	// Constructing a SEALContext object
+	auto context = SEALContext::Create(parms);
+	
+	Ciphertext newCiphertext;
+
+	std::ifstream encryptedFile;
+	encryptedFile.open(file_encrypted, std::ios::binary);
+	if (!encryptedFile.is_open()) {
+		std::cout << "Unable to open Encrypted File" << std::endl;
 		exit(-3);
 	}
 
-	std::string line;
-	std::vector<Ciphertext> votesOfVoter;
-	while ( getline (voteEncryptedFile, line) ) {
-		std::cout << line << '\n';
+	newCiphertext.unsafe_load(context, encryptedFile);
 
-		votesOfVoter.push_back(stringToCiphertext(line));
-    }
-
-    return votesOfVoter;
+    return newCiphertext;
 }
 
 Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
@@ -187,44 +201,39 @@ Ciphertext multiplyResult(Ciphertext encrypted1, Ciphertext encrypted2)
 
 int main(int argc, char* argv[])
 {
-	int j = 0;
-	std::vector<Ciphertext> voteVecCiphertext;
 	Ciphertext checksum;
 	std::vector<Ciphertext> results;
-
-printf("111111111111111\n");
+	std::vector<Ciphertext> weights;
+	std::vector<Ciphertext> voteVecCiphertext;
 
 	//Initializations
 	//get the voting parameters
 	if (!check_signature(ROOT_CRT_FILE, VOTE_INPUT, VOTE_INPUT_SIGNED)){
-		std::cout << "Weights NOT certified. Exiting...\n";
+		std::cout << "Input file NOT certified. Exiting...\n";
 		exit(-3);
 	}
 
-printf("22222222222222222\n");
-
-	unsigned int candidates = 0;
-	unsigned int votes = 0;
-	get_voting_params(VOTE_INPUT, candidates, votes);
-
-printf("333333333333333333\n");
+	unsigned int nrCandidates = 0;
+	unsigned int nrVotes = 0;
+	unsigned int nrVoters = 0;
+	get_voting_params(VOTE_INPUT, nrCandidates, nrVotes, nrVoters);
 
 	checksum = zeroInCiphertext();
-	for (int i = 0; i < candidates; ++i)
+	for (int i = 0; i < nrCandidates; ++i)
 		results.push_back(zeroInCiphertext());
 
-printf("4444444444444444444\n");
+	std::string weightsFile = "";
+	std::string weightsFileSigned = "";
+	for (int i = 0; i < nrVoters; ++i) {
+		weightsFile 		= string("./WeightsEncrypted/encryptedWeightsFile") + to_string(i+1) + string(".dat");
+		weightsFileSigned 	= string("./WeightsEncrypted/encryptedWeightsFile") + to_string(i+1) + string(".sign");
+		if (!check_signature(ROOT_CRT_FILE, weightsFile, weightsFileSigned)){
+			std::cout << "Weights NOT certified. Exiting...\n";
+			exit(-3);
+		}
 
-	if (!check_signature(ROOT_CRT_FILE, WEIGHTS, WEIGHTS_SIGNED)){
-		std::cout << "Weights NOT certified. Exiting...\n";
-		exit(-3);
+		weights.push_back(generateCiphertext(weightsFile));
 	}
-
-printf("55555555555555555555\n");
-
-	std::vector<Ciphertext> weights = generateVectorOfCiphertext(WEIGHTS);
-
-printf("66666666666666666666\n");
 
 	std::string votePath = "";
 	std::string voter_crt = "";
@@ -248,8 +257,6 @@ printf("66666666666666666666\n");
 	}
 	std::cout << voters << std::endl;
 
-printf("77777777777777777777777\n");
-
 	for(const auto voter : votersVec) {
 		
 		//Voter directory in the Ballot Box
@@ -258,8 +265,6 @@ printf("77777777777777777777777\n");
 		//get the number of votes casts by this voter
 		std::string counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
 		int counter = std::atoi((counterFile.substr(7)).c_str());
-
-printf("8888888888888888888888888 counter %d\n", counter);
 
 		//we start with the last vote
 		for (int id = counter; id > 0; id--) {
@@ -277,7 +282,6 @@ printf("8888888888888888888888888 counter %d\n", counter);
 			else {
 				std::cout << "Vote " + std::to_string(id) + " NOT certified. Cheking next one...\n";
 			}
-printf("999999999999999999999999999\n");
 		}
 
 		voteVecCiphertext = generateVectorOfCiphertext(vote_encrypted);
