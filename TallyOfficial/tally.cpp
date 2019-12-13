@@ -156,6 +156,8 @@ int main(int argc, char* argv[])
 	std::vector<Ciphertext> weights;
 	std::vector<Ciphertext> voteVecCiphertext;
 	bool valid = true;
+	int voterID = 0;
+
 
 	std::string ballotVoter 		= "";
 	std::string counterFile 		= "";
@@ -215,6 +217,7 @@ printf("WEIGHTS DONE\n");
 	std::cout << voters << std::endl;
 
 	for(const auto voter : votersVec) {
+		++voterID;
 
 printf("---> %s\n", voter);
 		
@@ -258,10 +261,10 @@ printf("id %d\n", id);
 				// the checksum for each vote and adds it to an accumulator
 				checksum = sumResult(checksum, voteVecCiphertext[j]);
 				// the result of the election - weight is the one of the voter
-				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[id]));
+				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[voterID]));
 			}
 		} else
-			std::cout << "No vote from the voter " << id << "\n";
+			std::cout << "No vote from the voter " << voterID << "\n";
 	}
 
 	return 0;
