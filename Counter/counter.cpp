@@ -176,7 +176,7 @@ int main(int argc, char* argv[])
 	fclose(fp);
 
 	for (int i = 0; i < sss_MLEN; ++i)
-    	printf("restored[i] %d\n", restored[i]);
+    	printf("restored[%d] %d\n", i, restored[i]);
 
 	string path_to_enc_sk 	= "electionSecretKeyFile.dat.enc";
 	string path_to_sk 		= "electionSecretKeyFile.dat";
