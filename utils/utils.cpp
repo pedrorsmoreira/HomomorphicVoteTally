@@ -16,7 +16,9 @@
 
 //name of the directory that will contain the vote
 #define VOTE_DIR                "Vote" //vote counter will be appended
+#define VOTES_PER_CAND           "votes_per_cand"
 
+#define VOTE_FILE               "vote.txt"
 #define VOTE_ENCRYPTED          "vote.seal"
 #define VOTE_SIGNED             "vote.sign"
 
