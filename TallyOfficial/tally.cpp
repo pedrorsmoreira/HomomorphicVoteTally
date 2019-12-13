@@ -234,7 +234,7 @@ int main(int argc, char* argv[])
 			if (check_signature(voter_crt, vote_encrypted, vote_signed))
 				break;
 			else {
-				std::cout << "Vote " + id + " NOT certified. Cheking next one...\n";
+				std::cout << "Vote " + std::to_string(id) + " NOT certified. Cheking next one...\n";
 			}
 		}
 
