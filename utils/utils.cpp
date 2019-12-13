@@ -1,8 +1,19 @@
-#include "utils.h"
+//#include "utils.h"
+#include <iostream>
 
-#include "seal/seal.h"
-using namespace std;
-using namespace seal;
+#define BALLOT_BOX              "../BallotBox"
+
+//root CA certificate
+#define ROOT_CRT_FILE           "rootCA.crt"
+
+#define VOTER_CRT               "voter" //append ID
+#define VOTER_CRT_EXTENSION     ".crt"
+
+//name of the directory that will contain the vote
+#define VOTE_DIR                "Vote" //vote counter will be appended
+
+#define VOTE_ENCRYPTED          "vote.seal"
+#define VOTE_SIGNED             "vote.sign"
 
 //for debugging
 void print(std::string& s){
@@ -52,27 +63,4 @@ bool check_signature(std::string& CA, std::string& subject, std::string& signed_
 void get_voting_params(std::string filePATH, unsigned int& candidates, unsigned int& votes_nr){
 	std::ifstream input(filePATH);
 	input >> candidates >> votes_nr;
-}
-
-SEALContext xx()
-{
-    // BFV encryption scheme
-    EncryptionParameters parms(scheme_type::BFV);
-
-    // Defining encryption parameters
-
-    // degree of the `polynomial modulus'
-    size_t poly_modulus_degree = 4096;
-    parms.set_poly_modulus_degree(poly_modulus_degree);
-
-    // [ciphertext] `coefficient modulus'
-    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-
-    // plaintext modulus
-    parms.set_plain_modulus(1024);
-
-    // Constructing a SEALContext object
-    auto context = SEALContext::Create(parms);
-
-    return context;
 }
