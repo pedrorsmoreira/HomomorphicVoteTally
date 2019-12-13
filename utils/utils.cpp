@@ -67,7 +67,7 @@ bool check_signature(std::string CA, std::string subject, std::string signed_sub
 }
 
 //get the number of candidates and number of votes to distribute
-void get_voting_params(std::string filePATH, unsigned int& candidates, unsigned int& votes_nr){
+void get_voting_params(std::string filePATH, unsigned int& candidates, unsigned int& votes_nr, unsigned int& voters_nr){
     std::ifstream input(filePATH);
-    input >> candidates >> votes_nr;
+    input >> candidates >> votes_nr >> voters_nr;
 }
