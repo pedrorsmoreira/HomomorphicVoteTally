@@ -1,8 +1,5 @@
 #include <iostream>
 
-#include "seal/seal.h"
-using namespace seal;
-
 #define BALLOT_BOX              "../BallotBox"
 
 //root CA certificate
@@ -73,39 +70,4 @@ bool check_signature(std::string CA, std::string subject, std::string signed_sub
 void get_voting_params(std::string filePATH, unsigned int& candidates, unsigned int& votes_nr, unsigned int& voters_nr){
     std::ifstream input(filePATH);
     input >> candidates >> votes_nr >> voters_nr;
-}
-
-Ciphertext generateCiphertext(std::string filename)
-{
-printf("filename %s\n", filename.c_str());
-    // BFV encryption scheme
-    EncryptionParameters parms(scheme_type::BFV);
-
-    // Defining encryption parameters
-
-    // degree of the `polynomial modulus'
-    size_t poly_modulus_degree = 4096;
-    parms.set_poly_modulus_degree(poly_modulus_degree);
-
-    // [ciphertext] `coefficient modulus'
-    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-
-    // plaintext modulus
-    parms.set_plain_modulus(1024);
-
-    // Constructing a SEALContext object
-    auto context = SEALContext::Create(parms);
-    
-    Ciphertext newCiphertext;
-
-    std::ifstream encryptedFile;
-    encryptedFile.open(filename, std::ios::binary);
-    if (!encryptedFile.is_open()) {
-        std::cout << "Unable to open Encrypted File" << std::endl;
-        exit(-3);
-    }
-
-    newCiphertext.unsafe_load(context, encryptedFile);
-
-    return newCiphertext;
 }

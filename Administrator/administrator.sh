@@ -34,6 +34,7 @@ echo $VOTERS >> inputCounter.txt
 openssl dgst -sha256 -sign rootCA.key -out inputCounter.sign inputCounter.txt
 # Copying the signed file with the properties of the election
 mv {inputCounter.txt,inputCounter.sign} ../Counter
+cp rootCA.crt ../Counter
 
 # Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial

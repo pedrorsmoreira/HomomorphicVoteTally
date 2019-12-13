@@ -3,12 +3,14 @@
 #include <cstdlib>
 #include <fstream>
 #include <vector>
-#include <assert.h>
+
+extern "C"{
+	#include "sss/sss.h"
+	#include "sss/randombytes.h"
+	#include <assert.h>
+}
 
 #include "../utils/utils.cpp"
-
-#include "sss/sss.h"
-#include "sss/randombytes.h"
 
 #include "seal/seal.h"
 using namespace seal;
@@ -78,10 +80,51 @@ Plaintext Decrypt(Ciphertext cypher)
 	return plaintext;
 }
 
+Ciphertext generateCiphertext(std::string filename)
+{
+printf("filename %s\n", filename.c_str());
+    // BFV encryption scheme
+    EncryptionParameters parms(scheme_type::BFV);
+
+    // Defining encryption parameters
+
+    // degree of the `polynomial modulus'
+    size_t poly_modulus_degree = 4096;
+    parms.set_poly_modulus_degree(poly_modulus_degree);
+
+    // [ciphertext] `coefficient modulus'
+    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+
+    // plaintext modulus
+    parms.set_plain_modulus(1024);
+
+    // Constructing a SEALContext object
+    auto context = SEALContext::Create(parms);
+    
+    Ciphertext newCiphertext;
+
+    std::ifstream encryptedFile;
+    encryptedFile.open(filename, std::ios::binary);
+    if (!encryptedFile.is_open()) {
+        std::cout << "Unable to open Encrypted File" << std::endl;
+        exit(-3);
+    }
+
+    newCiphertext.unsafe_load(context, encryptedFile);
+
+    return newCiphertext;
+}
+
 int main(int argc, char* argv[])
 {
 	Ciphertext checksum;
 	vector<Ciphertext> results;
+
+	//validate input file
+	if (! check_signature(ROOT_CRT_FILE, COUNTER_INPUT, COUNTER_INPUT_SIGNED)){
+		std::cout << "Input file NOT certified. Exiting...\n";
+		exit(-1);
+	}
 
 	//get essential information
 	unsigned int num_shares = 0, shares_threshold = 0, candidates = 0, voters = 0;
@@ -89,13 +132,7 @@ int main(int argc, char* argv[])
 
 	checksum = generateCiphertext(CHECKSUM_FILE);
 	for (int i = 0; i < candidates; i++)
-		results[i] = generateCiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION);
-
-	//validate input file
-	if (! check_signature(ROOT_CRT_FILE, COUNTER_INPUT, COUNTER_INPUT_SIGNED)){
-		std::cout << "Input file NOT certified. Exiting...\n";
-		exit(-1);
-	}
+		results.push_back(generateCiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION));
 
 	uint8_t restored[sss_MLEN] = {0};
 	FILE *fp;
@@ -138,8 +175,8 @@ int main(int argc, char* argv[])
 	fputc('\0', fp);
 	fclose(fp);
 
-	string path_to_enc_sk = "electionSecretKeyFile.dat.enc";
-	string path_to_sk = "electionSecretKeyFile.dat";
+	string path_to_enc_sk 	= "electionSecretKeyFile.dat.enc";
+	string path_to_sk 		= "electionSecretKeyFile.dat";
   
 	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
 
@@ -148,7 +185,7 @@ int main(int argc, char* argv[])
 
 	//decrypts the checksum
 	checksum_dec = atoi(((Decrypt(checksum)).to_string()).c_str());
-
+	printf("CHECK É %d\n", checksum_dec);
 	//checks the checksum validity
 	if(checksum_dec == candidates * voters)
 	{
@@ -156,7 +193,7 @@ int main(int argc, char* argv[])
 
 		//decryptes the elections results
 		for(int i = 0; i < results.size(); i++) {
-			results_dec[i] = atoi(((Decrypt(results[i])).to_string()).c_str());
+			results_dec.push_back(atoi(((Decrypt(results[i])).to_string()).c_str()));
 			cout << "Candidate" + to_string(i+1) + ": " + to_string(results_dec[i]) + "votes\n";
 		}
 		cout << "\n";
