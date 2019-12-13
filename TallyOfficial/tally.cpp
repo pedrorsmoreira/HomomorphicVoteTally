@@ -15,46 +15,6 @@ using namespace seal;
 #define SIGNED_EXTENSION 	".sign"
 #define SEAL_EXTENSION 	 	".seal"
 
-
-
-
-Plaintext Decrypt(Ciphertext cypher)
-{
-	printf("ENTROU\n");
-	// Scheme : BFV
-	EncryptionParameters parms(scheme_type::BFV);
-	// 1st Parameter
-	size_t poly_modulus_degree = 4096;
-	parms.set_poly_modulus_degree(poly_modulus_degree);
-	// 2nd Parameter
-	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-	// 3rd Parameter
-	parms.set_plain_modulus(1024);
-	// Starting
-	auto context = SEALContext::Create(parms);
-
-printf("WWWWWWWW\n");
-	// Loading the election public key from the file
-	std::ifstream secretKeyFile;
-	SecretKey secret_key;
-	secretKeyFile.open("electionSecretKeyFile.txt", std::ios::binary);
-	secret_key.unsafe_load(context, secretKeyFile);
-	secretKeyFile.close();
-printf("RRRRRRRRRRRRR\n");
-	// Constructing an instance of Decryptor - to be able to decrypt
-	Decryptor decryptor(context, secret_key);
-printf("hhhhhhhhhhhhhh\n");
-	Plaintext plaintext;
-	decryptor.decrypt(cypher, plaintext);
-printf("lllllllllllllllllll\n");
-	return plaintext;
-}
-
-
-
-
-
-
 Ciphertext zeroInCiphertext()
 {
 	// BFV encryption scheme
@@ -104,7 +64,6 @@ Ciphertext zeroInCiphertext()
 
 Ciphertext generateCiphertext(std::string filename)
 {
-printf("filename %s\n", filename.c_str());
     // BFV encryption scheme
     EncryptionParameters parms(scheme_type::BFV);
 
@@ -133,7 +92,7 @@ printf("filename %s\n", filename.c_str());
     }
 
     newCiphertext.unsafe_load(context, encryptedFile);
-printf("ACABOUUUU\n");
+
     return newCiphertext;
 }
 
@@ -199,7 +158,6 @@ int main(int argc, char* argv[])
 	bool valid = true;
 	int voterID = 0;
 
-
 	std::string ballotVoter 			= "";
 	std::string counterFile 			= "";
 	std::string votePath 				= "";
@@ -222,13 +180,9 @@ int main(int argc, char* argv[])
 
 	std::vector<Ciphertext> results(nrCandidates);
 
-printf("nrCandidates %d nrVotes %d nrVoters %d\n", nrCandidates, useless, nrVoters);
-
 	checksum = zeroInCiphertext();
 	for (int i = 0; i < nrCandidates; ++i)
 		results[i] = (zeroInCiphertext());
-
-printf("RESULTS AND CHECKSUM DONE\n");
 
 	std::string weightsFile = "";
 	std::string weightsFileSigned = "";
@@ -242,8 +196,6 @@ printf("RESULTS AND CHECKSUM DONE\n");
 
 		weights.push_back(generateCiphertext(weightsFile));
 	}
-
-printf("WEIGHTS DONE\n");
 	
 	//get a string with all the folders of the voters
 	std::string voters = ssystem((std::string("ls ") + BALLOT_BOX).c_str());
@@ -261,24 +213,16 @@ printf("WEIGHTS DONE\n");
 	}
 	std::cout << voters << std::endl;
 
-	for (int i = 0; i < nrVoters; ++i) {
-
-printf("---> %d\n", i);
-		
+	for (int i = 0; i < nrVoters; ++i) {		
 		//Voter directory in the Ballot Box
 		ballotVoter = BALLOT_BOX + std::string("/") + VOTER_PRIVATE_DIR + std::to_string(i+1);
 
 		//get the number of votes casts by this voter
 		counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
 		int counter = std::atoi((counterFile.substr(7)).c_str());
-
-printf("counter %d\n", counter);
 		
 		//we start with the last vote
-		for (int id = counter; id > 0; id--) {
-
-printf("id %d\n", id);
-			
+		for (int id = counter; id > 0; id--) {			
 			votePath = ballotVoter + std::string("/") + VOTE_DIR + std::to_string(id);
 			voterCrt = votePath + std::string("/") + VOTER_CRT + std::to_string(i+1) + VOTER_CRT_EXTENSION;
 			candidatesVotePath = votePath + std::string("/") + CANDIDATE_VOTE_DIR;
@@ -292,8 +236,7 @@ printf("id %d\n", id);
 					break;
 				}
 
-				voteVecCiphertext.push_back( generateCiphertext(candidateVoteFile));printf("GUrdouuu\n");
-				std::cout << "0x" << Decrypt(voteVecCiphertext[j]).to_string() << " ...... CorrectCENAS." << std::endl;
+				voteVecCiphertext.push_back( generateCiphertext(candidateVoteFile));
 			}
 
 			if (valid) break;
@@ -305,14 +248,9 @@ printf("id %d\n", id);
 				// Computes homomorphically:
 				// the checksum for each vote and adds it to an accumulator
 				checksum = sumResult(checksum, voteVecCiphertext[j]);
-				std::cout << "0x" << Decrypt(checksum).to_string() << " ...... CorrectCHECKKK." << std::endl;
 				
-				std::cout << "0x" << i << Decrypt(weights[i]).to_string() << " ...... CorrectWEUGHGTTTT." << std::endl;
-
 				// the result of the election - weight is the one of the voter
 				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[i]));
-			
-				std::cout << "0x" << j << Decrypt(results[j]).to_string() << " ...... CorrectRRREESSST." << std::endl;
 			}
 		} else
 			std::cout << "No vote from the voter " << voterID << "\n";
