@@ -263,13 +263,12 @@ printf("WEIGHTS DONE\n");
 	}
 	std::cout << voters << std::endl;
 
-	for(const auto voter : votersVec) {
-		++voterID;
+	for (int i = 0; i < nrVoters; ++i) {
 
 printf("---> %s\n", voter);
 		
 		//Voter directory in the Ballot Box
-		ballotVoter = BALLOT_BOX + std::string("/") + voter;
+		ballotVoter = BALLOT_BOX + std::string("/") + VOTER_PRIVATE_DIR + std::to_string(i);
 
 		//get the number of votes casts by this voter
 		counterFile = ssystem(("ls " + ballotVoter + " | grep counter").c_str());
@@ -309,7 +308,7 @@ printf("id %d\n", id);
 				// the checksum for each vote and adds it to an accumulator
 				checksum = sumResult(checksum, voteVecCiphertext[j]);
 				// the result of the election - weight is the one of the voter
-				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[voterID]));
+				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[i]));
 			}
 		} else
 			std::cout << "No vote from the voter " << voterID << "\n";
