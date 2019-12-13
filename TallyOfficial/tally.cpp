@@ -177,11 +177,11 @@ int main(int argc, char* argv[])
 	}
 
 	unsigned int nrCandidates = 0;
-	unsigned int nrVotes = 0;
+	unsigned int useless = 0;
 	unsigned int nrVoters = 0;
-	get_voting_params(VOTE_INPUT, nrCandidates, nrVotes, nrVoters);
+	get_voting_params(VOTE_INPUT, nrCandidates, useless, nrVoters);
 
-printf("nrCandidates %d nrVotes %d nrVoters %d\n", nrCandidates, nrVotes, nrVoters);
+printf("nrCandidates %d nrVotes %d nrVoters %d\n", nrCandidates, useless, nrVoters);
 
 	checksum = zeroInCiphertext();
 	for (int i = 0; i < nrCandidates; ++i)

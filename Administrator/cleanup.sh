@@ -45,3 +45,9 @@ rm -Rf CMakeFiles
 rm CMakeCache.txt cmake_install.cmake Makefile
 rm seal_encrypt
 cd ../..
+
+cd Counter
+rm -Rf CMakeFiles
+rm CMakeCache.txt cmake_install.cmake Makefile
+rm e* i* s*
+cd ..
