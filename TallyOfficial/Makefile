@@ -39,19 +39,33 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
+<<<<<<< HEAD
+CMAKE_COMMAND = /usr/local/bin/cmake
+
+# The command to remove a file.
+RM = /usr/local/bin/cmake -E remove -f
+=======
 CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
+<<<<<<< HEAD
+CMAKE_SOURCE_DIR = /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial
+
+# The top-level build directory on which CMake was run.
+CMAKE_BINARY_DIR = /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial
+=======
 CMAKE_SOURCE_DIR = /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +73,11 @@ CMAKE_BINARY_DIR = /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTal
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+<<<<<<< HEAD
+	/usr/local/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+=======
 	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -69,8 +87,13 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
+<<<<<<< HEAD
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/local/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+=======
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
 	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +103,15 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
+<<<<<<< HEAD
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/progress.marks
+	$(MAKE) -f CMakeFiles/Makefile2 all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles 0
+=======
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles 0
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
 .PHONY : all
 
 # The main clean target

@@ -28,3 +28,11 @@ rm -Rf CMakeFiles
 rm CMakeCache.txt cmake_install.cmake Makefile
 rm weights
 cd ..
+
+cd ../TallyOfficial
+rm -Rf CMakeFiles
+rm CMakeCache.txt cmake_install.cmake Makefile
+rm rootCA.crt
+rm electionPublicKeyFile.dat electionPublicKeyFile.sign e
+rm encryptedWeightsFile.dat encryptedWeightsFile.sign
+

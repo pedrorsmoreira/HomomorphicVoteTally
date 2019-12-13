@@ -15,6 +15,34 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/lib/cmake/SEAL-3.4/SEALConfigVersion.cmake"
   "/usr/local/lib/cmake/SEAL-3.4/SEALTargets-release.cmake"
   "/usr/local/lib/cmake/SEAL-3.4/SEALTargets.cmake"
+<<<<<<< HEAD
+  "/usr/local/share/cmake-3.16/Modules/CMakeCInformation.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeCXXInformation.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeCommonLanguageInclude.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeFindDependencyMacro.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeGenericSystem.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeInitializeConfigs.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeLanguageInformation.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeSystemSpecificInformation.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CMakeSystemSpecificInitialize.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CheckCSourceCompiles.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CheckIncludeFile.cmake"
+  "/usr/local/share/cmake-3.16/Modules/CheckLibraryExists.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Compiler/GNU-C.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Compiler/GNU-CXX.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Compiler/GNU.cmake"
+  "/usr/local/share/cmake-3.16/Modules/FindPackageHandleStandardArgs.cmake"
+  "/usr/local/share/cmake-3.16/Modules/FindPackageMessage.cmake"
+  "/usr/local/share/cmake-3.16/Modules/FindThreads.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Internal/CMakeCheckCompilerFlag.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Platform/Linux-GNU-C.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Platform/Linux-GNU-CXX.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Platform/Linux-GNU.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Platform/Linux.cmake"
+  "/usr/local/share/cmake-3.16/Modules/Platform/UnixPaths.cmake"
+=======
   "/usr/share/cmake-3.16/Modules/CMakeCCompiler.cmake.in"
   "/usr/share/cmake-3.16/Modules/CMakeCCompilerABI.c"
   "/usr/share/cmake-3.16/Modules/CMakeCInformation.cmake"
@@ -111,6 +139,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.16/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-3.16/Modules/Platform/UnixPaths.cmake"
   "/usr/share/cmake-3.16/Modules/SelectLibraryConfigurations.cmake"
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
   )
 
 # The corresponding makefile is:
@@ -121,11 +150,14 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
+<<<<<<< HEAD
+=======
   "CMakeFiles/3.16.1/CMakeSystem.cmake"
   "CMakeFiles/3.16.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.16.1/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.16.1/CMakeCXXCompiler.cmake"
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

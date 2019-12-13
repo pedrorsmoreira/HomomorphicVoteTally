@@ -4,7 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+<<<<<<< HEAD
+  "/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/tally.cpp" "/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/tally.dir/tally.cpp.o"
+=======
   "/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/tally.cpp" "/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/tally.dir/tally.cpp.o"
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
