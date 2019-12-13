@@ -59,6 +59,7 @@ Ciphertext zeroInCiphertext()
 
 Ciphertext stringToCiphertext(std::string word)
 {
+printf("olaaaaaaaaaaaaa\n");
 	// BFV encryption scheme
 	EncryptionParameters parms(scheme_type::BFV);
 
@@ -77,24 +78,31 @@ Ciphertext stringToCiphertext(std::string word)
 	// Constructing a SEALContext object
 	auto context = SEALContext::Create(parms);
 
-	Ciphertext newCiphertext;
-	std::fstream file;
-	file.open("conversion.txt", std::ios::trunc);
-	if (!file.is_open()) {
-		std::cout << "Unable to open Conversion File - string to Ciphertext" << std::endl;
-		exit(-3);
-	}
-	file << word;
+printf("adeusssssss\n");
 
-	newCiphertext.unsafe_load(context, file);
+	Ciphertext newCiphertext;
+
+	std::ofstream outputFile;
+	outputFile.open("conversion.txt", std::ios::binary | std::ios::trunc);
+	outputFile << word;
+	outputFile.close();
+
+printf("xixi\n");
+
+	std::ifstream inputFile;
+	inputFile.open("conversion.txt", std::ios::binary);
+	newCiphertext.unsafe_load(context, inputFile);
+	inputFile.close();
 
 	return newCiphertext;
 }
 
-std::vector<Ciphertext> generateVectorOfCiphertext(std::string vote_encrypted)
+std::vector<Ciphertext> generateVectorOfCiphertext(std::string file_encrypted)
 {
-	std::ifstream voteEncryptedFile;
-	voteEncryptedFile.open(vote_encrypted, std::ios::binary);
+printf("file_encrypted %s\n", file_encrypted.c_str());
+	std::ifstream voteEnusing namespace seal;
+cryptedFile;
+	voteEncryptedFile.open(file_encrypted, std::ios::binary);
 	if (!voteEncryptedFile.is_open()) {
 		std::cout << "Unable to open Vote Encrypted File" << std::endl;
 		exit(-3);
