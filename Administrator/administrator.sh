@@ -97,4 +97,8 @@ make > /dev/null
 openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
 mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
 
+# Creating directorie of the Ballot Box
+mkdir ../../BallotBox
+
 # COMPILES TALLY AND VOTER
+
