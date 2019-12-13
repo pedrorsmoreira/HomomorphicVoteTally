@@ -227,8 +227,8 @@ int main(int argc, char* argv[])
 			votePath 		= ballotVoter 	+ std::string("/") + VOTE_DIR + id;
 
 			voter_crt 		= votePath 		+ std::string("/") + VOTER_CRT + id + VOTER_CRT_EXTENSION;
-			vote_encrypted 	= voterPath 	+ std::string("/") + VOTE_ENCRYPTED;
-			vote_signed 	= voterPath 	+ std::string("/") + VOTE_SIGNED;
+			vote_encrypted 	= votePath 	+ std::string("/") + VOTE_ENCRYPTED;
+			vote_signed 	= votePath 	+ std::string("/") + VOTE_SIGNED;
 
 			//validate existing files
 			if (check_signature(voter_crt, vote_encrypted, vote_signed))
