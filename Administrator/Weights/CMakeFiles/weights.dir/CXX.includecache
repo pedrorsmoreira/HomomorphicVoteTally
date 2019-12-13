@@ -23,6 +23,8 @@ seal/seal.h
 /home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
 utils.h
 /home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.h
+seal/seal.h
+/home/cripto/CriptoProject/HomomorphicVoteTally/utils/seal/seal.h
 
 /home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.h
 iostream
