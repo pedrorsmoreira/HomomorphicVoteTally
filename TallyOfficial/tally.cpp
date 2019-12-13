@@ -35,7 +35,7 @@ Ciphertext zeroInCiphertext()
 	}
 
 	// Loading the election public key from the file
-	ifstream publicKeyFile;
+	std::ifstream publicKeyFile;
 	publicKeyFile.open(ELEC_KEY, ios::binary);
 	if (publicKeyFile.is_open())
 		public_key.unsafe_load(context, publicKeyFile);
@@ -77,7 +77,7 @@ Ciphertext stringToCiphertext(std::string word)
 	auto context = SEALContext::Create(parms);
 
 	Ciphertext newCiphertext;
-	fstream file;
+	std::fstream file;
 	file.open("conversion.txt", ios::trunc);
 	if (!voteEncryptedFile.is_open()) {
 		cout << "Unable to open Conversion File - string to Ciphertext" << endl;
@@ -92,7 +92,7 @@ Ciphertext stringToCiphertext(std::string word)
 
 std::vector<Ciphertext> generateVectorOfCiphertext(std::string vote_encrypted)
 {
-	ifstream voteEncryptedFile;
+	std::ifstream voteEncryptedFile;
 	voteEncryptedFile.open(vote_encrypted, ios::binary);
 	if (!voteEncryptedFile.is_open()) {
 		cout << "Unable to open Vote Encrypted File" << endl;
