@@ -9,6 +9,8 @@
 /home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/tally.cpp
 iostream
 -
+fstream
+-
 ../utils/utils.cpp
 /home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
 seal/seal.h
