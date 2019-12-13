@@ -200,8 +200,7 @@ int main(int argc, char* argv[])
 	std::vector<std::string> votersVec;
 
 	//get a string with all the folders of the voters
-	std::string str = "ls " + BALLOT_BOX;
-	std::string voters = ssystem(str.c_str());
+	std::string voters = ssystem((std::string("ls ") + BALLOT_BOX).c_str());
 
 	//get each voter folder (string) to the vector
 	std::string delimiter = " ";
