@@ -179,7 +179,7 @@ int main(int argc, char* argv[])
 	}
 	unsigned int candidates = 0;
 	unsigned int votes = 0;
-	get_voting_params(input, candidates, votes);
+	get_voting_params(VOTE_INPUT, candidates, votes);
 
 	checksum = zeroInCiphertext();
 	for (int i = 0; i < candidates; ++i)
