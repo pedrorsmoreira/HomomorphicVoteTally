@@ -80,6 +80,7 @@ printf("olaaaaaaaaaaaaa\n");
 
 printf("adeusssssss\n");
 
+	/*
 	Ciphertext newCiphertext;
 
 	std::ofstream outputFile;
@@ -95,6 +96,18 @@ printf("xixi\n");
 	inputFile.close();
 
 	return newCiphertext;
+	*/
+
+	fstream ct;
+	Ciphertext result;
+
+	ct.open("aux_file.txt", fstream::binary | fstream::out | fstream::trunc | fstream::in);
+	ct << aux;
+	result.unsafe_load(context, ct);
+	ct.close();
+	remove("aux_file.txt");
+
+	return result;
 }
 
 std::vector<Ciphertext> generateVectorOfCiphertext(std::string file_encrypted)
