@@ -62,6 +62,41 @@ Ciphertext zeroInCiphertext()
 	return zero_encrypted;
 }
 
+Ciphertext generateCiphertext(std::string filename)
+{
+printf("filename %s\n", filename.c_str());
+    // BFV encryption scheme
+    EncryptionParameters parms(scheme_type::BFV);
+
+    // Defining encryption parameters
+
+    // degree of the `polynomial modulus'
+    size_t poly_modulus_degree = 4096;
+    parms.set_poly_modulus_degree(poly_modulus_degree);
+
+    // [ciphertext] `coefficient modulus'
+    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+
+    // plaintext modulus
+    parms.set_plain_modulus(1024);
+
+    // Constructing a SEALContext object
+    auto context = SEALContext::Create(parms);
+    
+    Ciphertext newCiphertext;
+
+    std::ifstream encryptedFile;
+    encryptedFile.open(filename, std::ios::binary);
+    if (!encryptedFile.is_open()) {
+        std::cout << "Unable to open Encrypted File" << std::endl;
+        exit(-3);
+    }
+
+    newCiphertext.unsafe_load(context, encryptedFile);
+
+    return newCiphertext;
+}
+
 Ciphertext sumResult(Ciphertext encrypted1, Ciphertext encrypted2)
 {
 	// BFV encryption scheme
