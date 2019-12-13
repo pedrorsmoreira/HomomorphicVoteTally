@@ -1,5 +1,7 @@
 #include <iostream>
-#include "boost/filesystem.hpp"  
+#include "boost/filesystem.hpp"
+
+#include "seal_encrypt.h"
 
 //directories
 #define VOTERS_DIR 			".."
@@ -28,11 +30,18 @@
 #define VOTE_INPUT 					"input.txt"
 #define VOTE_INPUT_SIGNED 			"input.sign"
 
-//names of the files to create
-#define VOTE 			"vote.txt"
-#define VOTE_ENCRYPTED 	"vote.seal"
-#define VOTE_SIGNED 	"vote.sign" 
+//name of the directory that will contain the vote
+#define VOTE_DIR	"Vote" //vote counter will be appended
 
+//names of the files to create
+#define VOTE_FILE 		"vote.txt"
+#define VOTE_ENCRYPTED 	"vote.seal"
+#define VOTE_SIGNED 	"vote.sign"
+
+//for debugging
+void print(std::string& s){
+	std::cout << "\n" + s + "\n";
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////         auxiliar functions         ////////////////////////////////
@@ -45,8 +54,7 @@ void idenify_voter(int& argc, char* argv[], std::string& id){
 	else if (argc == 1){
 		std::cout << "Type your ID number:";
 		std::getline(std::cin, id);
-	}
-	else{
+	}else{
 		std::cout << "INVALID\n\n usage: vote <ID_number>";
 		exit(-1);
 	}
@@ -67,6 +75,13 @@ std::string ssystem (const char *command) {
         file.close();
     }
     remove(tmpname);
+
+    //remove \0 and \n
+    if (! result.empty())
+    	result.pop_back();
+    if (! result.empty())
+    	result.pop_back();
+
     return result;
 }
 
@@ -77,11 +92,11 @@ bool check_signature(std::string& CA, std::string& subject, std::string& signed_
 	std::string certified = "Verified OK";
 
 	system(("openssl x509 -pubkey -noout -in " + CA + " > " + key).c_str());
-	certified = ssystem( ("openssl dgst -sha256 -verify " + key + " -signature " + signed_subject + " " + subject).c_str());
-	
+	result = ssystem( ("openssl dgst -sha256 -verify " + key + " -signature " + signed_subject + " " + subject).c_str());
+
 	remove("CApublic.key");
 
-	return result == certified;
+	return result == certified;//return result.find(certified) != std::string::npos;
 }
 
 //get the number of candidates and number of votes to distribute
@@ -101,11 +116,11 @@ void write_vote(std::string filePATH, std::vector<unsigned int>& v){
 /////////////////////////////////         main         ///////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[]) {
-	std::string  id 		= "";
+	std::string  id;
 	unsigned int id_int = 0;
 	//get user ID
 	idenify_voter(argc, argv, id);
-	id_int = std::atoi(argv[1]);
+	id_int = std::atoi(id.c_str());
 
 
 	//check if user (directory) exists
@@ -115,7 +130,7 @@ int main(int argc, char* argv[]) {
 		exit(-2);
 	}
 
-	std::cout << "\n\nVoter " + id + " successefully identified.\n\n";
+	std::cout << "\n\nVoter " + id + " successefully identified.\n";
 
 	//put the paths for the needed files in strings (for the sake of easiness)
 	//existing files
@@ -129,11 +144,13 @@ int main(int argc, char* argv[]) {
 	std::string input 				= voterPath  + std::string("/") + VOTE_INPUT;
 	std::string input_signed		= voterPath  + std::string("/") + VOTE_INPUT_SIGNED;
 
+	//directory that will contain the vote
+	std::string vote_directory		= VOTE_DIR;
+
 	//files to create
-	std::string vote				= voterPath  + std::string("/") + VOTE;
+	std::string vote_file			= voterPath  + std::string("/") + VOTE_FILE;
 	std::string vote_encrypted 		= voterPath  + std::string("/") + VOTE_ENCRYPTED;
 	std::string vote_signed			= voterPath	 + std::string("/") + VOTE_SIGNED;
-
 	
 	//validate existing files
 	if (! check_signature(root_crt, voter_key, voter_key_signed)){
@@ -154,7 +171,7 @@ int main(int argc, char* argv[]) {
 	}
 
 
-	std::cout << "\n\nVoter " + id + " successefully certified.\n\n";
+	std::cout << "Voter " + id + " successefully certified.\n\n";
 
 	//get the voting parameters
 	unsigned int candidates = 0;
@@ -169,23 +186,23 @@ int main(int argc, char* argv[]) {
 		std::string aux;
 		unsigned int selectedCand, selectedVotes;
 
-		std::cout << candidates + "available candidates to vote on, and "  << votes << " votes to distribute.\n" << std::endl;
+		std::cout << "There are " + std::to_string(candidates) + " available candidates to vote on, and "  << votes << " vote(s) to distribute." << std::endl;
 
-		std::cout << "Choose a candidate to vote on (from 1 to " << candidates << "):";
+		std::cout << "Choose a candidate to vote on (from 1 to " << std::to_string(candidates) << "):";
 		std::getline(std::cin, aux);
-		selectedCand = std::atoi(argv[1]);
+		selectedCand = std::atoi(aux.c_str());
 
 		if (selectedCand < 1 || selectedCand > candidates){
 			std::cout << "Invalid candidate.\n\n";
 			continue;
 		}
 
-		std::cout << "\nChoose the number of votes for the candidate ([" << votes << ']' << "votes left):";
+		std::cout << "\nChoose the number of votes for the candidate ([" << std::to_string(votes) << ']' << "votes left):";
 		std::getline(std::cin, aux);
-		selectedVotes = std::atoi(argv[1]);
+		selectedVotes = std::atoi(aux.c_str());
 
 		if (selectedVotes < 1 || selectedVotes > votes){
-			std::cout << "Invalid value.\n\n";
+			std::cout << "\n\n------Invalid value-------\n\n";
 			continue;
 		}
 
@@ -195,18 +212,14 @@ int main(int argc, char* argv[]) {
 		std::cout << "\n\n";
 	}
 
-	//write the vote (vector final_vote) in an ouput file (vote)
-	write_vote(vote, final_vote);
+	//write the vote (the vector final_vote) in an ouput file (vote_file)
+	write_vote(vote_file, final_vote);
 
-	/////////////////////////////////////////////////////
-	////  encrypt the vote file ---> vote_encrypted  ////
-	/////////////////////////////////////////////////////			
-
-
-	/////////////////////////////////////////////////////
-	////  sign the encrypted vote ---> vote_signed  /////
-	/////////////////////////////////////////////////////			
-
+	//encrypt the vote with the SEAL library using the election key
+	seal_encrypt_with_public_key(vote_file, vote_encrypted, election_key);
+			
+	//sign the encrypted vote with the voter private key (output in vote_signed file)
+	system(("openssl dgst -sha256 -sign " + voter_key + " -out " + vote_signed + " " + vote_encrypted).c_str());
 
 	//write to Ballot Box
 	//Voter directory in the Ballot Box
@@ -222,11 +235,10 @@ int main(int argc, char* argv[]) {
 	int counter = std::atoi((counterFile.substr(7)).c_str()) + 1;
 
 	//update counter file
-	system(("mv " + ballotVoter + std::string("/") + counterFile + " " 
-		+ ballotVoter + std::string("/") + "counter" + std::to_string(counter)).c_str());
+	system(("mv " + ballotVoter + std::string("/") + counterFile + " " + ballotVoter + std::string("/") + "counter" + std::to_string(counter)).c_str());
 
 	//create directory with the vote to send to the Ballot Box
-	std::string voteDirectory = "vote" + std::to_string(counter);
+	std::string voteDirectory = vote_directory + std::to_string(counter);
 	system(("mkdir "+voteDirectory).c_str());
 	system(("cp " + voter_crt + " " + voteDirectory).c_str());
 	system(("mv " + vote_encrypted + " " + voteDirectory).c_str());
@@ -236,7 +248,7 @@ int main(int argc, char* argv[]) {
 	system(("mv "+ voteDirectory + " " + ballotVoter).c_str());
 
 	//erase the raw vote text file
-	system(("rm " + vote).c_str());	
+	system(("rm " + vote_file).c_str());	
 
 	return 0;
 }
