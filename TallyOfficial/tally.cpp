@@ -194,7 +194,6 @@ Ciphertext multiplyResult(Ciphertext encrypted1, Ciphertext encrypted2)
 int main(int argc, char* argv[])
 {
 	Ciphertext checksum;
-	std::vector<Ciphertext> results;
 	std::vector<Ciphertext> weights;
 	std::vector<Ciphertext> voteVecCiphertext;
 	bool valid = true;
@@ -221,11 +220,13 @@ int main(int argc, char* argv[])
 	unsigned int nrVoters = 0;
 	get_voting_params(VOTE_INPUT, nrCandidates, useless, nrVoters);
 
+	std::vector<Ciphertext> results(nrCandidates);
+
 printf("nrCandidates %d nrVotes %d nrVoters %d\n", nrCandidates, useless, nrVoters);
 
 	checksum = zeroInCiphertext();
 	for (int i = 0; i < nrCandidates; ++i)
-		results.push_back(zeroInCiphertext());
+		results[i] = (zeroInCiphertext());
 
 printf("RESULTS AND CHECKSUM DONE\n");
 
@@ -292,7 +293,7 @@ printf("id %d\n", id);
 				}
 
 				voteVecCiphertext.push_back( generateCiphertext(candidateVoteFile));printf("GUrdouuu\n");
-				std::cout << "0x" << Decrypt(voteVecCiphertext[j]).to_string() << " ...... Correct." << std::endl;
+				std::cout << "0x" << Decrypt(voteVecCiphertext[j]).to_string() << " ...... CorrectCENAS." << std::endl;
 			}
 
 			if (valid) break;
@@ -304,8 +305,14 @@ printf("id %d\n", id);
 				// Computes homomorphically:
 				// the checksum for each vote and adds it to an accumulator
 				checksum = sumResult(checksum, voteVecCiphertext[j]);
+				std::cout << "0x" << Decrypt(checksum).to_string() << " ...... CorrectCHECKKK." << std::endl;
+				
+				std::cout << "0x" << i << Decrypt(weights[i]).to_string() << " ...... CorrectWEUGHGTTTT." << std::endl;
+
 				// the result of the election - weight is the one of the voter
-				//results.push_back(sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[i])));
+				results[j] = sumResult(results[j], multiplyResult(voteVecCiphertext[j], weights[i]));
+			
+				std::cout << "0x" << j << Decrypt(results[j]).to_string() << " ...... CorrectRRREESSST." << std::endl;
 			}
 		} else
 			std::cout << "No vote from the voter " << voterID << "\n";
