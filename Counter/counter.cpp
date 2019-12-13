@@ -150,22 +150,44 @@ int main(int argc, char* argv[])
 			exit(-1);
 		}
 
-		strcpy(filename, share.c_str());
-		//snprintf(filename, sizeof(filename), "share%d.txt", i+1);
-		fp = fopen(filename, "rb");
+		//strcpy(filename, share.c_str());
+		/*snprintf(filename, sizeof(filename), "share%d.txt", i+1);
+		fp = fopen(filename, ios::binary);
 		j = 0;
 		do {
 			char c = fgetc(fp);
+			//printf("C é %c e J %d e I é %d ----\n", c, j, i);
 			*x = c;
 			if (feof(fp) || c == '\n') break;
 			shares[i][j++] = *x;
-		} while(1);
+		} while(1);*/
+
+		ifstream fp;
+		fstream pass_file, test;
+		unsigned char recover[130], c;
+
+		fp.open(filename, ios::binary);
+		test.open("test.txt", ios::trunc | ios::binary);
+		int w = 0;
+		while ( w < sss_SHARE_LEN )
+		{
+			c = fp.get();
+		
+			shares[j][w] = c;
+			test.put(c);
+			w++;
+		}
+		fp.close();
+		test.close();
 	}
 
 	int tmp;
 	// Combine some of the shares to restore the original secret (restore is the private key)
+	//for (int ii = 0; ii < sss_MLEN; +ii)
+	//	if (restored[ii] != 0)
+	//		printf("%d ---- %u\n", ii, restored[ii]);
 	tmp = sss_combine_shares(restored, shares, shares_threshold);printf("AAAQQQQUUIIII\n");
-	assert(tmp == 0);
+	//assert(tmp == 0);
 
 	// Escreve num ficheiro a pass dps de juntar as shares
 	fp = fopen("recovered_pass.txt", "wb");
@@ -177,11 +199,11 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < sss_MLEN; ++i)
     	printf("restored[%d] %d\n", i, restored[i]);
-    		
+
 	string path_to_enc_sk 	= "electionSecretKeyFile.txt.enc";
 	string path_to_sk 		= "electionSecretKeyFile.txt";
   
-	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
+//	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
 
 	int checksum_dec;
 	vector<int> results_dec;
