@@ -1,3 +1,0 @@
-/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Counter/CMakeFiles/rebuild_cache.dir
-/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Counter/CMakeFiles/counter.dir
-/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/Counter/CMakeFiles/edit_cache.dir
