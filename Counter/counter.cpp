@@ -39,83 +39,10 @@ using namespace std;
 //name of the file to create with the private key
 #define PRIVATE_KEY_FILE_PATH		"electionSecretKeyFile.txt"
 
-
-
-
-
-unsigned int numCandidates, numVoters, shares_threshold;
-
-
-
-
-
-
-
-void getpass()
-{	
-	char file_name[30], file_sign_name[30];
-	ifstream fp;
-	ofstream pass_file, test;
-	sss_Share shares2[shares_threshold];
-	unsigned char recover[130], c;
-
-	
-	for (int j = 0;j < shares_threshold; j++)
-	{
-		snprintf(file_name, sizeof(file_name), "share%d.txt", j+1);
-		/*snprintf(file_sign_name, sizeof(file_sign_name), "pass_%d.sha256", j+1);
-		
-		if( !verifySignature("rootCA.crt", file_sign_name, file_name) ){
-			cout << "At least one of the electionPrivateKey shares signature is wrong!" << endl;
-			exit(EXIT_FAILURE);
-		}
-		*/
-		fp.open(file_name, ios::binary);
-		test.open("test.txt", ios::trunc | ios::binary);
-		int w = 0;
-		while ( w < sss_SHARE_LEN )
-		{
-			c = fp.get();
-		
-			shares2[j][w] = c;
-			test.put(c);
-			w++;
-		}
-		fp.close();
-		test.close();
-	}
-	
-	int tmp;
-	// Combine some of the shares to restore the original secret
-	tmp = sss_combine_shares(recover, shares2, shares_threshold);
-	assert(tmp == 0);
-	
-	// Escreve num ficheiro a pass dps de juntar as shares
-	pass_file.open("recovered_pass.txt", ios::trunc);
-	for (int j = 0;j< 64;j++) {
-		pass_file.put(recover[j]);
-	}
-	pass_file.put('\0');
-	pass_file.close();
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-//get the number of numCandidates and number of votes to distribute
-void get_sss_info(string filePATH, unsigned int& trustees, unsigned int& threshold, unsigned int& numCandidates, unsigned int& voters){
+//get the number of candidates and number of votes to distribute
+void get_sss_info(string filePATH, unsigned int& trustees, unsigned int& threshold, unsigned int& candidates, unsigned int& voters){
 	ifstream input(filePATH);
-	input >> trustees >> threshold >> numCandidates >> voters;
+	input >> trustees >> threshold >> candidates >> voters;
 }
 
 Plaintext Decrypt(Ciphertext cypher)
@@ -200,17 +127,13 @@ int main(int argc, char* argv[])
 	}
 
 	//get essential information
-	unsigned int num_shares = 0;//, shares_threshold = 0, numCandidates = 0, voters = 0;
-	get_sss_info(COUNTER_INPUT, num_shares, shares_threshold, numCandidates, numVoters);
+	unsigned int num_shares = 0, shares_threshold = 0, candidates = 0, voters = 0;
+	get_sss_info(COUNTER_INPUT, num_shares, shares_threshold, candidates, voters);
 
 	checksum = generateCiphertext(CHECKSUM_FILE);
-	printf("NC é %d\n", numCandidates);
-	for (int i = 0; i < numCandidates; i++)
+	for (int i = 0; i < candidates; i++)
 		results.push_back(generateCiphertext(RESULTS + to_string(i+1) + RESULTS_EXTENSION));
 
-	getpass();
-
-	/*
 	uint8_t restored[sss_MLEN] = {0};
 	FILE *fp;
 	char filename[20];
@@ -237,7 +160,7 @@ int main(int argc, char* argv[])
 			*x = c;
 			if (feof(fp) || c == '\n') break;
 			shares[i][j++] = *x;
-		} while(1);
+		} while(1);*/
 
 		ifstream fp;
 		fstream pass_file, test;
@@ -277,12 +200,10 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < sss_MLEN; ++i)
     	printf("restored[%d] %d\n", i, restored[i]);
 
-    */
-
 	string path_to_enc_sk 	= "electionSecretKeyFile.txt.enc";
 	string path_to_sk 		= "electionSecretKeyFile.txt";
   
-	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
+//	system(("openssl enc -aes-256-cbc -d -in " + path_to_enc_sk + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_pass.txt -iter 10").c_str());
 
 	int checksum_dec;
 	vector<int> results_dec;
@@ -291,8 +212,8 @@ int main(int argc, char* argv[])
 	checksum_dec = atoi(((Decrypt(checksum)).to_string()).c_str());
 	printf("CHECK É %d\n", checksum_dec);
 	//checks the checksum validity
-	//if(checksum_dec == numCandidates * numVoters)
-	//{
+	if(checksum_dec == candidates * voters)
+	{
 		cout << "Elections results:\n";
 
 		//decryptes the elections results
@@ -301,5 +222,5 @@ int main(int argc, char* argv[])
 			cout << "Candidate" + to_string(i+1) + ": " + to_string(results_dec[i]) + "votes\n";
 		}
 		cout << "\n";
-	//}
+	}
 }

@@ -6,41 +6,6 @@
 #include "sss/sss.h"
 #include "sss/randombytes.h"
 
-int main(int argc, char *argv[]) {
-	// Recives in argv[1] number of shares to create and argv[2] the threshold
-	
-	long num_shares = strtol(argv[1], NULL, 10);
-	long shares_threshold = strtol(argv[2], NULL, 10);
-	unsigned char pass[130];
-	int w=0;
-	FILE *fp;
-	
-	fp = fopen("pass.txt", "rb");
-	while ( w<64 ) {
-		pass[w] = fgetc(fp);
-		w++;
-	}
-	pass[64]='\0';
-	fclose(fp);
-	
-	sss_Share shares[num_shares];
-	
-	// Split the secret into shares
-	sss_create_shares(shares, pass, num_shares, shares_threshold);
-	char file_name[30];
-	for (int i = 0;i<num_shares;i++) {
-		snprintf(file_name, sizeof(file_name), "share%d.txt", i+1);
-		fp = fopen(file_name, "w");
-		for (int j = 0;j< sss_SHARE_LEN;j++) {
-			fputc(shares[i][j], fp);
-		}
-		fputc('\0', fp);
-		fclose(fp);
-	}	
-	return 0;
-}
-
-/*
 int main(int argc, char *argv[])
 {
 	// Receives the number of shares to create and the defined threshold
@@ -76,4 +41,3 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
-*/
