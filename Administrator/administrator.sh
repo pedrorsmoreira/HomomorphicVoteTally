@@ -102,7 +102,7 @@ for (( i=1; i<=$VOTERS; i++ ))
 do
 	openssl dgst -sha256 -sign ../rootCA.key -out ./WeightsEncrypted/encryptedWeightsFile$i.sign ./WeightsEncrypted/encryptedWeightsFile$i.dat
 done
-mv WeightsEncrypted ../../TallyOfficial
+mv WeightsEncrypted ../../TallyOfficial/
 
 cd ../..
 
