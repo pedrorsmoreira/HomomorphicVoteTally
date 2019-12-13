@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
 		//decryptes the elections results
 		for(int i = 0; i < results.size(); i++) {
 			results_dec[i] = atoi(((Decrypt(results[i])).to_string()).c_str());
-			cout << "Candidate" + to_string(i+1) + ": " + results_dec[i] + "votes\n";
+			cout << "Candidate" + to_string(i+1) + ": " + to_string(results_dec[i]) + "votes\n";
 		}
 		cout << "\n";
 	}
