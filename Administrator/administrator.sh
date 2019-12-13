@@ -23,7 +23,7 @@ echo $VOTERS >> input.txt
 # Signing this file
 openssl dgst -sha256 -sign rootCA.key -out input.sign input.txt
 # Copying the signed file with the properties of the election
-cp {input.txt,input.sign} ../Tallyios::binary | Official
+cp {input.txt,input.sign} ../TallyOfficial
 
 # Installing the root certificate in the tally official app
 cp rootCA.crt ../TallyOfficial
@@ -93,12 +93,16 @@ done
 
 # Assigning a weight to each voter and encrypts it with the election public key
 cd ../Weights
+mkdir WeightsEncrypted
 cmake . > /dev/null
 make > /dev/null
 ./weights ../ElectionKey/electionPublicKeyFile.dat $VOTERS
-# Signing the file
-openssl dgst -sha256 -sign ../rootCA.key -out encryptedWeightsFile.sign encryptedWeightsFile.dat
-mv {encryptedWeightsFile.dat,encryptedWeightsFile.sign} ../../TallyOfficial
+# Signing the files
+for (( i=1; i<=$VOTERS; i++ ))
+do
+	openssl dgst -sha256 -sign ../rootCA.key -out ./WeightsEncrypted/encryptedWeightsFile$i.sign ./WeightsEncrypted/encryptedWeightsFile$i.dat
+done
+mv WeightsEncrypted ../../TallyOfficial/
 
 cd ../..
 

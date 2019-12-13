@@ -107,39 +107,39 @@ int main(int argc, char* argv[]) {
 	std::cout << "Voter " + id + " successefully certified.\n\n";
 
 	//get the voting parameters
-	unsigned int candidates = 0;
-	unsigned int votes = 0;
-	get_voting_params(input, candidates, votes);
+	unsigned int nrCandidates = 0;
+	unsigned int nrVotes = 0;
+	get_voting_params(input, nrCandidates, nrVotes);
 	
 	//create the vector that will contain the votes
-	std::vector<unsigned int> final_vote (candidates, 0); 	
+	std::vector<unsigned int> final_vote (nrCandidates, 0); 	
 
 	//read the vote from the voter (from the cmd)
-	while (votes > 0){
+	while (nrVotes > 0){
 		std::string aux;
 		unsigned int selectedCand, selectedVotes;
 
-		std::cout << "There are " + std::to_string(candidates) + " available candidates to vote on, and "  << votes << " vote(s) to distribute." << std::endl;
+		std::cout << "There are " + std::to_string(nrCandidates) + " available candidates to vote on, and "  << nrVotes << " vote(s) to distribute." << std::endl;
 
-		std::cout << "Choose a candidate to vote on (from 1 to " << std::to_string(candidates) << "):";
+		std::cout << "Choose a candidate to vote on (from 1 to " << std::to_string(nrCandidates) << "):";
 		std::getline(std::cin, aux);
 		selectedCand = std::atoi(aux.c_str());
 
-		if (selectedCand < 1 || selectedCand > candidates){
+		if (selectedCand < 1 || selectedCand > nrCandidates){
 			std::cout << "Invalid candidate.\n\n";
 			continue;
 		}
 
-		std::cout << "\nChoose the number of votes for the candidate ([" << std::to_string(votes) << ']' << "votes left):";
+		std::cout << "\nChoose the number of votes for the candidate ([" << std::to_string(nrVotes) << ']' << "votes left):";
 		std::getline(std::cin, aux);
 		selectedVotes = std::atoi(aux.c_str());
 
-		if (selectedVotes < 1 || selectedVotes > votes){
+		if (selectedVotes < 1 || selectedVotes > nrVotes){
 			std::cout << "\n\n------Invalid value-------\n\n";
 			continue;
 		}
 
-		votes -= selectedVotes;
+		nrVotes -= selectedVotes;
 		final_vote[selectedCand-1] += selectedVotes;
 
 		std::cout << "\n\n";
