@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/rebuild_cache.dir
+/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/tally.dir
+/home/cripto/CriptoProject/HomomorphicVoteTally/TallyOfficial/CMakeFiles/edit_cache.dir
+=======
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/rebuild_cache.dir
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/tally.dir
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/edit_cache.dir
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a

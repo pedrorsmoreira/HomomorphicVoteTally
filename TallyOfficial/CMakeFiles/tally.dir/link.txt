@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+/usr/bin/c++     CMakeFiles/tally.dir/tally.cpp.o  -o tally  /usr/local/lib/libseal-3.4.a -pthread 
+=======
+/usr/bin/c++     CMakeFiles/tally.dir/tally.cpp.o  -o tally  /usr/local/lib/libseal-3.4.a -pthread /usr/lib/libz.so 
+>>>>>>> 97395f64a054f54d00034189a74f77812735a82a
