@@ -4,6 +4,8 @@
 #include <string>
 #include <ctime>
 
+#include "../../utils/utils.cpp"
+
 #include "seal/seal.h"
 using namespace std;
 using namespace seal;
@@ -32,23 +34,7 @@ int main(int argc, char* argv[])
     int numberOfVoters = atoi(argv[2]);
     int howToGenerateWeights = RANDOM;
 
-	// BFV encryption scheme
-	EncryptionParameters parms(scheme_type::BFV);
-
-	// Defining encryption parameters
-
-	// degree of the `polynomial modulus'
-	size_t poly_modulus_degree = 4096;
-	parms.set_poly_modulus_degree(poly_modulus_degree);
-
-	// [ciphertext] `coefficient modulus'
-	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-
-	// plaintext modulus
-	parms.set_plain_modulus(1024);
-
-	// Constructing a SEALContext object
-	auto context = SEALContext::Create(parms);
+	auto context = xx();
 
 	// Loading the election public key from the file
 	ifstream publicKeyFile;
