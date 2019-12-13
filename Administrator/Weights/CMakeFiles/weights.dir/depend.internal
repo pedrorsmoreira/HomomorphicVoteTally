@@ -3,8 +3,6 @@
 
 CMakeFiles/weights.dir/weights.cpp.o
  /home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/weights.cpp
- /home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.cpp
- /home/cripto/CriptoProject/HomomorphicVoteTally/utils/utils.h
  /usr/local/include/SEAL-3.4/seal/batchencoder.h
  /usr/local/include/SEAL-3.4/seal/biguint.h
  /usr/local/include/SEAL-3.4/seal/ciphertext.h

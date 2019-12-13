@@ -1,24 +1,24 @@
 Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
 Change Dir: /home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_f31ee/fast && /usr/bin/make -f CMakeFiles/cmTC_f31ee.dir/build.make CMakeFiles/cmTC_f31ee.dir/build
+Run Build Command(s):/usr/bin/make cmTC_2639e/fast && /usr/bin/make -f CMakeFiles/cmTC_2639e.dir/build.make CMakeFiles/cmTC_2639e.dir/build
 make[1]: Entering directory '/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_f31ee.dir/src.c.o
-/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_f31ee.dir/src.c.o   -c /home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTC_f31ee
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f31ee.dir/link.txt --verbose=1
-/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_f31ee.dir/src.c.o  -o cmTC_f31ee 
-CMakeFiles/cmTC_f31ee.dir/src.c.o: In function `main':
+Building C object CMakeFiles/cmTC_2639e.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_2639e.dir/src.c.o   -c /home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_2639e
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2639e.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_2639e.dir/src.c.o  -o cmTC_2639e 
+CMakeFiles/cmTC_2639e.dir/src.c.o: In function `main':
 src.c:(.text+0x3e): undefined reference to `pthread_create'
 src.c:(.text+0x4a): undefined reference to `pthread_detach'
 src.c:(.text+0x5b): undefined reference to `pthread_join'
 src.c:(.text+0x6f): undefined reference to `pthread_atfork'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_f31ee.dir/build.make:86: recipe for target 'cmTC_f31ee' failed
-make[1]: *** [cmTC_f31ee] Error 1
+CMakeFiles/cmTC_2639e.dir/build.make:86: recipe for target 'cmTC_2639e' failed
+make[1]: *** [cmTC_2639e] Error 1
 make[1]: Leaving directory '/home/cripto/CriptoProject/HomomorphicVoteTally/Administrator/Weights/CMakeFiles/CMakeTmp'
-Makefile:121: recipe for target 'cmTC_f31ee/fast' failed
-make: *** [cmTC_f31ee/fast] Error 2
+Makefile:121: recipe for target 'cmTC_2639e/fast' failed
+make: *** [cmTC_2639e/fast] Error 2
 
 
 Source file was:
