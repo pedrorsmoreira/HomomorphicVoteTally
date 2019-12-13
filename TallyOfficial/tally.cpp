@@ -80,7 +80,7 @@ Ciphertext stringToCiphertext(std::string word)
 	Ciphertext newCiphertext;
 	std::fstream file;
 	file.open("conversion.txt", std::ios::trunc);
-	if (!voteEncryptedFile.is_open()) {
+	if (!file.is_open()) {
 		std::cout << "Unable to open Conversion File - string to Ciphertext" << std::endl;
 		exit(-3);
 	}
@@ -173,6 +173,10 @@ int main(int argc, char* argv[])
 
 	//Initializations
 	//get the voting parameters
+	if (!check_signature(ROOT_CRT_FILE, VOTE_INPUT, VOTE_INPUT_SIGNED)){
+		std::cout << "Weights NOT certified. Exiting...\n";
+		exit(-3);
+	}
 	unsigned int candidates = 0;
 	unsigned int votes = 0;
 	get_voting_params(input, candidates, votes);
@@ -196,7 +200,8 @@ int main(int argc, char* argv[])
 	std::vector<std::string> votersVec;
 
 	//get a string with all the folders of the voters
-	std::string voters = ssystem(("ls " + BALLOT_BOX).c_str());
+	std::string str = "ls " + BALLOT_BOX;
+	std::string voters = ssystem(str.c_str());
 
 	//get each voter folder (string) to the vector
 	std::string delimiter = " ";

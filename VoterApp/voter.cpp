@@ -16,9 +16,6 @@
 #define VOTER_CRT_SIGNED 			"voter" //append ID
 #define VOTER_CRT_SIGNED_EXTENSION 	".crt.sign"
 
-#define VOTE_INPUT 					"input.txt"
-#define VOTE_INPUT_SIGNED 			"input.sign"
-
 //executable to encrypt a file with the SEAL library
 #define SEAL_ENCRYPT	"seal/seal_encrypt"
 
