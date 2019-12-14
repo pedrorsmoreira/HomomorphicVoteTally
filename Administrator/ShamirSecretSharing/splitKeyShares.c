@@ -49,11 +49,8 @@ int main(int argc, char *argv[])
 	unsigned char data[130], c;
 	sss_Share shares[numberOfShares];
 
-	int i = 0;
-
-	fp = fopen("password.txt", "rb");	
-
-	while(i < sss_MLEN) 
+	fp = fopen("password.txt", "rb");
+	for (int i = 0; i < count; ++i)
 		data[i++] = fgetc(fp);
 	fclose(fp);
 	data[sss_MLEN]='\0';
