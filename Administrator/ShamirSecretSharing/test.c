@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 		} while(1);
 	}
 
-
+	// PRINTS
 	j=0;
 	fp = fopen("password.txt", "rb");
     do {
@@ -43,16 +43,19 @@ int main(int argc, char *argv[])
     for (j = 0; j < sss_MLEN; ++j)
     	printf("data[%d] %d\n", j, data[j]);
     printf("\n");
+    // PRINTS
 
 
 	int tmp;
 	// Combine some of the shares to restore the original secret
 	tmp = sss_combine_shares(restored, shares2, shares_threshold);
 
+	// PRINTS
 	printf("\n");
     for (j = 0; j < sss_MLEN; ++j)
     	printf("restored[%d] %d\n", j, restored[j]);
     printf("\n");
+    // PRINTS
 
 	assert(tmp == 0);
 	assert(memcmp(restored, data, sss_MLEN) == 0);

@@ -80,8 +80,8 @@ done
 cd ../Administrator/ShamirSecretSharing
 
 # Encrypts electionSecretKeyFile with a random generated password and deletes unencripted file
-openssl rand -hex 16 > pass.txt
-openssl enc -aes-256-cbc -salt -in ../ElectionKey/electionSecretKeyFile.txt -out ../ElectionKey/electionSecretKeyFile.txt.enc -pass file:pass.txt -iter 10
+openssl rand -hex 16 > password.txt
+openssl enc -aes-256-cbc -salt -in ../ElectionKey/electionSecretKeyFile.txt -out ../ElectionKey/electionSecretKeyFile.txt.enc -pass file:password.txt -iter 10
 #rm ../ElectionKey/electionSecretKeyFile.txt
 mv ../ElectionKey/electionSecretKeyFile.txt.enc ../../Counter
 

@@ -236,7 +236,7 @@ int main(int argc, char* argv[])
 					break;
 				}
 
-				voteVecCiphertext.push_back( generateCiphertext(candidateVoteFile));
+				voteVecCiphertext.push_back(generateCiphertext(candidateVoteFile));
 			}
 
 			if (valid) break;

@@ -2,6 +2,7 @@
 
 openssl rand -hex 16 > password.txt
 openssl enc -aes-256-cbc -salt -in original.txt -out original.txt.enc -pass file:password.txt -iter 10
+
 make clean
 make
 ./splitKeyShares 5 4
