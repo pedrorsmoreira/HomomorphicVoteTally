@@ -8,6 +8,7 @@
 #define num_shares 5
 #define shares_threshold 4
 
+/*
 int main(int argc, char *argv[])
 {
 	uint8_t data[sss_MLEN] = {0}, restored[sss_MLEN] = {0};
@@ -70,11 +71,11 @@ int main(int argc, char *argv[])
 	fputc('\0', fp);
 	fclose(fp);
 
-}
+}*/
 
 int main(int argc, char *argv[])
 {
-	unsigned char data[130], restored[130];
+	unsigned char data[130], restored[130], c;
 	FILE *fp;
 	char filename[20];
 	sss_Share shares2[num_shares];
