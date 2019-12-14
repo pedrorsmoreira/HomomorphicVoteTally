@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
     // PRINTS
 
 	assert(tmp == 0);
-	assert(memcmp(restored, data, sss_MLEN) == 0);
+	//assert(memcmp(restored, data, sss_MLEN) == 0);
 
 	// Escreve num ficheiro a pass dps de juntar as shares
 	fp = fopen("recovered_password.txt", "wb");
