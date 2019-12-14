@@ -1,0 +1,3 @@
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/rebuild_cache.dir
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/tally.dir
+/home/pedromoreira/Desktop/cadeiras/Cripto/HomomorphicVoteTally/TallyOfficial/CMakeFiles/edit_cache.dir

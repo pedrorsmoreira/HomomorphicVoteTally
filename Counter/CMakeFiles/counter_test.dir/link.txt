@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/counter_test.dir/counter_test.cpp.o  -o counter_test  libsss.a /usr/local/lib/libseal-3.4.a librandombytes.a libhazmat.a libtweet.a -pthread /usr/lib/libz.so 

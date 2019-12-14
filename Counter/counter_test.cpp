@@ -29,6 +29,12 @@ using namespace seal;
 //names of the existing files
 #define SHARE 					"share" //append ID
 
+//name of the file to create with the private key
+#define PRIVATE_KEY_FILE_PATH		"electionSecretKeyFile.txt"
+
+#define PRIVATE_KEY_FILE_PATH_ENC		"electionSecretKeyFile.txt.enc"
+
+
 void get_sss_info(std::string filePATH, unsigned int& trustees, unsigned int& threshold_trustees, unsigned int& nrCandidates, unsigned int& nrVoters){
 	std::ifstream input(filePATH);
 	input >> trustees >> threshold_trustees >> nrCandidates >> nrVoters;
@@ -83,13 +89,13 @@ Plaintext Decrypt(Ciphertext cypher)
 	auto context = SEALContext::Create(parms);
 
 	// Loading the election public key from the file
-	ifstream secretKeyFile;
+	std::ifstream secretKeyFile;
 	SecretKey secret_key;
-	secretKeyFile.open(PRIVATE_KEY_FILE_PATH, ios::binary);
+	secretKeyFile.open(PRIVATE_KEY_FILE_PATH, std::ios::binary);
 	if (secretKeyFile.is_open())
 		secret_key.unsafe_load(context, secretKeyFile);
 	else {
-		cout << "Unable to open Private Key File" << endl;
+		std::cout << "Unable to open Private Key File" << std::endl;
 		exit(-1);
 	}
 	secretKeyFile.close();
@@ -171,6 +177,8 @@ int main()
 	}
 	fputc('\0', fp);
 	fclose(fp);
+
+	system(("openssl enc -aes-256-cbc -d -in " + std::string(PRIVATE_KEY_FILE_PATH_ENC) + " -out " + PRIVATE_KEY_FILE_PATH " -pass file:recovered_password.txt -iter 10").c_str());
 
 	//decrypts the checksum
 	int checksum_dec = atoi((Decrypt(checksum).to_string()).c_str()) ;
