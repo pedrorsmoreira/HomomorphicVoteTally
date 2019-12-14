@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
 	int i = 0;
 
-    fp = fopen("pass.txt", "rb");
+    fp = fopen("password.txt", "rb");
     do {
     	char c = fgetc(fp);
     	if (feof(fp) || c == '\n') break;
