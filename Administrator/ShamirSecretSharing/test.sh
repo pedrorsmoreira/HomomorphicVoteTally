@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-openssl rand -hex 16 > password.txt
+openssl rand -hex 32 > password.txt
 openssl enc -aes-256-cbc -salt -in original.txt -out original.txt.enc -pass file:password.txt -iter 10
 
 make clean
