@@ -46,18 +46,20 @@ int main(int argc, char *argv[])
 	uint8_t numberOfShares = atoi(argv[1]), thershold = atoi(argv[2]); 
 	FILE* fp; char filename[20];
 
-	unsigned char data[130];
+	unsigned char data[130], c;
 	sss_Share shares[numberOfShares];
 
 	int i = 0;
 
-	fp = fopen("password.txt", "rb");
+	fp = fopen("password.txt", "rb");	
     do {
+    	c = fgetc(fp);
+    	if ((c = fgetc(fp)) == EOF) break;
     	data[i++] = fgetc(fp);
     } while(i < sss_MLEN);
     fclose(fp);
 
-    data[sss_MLEN]='\0';
+    data[i]='\0';
 
      // Split the secret into $numberOfShares shares (with a recombination theshold of $thershold)
     sss_create_shares(shares, data, numberOfShares, thershold);
