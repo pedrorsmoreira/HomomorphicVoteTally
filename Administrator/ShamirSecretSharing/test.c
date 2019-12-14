@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	printf("sss_MLEN %ld\n", sss_MLEN);
 
 	// Escreve num ficheiro a pass dps de juntar as shares
-	fp = fopen("recovered_pass.txt", "wb");
+	fp = fopen("recovered_password.txt", "wb");
 	for (j = 0;j< sss_MLEN;j++) {
 		fputc(restored[j], fp);
 	}
