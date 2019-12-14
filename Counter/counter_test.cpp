@@ -89,13 +89,16 @@ int main()
 	checksum = generateCiphertext(CHECKSUM);
 	for (int i = 0; i < nrCandidates; i++)
 		results[i] = generateCiphertext(RESULTS + std::to_string(i+1) + TXT_EXTENSION);
-	
-	uint8_t restored_buf[sss_MLEN] = {0};
+
+
+	--------
+
+	unsigned char restored_buf[sss_MLEN+1], c;
 	FILE *fp;
 	char filename[20];
 	sss_Share restored_shares[trustees];
-	sss_Share x;
 	int j = 0;
+
 
 	std::string share 		= "";
 	std::string share_signed = "";
@@ -104,22 +107,19 @@ int main()
 		share 			= SHARE + std::to_string(i+1) + TXT_EXTENSION;
 		share_signed 	= SHARE + std::to_string(i+1) + SIGNED_EXTENSION;
 
-
-		snprintf(filename, sizeof(filename), share.c_str(), i+1);
+		snprintf(filename, sizeof(filename), "share%d.txt", i+1);
 		fp = fopen(filename, "rb");
 		j = 0;
-		do {
-			char c = fgetc(fp);
-			*x = c;
-			if (feof(fp) || c == '\n') break;
-			restored_shares[i][j++] = *x;
-		} while(1);
+
+		while (j < sss_SHARE_LEN) {
+			c = fgetc(fp);
+			shares2[i][j++] = c;
+		}
+		fclose(fp);
 	}
 
-	int tmp;
-
 	// Combine some of the shares to restore the original secret
-	tmp = sss_combine_shares(restored_buf, restored_shares, threshold_trustees);
+	int tmp = sss_combine_shares(restored_buf, restored_shares, threshold_trustees);
 
 	// PRINTS
 	printf("\n");
@@ -130,10 +130,10 @@ int main()
 
     assert(tmp == 0);
 
-    // Escreve num ficheiro a pass dps de juntar as shares
-	fp = fopen("recovered_password.txt", "wb");
-	for (j = 0; j < sss_MLEN; j++)
-		fputc(restored_buf[j], fp);
+    fp = fopen("recovered_password.txt", "wb");
+	for (j = 0; j < sss_MLEN; j++) {
+		fputc(restored[j], fp);
+	}
 	fputc('\0', fp);
 	fclose(fp);
 
