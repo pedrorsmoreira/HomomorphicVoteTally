@@ -68,6 +68,41 @@ Ciphertext generateCiphertext(std::string filename)
     return newCiphertext;
 }
 
+Plaintext Decrypt(Ciphertext cypher)
+{
+	// Scheme : BFV
+	EncryptionParameters parms(scheme_type::BFV);
+	// 1st Parameter
+	size_t poly_modulus_degree = 4096;
+	parms.set_poly_modulus_degree(poly_modulus_degree);
+	// 2nd Parameter
+	parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+	// 3rd Parameter
+	parms.set_plain_modulus(1024);
+	// Starting
+	auto context = SEALContext::Create(parms);
+
+	// Loading the election public key from the file
+	ifstream secretKeyFile;
+	SecretKey secret_key;
+	secretKeyFile.open(PRIVATE_KEY_FILE_PATH, ios::binary);
+	if (secretKeyFile.is_open())
+		secret_key.unsafe_load(context, secretKeyFile);
+	else {
+		cout << "Unable to open Private Key File" << endl;
+		exit(-1);
+	}
+	secretKeyFile.close();
+
+	// Constructing an instance of Decryptor - to be able to decrypt
+	Decryptor decryptor(context, secret_key);
+
+	Plaintext plaintext;
+	decryptor.decrypt(cypher, plaintext);
+
+	return plaintext;
+}
+
 
 int main()
 {
@@ -105,6 +140,8 @@ int main()
 		share 			= SHARE + std::to_string(i+1) + TXT_EXTENSION;
 		share_signed 	= SHARE + std::to_string(i+1) + SIGNED_EXTENSION;
 
+		//checkar
+
 		snprintf(filename, sizeof(filename), "share%d.txt", i+1);
 		fp = fopen(filename, "rb");
 		j = 0;
@@ -135,6 +172,9 @@ int main()
 	fputc('\0', fp);
 	fclose(fp);
 
+	//decrypts the checksum
+	int checksum_dec = atoi((Decrypt(checksum).to_string()).c_str()) ;
+	printf("CHECK É %d\n", checksum_dec);
 
 	return 0;
 }
