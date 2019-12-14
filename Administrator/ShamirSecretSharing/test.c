@@ -88,6 +88,8 @@ int main(int argc, char *argv[])
 
 		while ( (c  = fgetc(fp)) != '\0' )
 			shares2[i][j++] = c;
+
+		fclose(fp);
 	}
 
 	int tmp;
@@ -95,6 +97,19 @@ int main(int argc, char *argv[])
 	tmp = sss_combine_shares(restored, shares2, shares_threshold);
 
 	// PRINTS
+
+	fp = fopen("password.txt", "rb");	
+    do {
+    	c = fgetc(fp);
+    	if ((c = fgetc(fp)) == EOF) break;
+    	data[i++] = fgetc(fp);
+    } while(i < sss_MLEN);
+    fclose(fp);
+
+    data[i]='\0';
+
+
+
 	printf("\n");
     for (j = 0; j < sss_MLEN; ++j)
     	printf("restored[%d] %d\n", j, restored[j]);
