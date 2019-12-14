@@ -24,6 +24,8 @@ int main(int argc, char *argv[])
     	data[i++] = (uint8_t) c;
     } while(1);
     fclose(fp);
+    data[i++] = '\0';
+
 
     // Split the secret into $numberOfShares shares (with a recombination theshold of $thershold)
     sss_create_shares(shares, data, numberOfShares, thershold);
