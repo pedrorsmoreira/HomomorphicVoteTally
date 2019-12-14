@@ -49,8 +49,11 @@ int main(int argc, char *argv[])
 	unsigned char data[130], c;
 	sss_Share shares[numberOfShares];
 
+	int i = 0;
+
 	fp = fopen("password.txt", "rb");
-	for (int i = 0; i < sss_MLEN; ++i)
+
+	while(i < sss_MLEN) 
 		data[i++] = fgetc(fp);
 	fclose(fp);
 	data[sss_MLEN]='\0';
@@ -58,7 +61,7 @@ int main(int argc, char *argv[])
      // Split the secret into $numberOfShares shares (with a recombination theshold of $thershold)
     sss_create_shares(shares, data, numberOfShares, thershold);
 
-    for (int i = 0; i < numberOfShares; i++) {
+    for (i = 0; i < numberOfShares; i++) {
 		snprintf(filename, sizeof(filename), "share%d.txt", i+1);
 		fp = fopen(filename, "w");
 		for (int j = 0; j < sss_SHARE_LEN; j++)
