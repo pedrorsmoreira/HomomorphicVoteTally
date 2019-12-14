@@ -108,9 +108,10 @@ int main(int argc, char *argv[])
 
     data[i]='\0';
 
-
-
-	printf("\n");
+    printf("\n");
+    for (j = 0; j < sss_MLEN; ++j)
+    	printf("data[%d] %d\n", j, data[j]);
+    printf("\n\n");
     for (j = 0; j < sss_MLEN; ++j)
     	printf("restored[%d] %d\n", j, restored[j]);
     printf("\n");
