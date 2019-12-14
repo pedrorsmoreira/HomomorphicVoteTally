@@ -49,5 +49,5 @@ cd ../..
 cd Counter
 rm -Rf CMakeFiles
 rm CMakeCache.txt cmake_install.cmake Makefile
-rm e* i* s*
+rm share* rootCA.crt input* elect*
 cd ..
