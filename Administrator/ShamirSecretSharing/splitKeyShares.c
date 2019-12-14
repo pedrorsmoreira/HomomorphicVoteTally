@@ -49,6 +49,8 @@ int main(int argc, char *argv[])
 	unsigned char data[130];
 	sss_Share shares[numberOfShares];
 
+	int i = 0;
+
 	fp = fopen("password.txt", "rb");
     do {
     	data[i++] = fgetc(fp);
