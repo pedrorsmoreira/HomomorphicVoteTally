@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-	unsigned char data[130], restored[130], c;
+	unsigned char data[sss_MLEN+1], restored[sss_MLEN+1], c;
 	FILE *fp;
 	char filename[20];
 	sss_Share shares2[num_shares];
@@ -93,9 +93,9 @@ int main(int argc, char *argv[])
 		fclose(fp);
 	}
 
-	int tmp;
+	
 	// Combine some of the shares to restore the original secret
-	tmp = sss_combine_shares(restored, shares2, shares_threshold);
+	int tmp = sss_combine_shares(restored, shares2, shares_threshold);
 
 	// PRINTS
 	int i;

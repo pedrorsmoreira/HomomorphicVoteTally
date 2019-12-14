@@ -89,7 +89,7 @@ int main()
 	checksum = generateCiphertext(CHECKSUM);
 	for (int i = 0; i < nrCandidates; i++)
 		results[i] = generateCiphertext(RESULTS + std::to_string(i+1) + TXT_EXTENSION);
-
+	
 	uint8_t restored_buf[sss_MLEN] = {0};
 	FILE *fp;
 	char filename[20];

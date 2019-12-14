@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 	uint8_t numberOfShares = atoi(argv[1]), thershold = atoi(argv[2]); 
 	FILE* fp; char filename[20];
 
-	unsigned char data[130], c;
+	unsigned char data[sss_MLEN+1], c;
 	sss_Share shares[numberOfShares];
 
 	fp = fopen("password.txt", "rb");
