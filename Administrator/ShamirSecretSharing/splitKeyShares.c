@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	fp = fopen("password.txt", "rb");	
     do {
     	c = fgetc(fp);
-    	printf("C ---> %c\n", c);
+    	printf("i ---> %d | C ---> %c\n", i, c);
     	if ((c = fgetc(fp)) == EOF) break;
     	data[i++] = fgetc(fp);
     } while(i < sss_MLEN);
