@@ -89,7 +89,7 @@ mv ../ElectionKey/electionSecretKeyFile.txt.enc ../../Counter
 # secret sharing and distributing each of the shares by the trustees
 make > /dev/null
 ./splitKeyShares $TRUSTEES $THRESHOLD_TRUSTEES
-rm pass.txt # Deleting the original password
+#rm password.txt # Deleting the original password
 #make clean > /dev/null
 
 for (( i=1; i<=$TRUSTEES; i++ ))

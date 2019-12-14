@@ -91,8 +91,6 @@ int main()
 		results[i] = generateCiphertext(RESULTS + std::to_string(i+1) + TXT_EXTENSION);
 
 
-	--------
-
 	unsigned char restored_buf[sss_MLEN+1], c;
 	FILE *fp;
 	char filename[20];
@@ -113,7 +111,7 @@ int main()
 
 		while (j < sss_SHARE_LEN) {
 			c = fgetc(fp);
-			shares2[i][j++] = c;
+			restored_shares[i][j++] = c;
 		}
 		fclose(fp);
 	}
@@ -132,7 +130,7 @@ int main()
 
     fp = fopen("recovered_password.txt", "wb");
 	for (j = 0; j < sss_MLEN; j++) {
-		fputc(restored[j], fp);
+		fputc(restored_buf[j], fp);
 	}
 	fputc('\0', fp);
 	fclose(fp);
