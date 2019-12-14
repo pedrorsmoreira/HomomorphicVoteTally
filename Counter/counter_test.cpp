@@ -78,7 +78,7 @@ int main()
 	}
 
 	//get essential information
-	unsigned int num_shares = 0, shares_threshold = 0, candidates = 0, voters = 0;
+	unsigned int trustees = 0, threshold_trustees = 0, nrCandidates = 0, nrVoters = 0;
 	get_sss_info(COUNTER_INPUT, trustees, threshold_trustees, nrCandidates, nrVoters);
 
 	printf("\ntrustees %d\nthreshold_trustees %d\nnrCandidates %d\nnrVoters %d\n\n", trustees, threshold_trustees, nrCandidates, nrVoters);
