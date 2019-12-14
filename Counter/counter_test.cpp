@@ -97,12 +97,12 @@ int main()
 	sss_Share x;
 	int j = 0;
 
-	std:string share 		= "";
-	std:string share_signed = "";
+	std::string share 		= "";
+	std::string share_signed = "";
 
 	for (int i = 0; i < trustees; i++) {
-		share 			= SHARE + to_string(i+1) + TXT_EXTENSION;
-		share_signed 	= SHARE + to_string(i+1) + SIGNED_EXTENSION;
+		share 			= SHARE + std::to_string(i+1) + TXT_EXTENSION;
+		share_signed 	= SHARE + std::to_string(i+1) + SIGNED_EXTENSION;
 
 
 		snprintf(filename, sizeof(filename), share.c_str(), i+1);
