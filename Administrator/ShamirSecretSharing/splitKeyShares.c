@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
 	fp = fopen("password.txt", "rb");	
 
-	while(w < sss_MLEN) 
+	while(i < sss_MLEN) 
 		data[i++] = fgetc(fp);
 	fclose(fp);
 	data[sss_MLEN]='\0';
