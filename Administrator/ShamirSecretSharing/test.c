@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 	tmp = sss_combine_shares(restored, shares2, shares_threshold);
 
 	// PRINTS
-
+	int i;
 	fp = fopen("password.txt", "rb");	
     do {
     	c = fgetc(fp);
