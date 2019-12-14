@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-	unsigned char data[sss_MLEN] = {0}, restored[sss_MLEN] = {0};
+	uint8_t data[sss_MLEN] = {0}, restored[sss_MLEN] = {0};
 	FILE *fp;
 	char filename[20];
 	sss_Share shares2[num_shares];
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 		fp = fopen(filename, "rb");
 		j = 0;
 		do {
-			unsigned char c = fgetc(fp);
+			char c = fgetc(fp);
 			*x = c;
 			if (feof(fp) || c == '\n') break;
 			shares2[i][j++] = *x;
@@ -70,4 +70,44 @@ int main(int argc, char *argv[])
 	fputc('\0', fp);
 	fclose(fp);
 
+}
+
+int main(int argc, char *argv[])
+{
+	unsigned char data[130], restored[130];
+	FILE *fp;
+	char filename[20];
+	sss_Share shares2[num_shares];
+	int j = 0;
+
+	for (int i = 0; i < num_shares; i++) {
+		snprintf(filename, sizeof(filename), "share%d.txt", i+1);
+		fp = fopen(filename, "rb");
+		j = 0;
+
+		while ( (c  = fgetc(fp)) != '\0' )
+			shares2[i][j++] = c;
+	}
+
+	int tmp;
+	// Combine some of the shares to restore the original secret
+	tmp = sss_combine_shares(restored, shares2, shares_threshold);
+
+	// PRINTS
+	printf("\n");
+    for (j = 0; j < sss_MLEN; ++j)
+    	printf("restored[%d] %d\n", j, restored[j]);
+    printf("\n");
+    // PRINTS
+
+	assert(tmp == 0);
+	assert(memcmp(restored, data, sss_MLEN) == 0);
+
+	// Escreve num ficheiro a pass dps de juntar as shares
+	fp = fopen("recovered_password.txt", "wb");
+	for (j = 0; j < sss_MLEN; j++) {
+		fputc(restored[j], fp);
+	}
+	fputc('\0', fp);
+	fclose(fp);
 }
