@@ -133,7 +133,7 @@ int main()
     // Escreve num ficheiro a pass dps de juntar as shares
 	fp = fopen("recovered_password.txt", "wb");
 	for (j = 0; j < sss_MLEN; j++)
-		fputc(restored[j], fp);
+		fputc(restored_buf[j], fp);
 	fputc('\0', fp);
 	fclose(fp);
 
