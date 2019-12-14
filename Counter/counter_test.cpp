@@ -31,7 +31,7 @@ using namespace seal;
 
 void get_sss_info(std::string filePATH, unsigned int& trustees, unsigned int& threshold_trustees, unsigned int& nrCandidates, unsigned int& nrVoters){
 	std::ifstream input(filePATH);
-	std::input >> trustees >> threshold_trustees >> nrCandidates >> nrVoters;
+	input >> trustees >> threshold_trustees >> nrCandidates >> nrVoters;
 }
 
 Ciphertext generateCiphertext(std::string filename)
