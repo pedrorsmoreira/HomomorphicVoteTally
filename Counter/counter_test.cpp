@@ -30,8 +30,8 @@ using namespace seal;
 #define SHARE 					"share" //append ID
 
 void get_sss_info(std::string filePATH, unsigned int& trustees, unsigned int& threshold_trustees, unsigned int& nrCandidates, unsigned int& nrVoters){
-	ifstream input(filePATH);
-	input >> trustees >> threshold_trustees >> nrCandidates >> nrVoters;
+	std::ifstream input(filePATH);
+	std::input >> trustees >> threshold_trustees >> nrCandidates >> nrVoters;
 }
 
 Ciphertext generateCiphertext(std::string filename)
@@ -87,13 +87,13 @@ int main()
 	std::vector<Ciphertext> results(nrCandidates);
 
 	checksum = generateCiphertext(CHECKSUM);
-	for (int i = 0; i < candidates; i++)
-		results[i] = generateCiphertext(RESULTS + to_string(i+1) + TXT_EXTENSION);
+	for (int i = 0; i < nrCandidates; i++)
+		results[i] = generateCiphertext(RESULTS + std::to_string(i+1) + TXT_EXTENSION);
 
 	uint8_t restored_buf[sss_MLEN] = {0};
 	FILE *fp;
 	char filename[20];
-	sss_Share restored_shares[num_shares];
+	sss_Share restored_shares[trustees];
 	sss_Share x;
 	int j = 0;
 
