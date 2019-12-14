@@ -2,6 +2,12 @@
 #include <fstream>
 #include <string>
 
+extern "C"{
+	#include "sss/sss.h"
+	#include "sss/randombytes.h"
+	#include <assert.h>
+}
+
 #include "../utils/utils.cpp"
 
 #include "seal/seal.h"
