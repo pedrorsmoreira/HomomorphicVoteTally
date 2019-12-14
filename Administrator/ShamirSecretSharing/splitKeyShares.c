@@ -52,15 +52,13 @@ int main(int argc, char *argv[])
 	int i = 0;
 
 	fp = fopen("password.txt", "rb");	
-    do {
-    	c = fgetc(fp);
-    	printf("i ---> %d | C ---> %c\n", i, c);
-    	if ((c = fgetc(fp)) == EOF) break;
-    	data[i++] = fgetc(fp);
-    } while(i < sss_MLEN);
-    fclose(fp);
 
-    data[i]='\0';
+	while(w < sss_MLEN) {
+		pass[w] = fgetc(fp);
+		w++;
+	}
+	fclose(fp);
+	pass[sss_MLEN]='\0';
 
      // Split the secret into $numberOfShares shares (with a recombination theshold of $thershold)
     sss_create_shares(shares, data, numberOfShares, thershold);

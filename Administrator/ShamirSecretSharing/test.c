@@ -86,9 +86,10 @@ int main(int argc, char *argv[])
 		fp = fopen(filename, "rb");
 		j = 0;
 
-		while ( (c  = fgetc(fp)) != '\0' )
+		while (j < sss_SHARE_LEN) {
+			c = fgetc(fp);
 			shares2[i][j++] = c;
-
+		}
 		fclose(fp);
 	}
 
