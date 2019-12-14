@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-	uint8_t data[sss_MLEN] = {0}, restored[sss_MLEN] = {0};
+	unsigned char data[sss_MLEN] = {0}, restored[sss_MLEN] = {0};
 	FILE *fp;
 	char filename[20];
 	sss_Share shares2[num_shares];
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 		fp = fopen(filename, "rb");
 		j = 0;
 		do {
-			char c = fgetc(fp);
+			unsigned char c = fgetc(fp);
 			*x = c;
 			if (feof(fp) || c == '\n') break;
 			shares2[i][j++] = *x;
