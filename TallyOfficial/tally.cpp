@@ -258,7 +258,7 @@ int main(int argc, char* argv[])
 
 	// Writes a file with the checksum 
 	std::ofstream checksumFile;
-	checksumFile.open("../Counter/checksum.txt", std::ios::binary | std::ios::app);
+	checksumFile.open("../Counter/checksum.txt", std::ios::binary);
 	checksum.save(checksumFile);
 	checksumFile.close();
 
@@ -266,7 +266,7 @@ int main(int argc, char* argv[])
 	std::string output = "";
 	for (int i = 0; i < nrCandidates; ++i) {
 		output = std::string("../Counter/results") + std::to_string(i+1) + TXT_EXTENSION;
-		resultsFile.open(output.c_str(), std::ios::binary | std::ios::app);
+		resultsFile.open(output.c_str(), std::ios::binary);
 		results[i].save(resultsFile);
 		resultsFile.close();
 	}

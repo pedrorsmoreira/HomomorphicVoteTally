@@ -1,2 +1,0 @@
-/usr/bin/ar qc libhazmat.a  CMakeFiles/hazmat.dir/sss/hazmat.c.o
-/usr/bin/ranlib libhazmat.a
